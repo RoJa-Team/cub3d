@@ -1,0 +1,6 @@
+[submodule "catch_lib"]
+	path = catch_lib
+	url = git@github.com:Shishudy/catch_lib.git
+[submodule "minilibx"]
+	path = minilibx
+	url = https://github.com/42paris/minilibx-linux.git
