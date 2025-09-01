@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/29 19:44:47 by rafasant          #+#    #+#              #
-#    Updated: 2025/09/01 19:45:53 by rafasant         ###   ########.fr        #
+#    Updated: 2025/09/01 20:29:09 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ CC 			= cc
 CFLAGS		= -Wall -Wextra -Werror -g -O3 -lXext -lX11 -lm -lz ${HEADERS}
 NAME 		= cub3D
 RM			= rm -rf
-HEADERS 	= $(addprefix -I, . catch_lib minilibx)
-INCLUDE 	= catch_lib/catch.a minilibx/libmlx.a
+HEADERS 	= $(addprefix -I, . catch_lib minilibx libft)
+INCLUDE 	= catch_lib/catch.a minilibx/libmlx.a libft/libft.a
 SRCS 		= $(addprefix ${SRCS_DIR}, cub3d.c)
 OBJS		= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 SRCS_DIR	= srcs/
@@ -29,6 +29,7 @@ all: ${INCLUDE} ${NAME}
 ${INCLUDE} :
 	@echo "Compiling packages..."
 	@make -C catch_lib --silent
+	@make -C libft --silent
 	@make -C minilibx --silent --no-print-directory > /dev/null 2>&1
 	@echo "Packages compiled!"
 ${NAME} : ${OBJS}
@@ -38,12 +39,14 @@ ${NAME} : ${OBJS}
 clean: 
 	@${RM} ${OBJS_DIR}
 	@make clean -C catch_lib --silent
+	@make clean -C libft --silent
 	@make clean -C minilibx --silent > /dev/null 2>&1
 	@echo "Cleaned object files!"
 
 fclean: clean
 	@${RM} ${NAME}
 	@make fclean -C catch_lib --silent
+	@make fclean -C libft --silent
 	@echo "Cleaned executables!"
 
 re: fclean all
