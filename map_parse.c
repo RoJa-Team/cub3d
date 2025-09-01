@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/01 21:57:45 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/01 22:50:39 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	init_map_objects()
 
 int	map_parse(char *cub_file)
 {
-	get_map();
+	allocate_map();
+	assign_map_lines();
 	if (map_objects->map)
 	{
 		if (!valid_map(map_objects()->map))
@@ -78,16 +79,9 @@ int	map_parse(char *cub_file)
 			return (1);
 		}
 	}
+	else
+		return (1);
 	return (0);
-}
-
-void	get_map(void)
-{
-	allocate_map();
-	if (!map_objects()->map)
-		return ;
-	assign_map_lines();
-	close(fd);
 }
 
 void	allocate_map(int fd)
@@ -139,4 +133,28 @@ void	assign_map_lines(int fd)
 		row++;
 		cub_file = cub_file->next;
 	}
+}
+
+int	valid_map(char **map)
+{
+	if (!is_bounded_by_walls(map))
+	{
+		ft_printf("Map is not bounded by walls\n");
+		return (0);
+	}
+	if (!validate_characters(map))
+	{
+		ft_printf("Invalid or missing characters on the map\n");
+		return (0);
+	}
+}
+
+void	free_map()
+{
+	int	i;
+
+	i = -1;
+	while (map_objects()->map[++i])
+		free(map_objects()->map[i]);
+	free(map_objects()->map);
 }
