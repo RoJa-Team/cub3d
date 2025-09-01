@@ -6,17 +6,17 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/29 19:44:47 by rafasant          #+#    #+#              #
-#    Updated: 2025/08/29 20:03:36 by rafasant         ###   ########.fr        #
+#    Updated: 2025/09/01 19:45:53 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 			= cc
-CFLAGS		= -Wall -Wextra -Werror ${HEADERS}
+CFLAGS		= -Wall -Wextra -Werror -g -O3 -lXext -lX11 -lm -lz ${HEADERS}
 NAME 		= cub3D
 RM			= rm -rf
-HEADERS 	= $(addprefix -I, . catch_lib)
-INCLUDE 	= catch_lib/catch.a
-SRCS 		= $(addprefix ${SRCS_DIR} )
+HEADERS 	= $(addprefix -I, . catch_lib minilibx)
+INCLUDE 	= catch_lib/catch.a minilibx/libmlx.a
+SRCS 		= $(addprefix ${SRCS_DIR}, cub3d.c)
 OBJS		= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 SRCS_DIR	= srcs/
 OBJS_DIR	= objs/
@@ -27,16 +27,18 @@ ${OBJS_DIR}%.o: ${SRCS_DIR}%.c
 
 all: ${INCLUDE} ${NAME}
 ${INCLUDE} :
-	@echo "Compiling catch_lib..."
+	@echo "Compiling packages..."
 	@make -C catch_lib --silent
-	@make clean -C catch_lib --silent
-	@echo "Catch_lib compiled!"
+	@make -C minilibx --silent --no-print-directory > /dev/null 2>&1
+	@echo "Packages compiled!"
 ${NAME} : ${OBJS}
 	@${CC} ${CFLAGS} ${OBJS} ${INCLUDE} -o ${NAME}
 	@echo "Compiled $(NAME)."
 
 clean: 
 	@${RM} ${OBJS_DIR}
+	@make clean -C catch_lib --silent
+	@make clean -C minilibx --silent > /dev/null 2>&1
 	@echo "Cleaned object files!"
 
 fclean: clean
