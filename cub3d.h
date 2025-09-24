@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/03 22:44:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/24 23:09:11 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,11 @@ typedef struct s_texture
 typedef struct s_textures
 {
 	t_texture	*wall;
-	t_texture	*door_open;
-	t_texture	*door_closed;
+	t_texture	*door;
 	t_texture	*ceiling;
 	t_texture	*floor;
+	int			*ccolour;
+	int			*fcolour;
 }       		t_textures;
 
 typedef struct s_map_objects
@@ -117,6 +118,10 @@ typedef struct s_game
 	void	*mlx_ptr;
 	void	*win_ptr;
 }				t_game;
+
+/*---------- parse_file.c ----------*/
+void	parse_file(char *file);
+
 
 /*---------- static_structs.c ----------*/
 t_map_objects	*map_objects(void);
