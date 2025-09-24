@@ -1,0 +1,239 @@
+# cub3D Project - User Stories and Tasks
+
+## Epic: 3D Ray-Casting Maze Game
+
+### User Story 1: Window Management
+**As a** player  
+**I want** a responsive game window  
+**So that** I can have a smooth gaming experience
+
+#### Tasks:
+- [ ] Initialize MiniLibX library
+- [ ] Create game window with configurable dimensions
+- [ ] Implement window close functionality via ESC key
+- [ ] Implement window close functionality via red cross button
+- [ ] Handle window minimize/maximize events
+- [ ] Ensure smooth window switching between applications
+- [ ] Test window responsiveness under different scenarios
+
+---
+
+### User Story 2: Scene Configuration File Parser
+**As a** player  
+**I want** to load game configurations from a .cub file  
+**So that** I can play different maze layouts
+
+#### Tasks:
+- [ ] Create file validation to check for .cub extension
+- [ ] Implement file opening and reading functionality
+- [ ] Parse texture paths (NO, SO, WE, EA identifiers)
+- [ ] Parse floor color (F identifier with RGB values)
+- [ ] Parse ceiling color (C identifier with RGB values)
+- [ ] Validate RGB values are within [0,255] range
+- [ ] Handle multiple spaces between elements
+- [ ] Handle empty lines between elements (except in map)
+- [ ] Ensure map is always the last element in file
+- [ ] Create error handling for file read failures
+
+---
+
+### User Story 3: Map Parser and Validator
+**As a** game developer  
+**I want** a robust map parser  
+**So that** the game loads valid maze layouts
+
+#### Tasks:
+- [ ] Parse map characters (0, 1, N, S, E, W)
+- [x] Validate map contains only allowed characters
+- [x] Identify player starting position (N, S, E, W)
+- [ ] Determine player initial orientation based on spawn character
+- [x] Preserve spaces within the map structure
+- [x] Validate map is completely enclosed by walls
+- [x] Implement flood-fill algorithm to check map closure
+- [x] Handle irregular map shapes
+- [x] Store map in appropriate data structure (2D array/list)
+- [x] Create error messages for invalid maps
+
+---
+
+### User Story 4: Texture Loading System
+**As a** player  
+**I want** different wall textures for each direction  
+**So that** I can orient myself in the maze
+
+#### Tasks:
+- [ ] Load North wall texture from specified path
+- [ ] Load South wall texture from specified path
+- [ ] Load East wall texture from specified path
+- [ ] Load West wall texture from specified path
+- [ ] Validate texture files exist and are readable
+- [ ] Convert textures to MiniLibX compatible format
+- [ ] Store textures in memory for rendering
+- [ ] Handle texture loading errors gracefully
+
+---
+
+### User Story 5: Ray-Casting Engine
+**As a** player  
+**I want** a 3D perspective view of the maze  
+**So that** I experience immersive first-person gameplay
+
+#### Tasks:
+- [ ] Implement ray-casting algorithm
+- [ ] Calculate ray directions for each screen column
+- [ ] Perform DDA (Digital Differential Analysis) for ray traversal
+- [ ] Detect wall collisions
+- [ ] Calculate perpendicular distance to walls
+- [ ] Determine wall slice height based on distance
+- [ ] Identify which wall face was hit (N, S, E, W)
+- [ ] Optimize ray-casting for performance
+- [ ] Handle edge cases (corners, boundaries)
+
+---
+
+### User Story 6: Rendering System
+**As a** player  
+**I want** smooth graphics rendering  
+**So that** the game looks visually appealing
+
+#### Tasks:
+- [ ] Create image buffer using MiniLibX
+- [ ] Implement floor rendering with specified color
+- [ ] Implement ceiling rendering with specified color
+- [ ] Calculate texture coordinates for wall slices
+- [ ] Apply appropriate texture based on wall direction
+- [ ] Implement texture mapping for walls
+- [ ] Draw complete frame to window
+- [ ] Implement double buffering for smooth rendering
+- [ ] Optimize rendering loop for target FPS
+
+---
+
+### User Story 7: Player Movement
+**As a** player  
+**I want** to move through the maze using WASD keys  
+**So that** I can explore and navigate the environment
+
+#### Tasks:
+- [ ] Capture W key input for forward movement
+- [ ] Capture S key input for backward movement
+- [ ] Capture A key input for left strafe
+- [ ] Capture D key input for right strafe
+- [ ] Calculate new player position based on movement
+- [ ] Implement collision detection with walls
+- [ ] Prevent player from walking through walls
+- [ ] Apply movement speed constants
+- [ ] Ensure smooth movement feel
+
+---
+
+### User Story 8: Camera Rotation
+**As a** player  
+**I want** to look around using arrow keys  
+**So that** I can view different parts of the maze
+
+#### Tasks:
+- [ ] Capture left arrow key for left rotation
+- [ ] Capture right arrow key for right rotation
+- [ ] Update camera direction vector
+- [ ] Update camera plane for FOV
+- [ ] Apply rotation speed constants
+- [ ] Ensure smooth rotation animation
+- [ ] Maintain proper aspect ratio during rotation
+
+---
+
+### User Story 9: Error Handling
+**As a** developer  
+**I want** comprehensive error handling  
+**So that** users receive clear feedback on issues
+
+#### Tasks:
+- [ ] Create error message system
+- [ ] Handle missing texture files
+- [ ] Handle invalid map configurations
+- [ ] Handle missing player spawn point
+- [ ] Handle multiple player spawn points
+- [ ] Handle unclosed maps
+- [ ] Handle invalid RGB values
+- [ ] Handle file permission errors
+- [ ] Ensure "Error\n" prefix for all error outputs
+- [ ] Implement clean program exit on errors
+
+---
+
+### User Story 10: Memory Management
+**As a** developer  
+**I want** proper memory management  
+**So that** the game runs without leaks
+
+#### Tasks:
+- [ ] Implement proper malloc/free for dynamic allocations
+- [ ] Free texture memory on program exit
+- [ ] Free map data structure
+- [ ] Free MiniLibX resources
+- [ ] Implement cleanup function for all resources
+- [ ] Test with valgrind for memory leaks
+- [ ] Handle allocation failures gracefully
+
+---
+
+### User Story 11: Build System
+**As a** developer  
+**I want** a robust build system  
+**So that** the project compiles reliably
+
+#### Tasks:
+- [ ] Create Makefile with 'all' target
+- [ ] Implement 'clean' target to remove object files
+- [ ] Implement 'fclean' target for full cleanup
+- [ ] Implement 're' target for rebuild
+- [ ] Add 'bonus' target for extra features
+- [ ] Link math library (-lm)
+- [ ] Link MiniLibX library
+- [ ] Include libft if used
+- [ ] Set appropriate compiler flags
+- [ ] Handle dependencies correctly
+
+---
+
+## Testing Checklist
+
+### Functional Tests
+- [ ] Test with minimal valid map
+- [ ] Test with complex valid maps
+- [ ] Test all movement controls
+- [ ] Test all rotation controls
+- [ ] Test window management
+- [ ] Test various texture formats
+- [ ] Test different color values
+
+### Error Tests
+- [ ] Test with invalid file extension
+- [ ] Test with missing textures
+- [ ] Test with open maps
+- [ ] Test with invalid characters in map
+- [ ] Test with no player spawn
+- [ ] Test with multiple player spawns
+- [ ] Test with RGB values out of range
+- [ ] Test with malformed configuration files
+
+### Performance Tests
+- [ ] Verify smooth rendering (target FPS)
+- [ ] Test with large maps
+- [ ] Check memory usage
+- [ ] Verify no memory leaks
+
+---
+
+## Definition of Done
+- [ ] Code compiles without warnings
+- [ ] All Makefile rules work correctly
+- [ ] Program takes .cub file as argument
+- [ ] All textures load and display correctly
+- [ ] Movement and rotation work smoothly
+- [ ] Window management is responsive
+- [ ] All errors are handled with appropriate messages
+- [ ] No memory leaks detected
+- [ ] Code follows project coding standards
+- [ ] Documentation is complete
