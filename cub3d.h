@@ -6,16 +6,16 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/03 22:44:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/27 14:38:24 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "libft.h"
-# include "catch.h"
-# include "mlx.h"
+# include "libft/libft.h"
+# include "catch_lib/catch.h"
+# include "minilibx/mlx.h"
 
 # define KEY_ESC 65307
 # define KEY_W 119
@@ -64,10 +64,19 @@ typedef struct s_file
 	struct s_file	*next;
 }       		t_file;
 
+typedef	struct s_game
+{
+	void	*mlx;
+	void	*win;
+	t_img	img;
+	int	width;
+	int	height;
+}
+
 typedef struct s_img
 {
-	int		w;
-	int		h;
+	int	w;
+	int	h;
 	void	*img_ptr;
 	char	*addr;
 	int		bpp;
@@ -100,8 +109,8 @@ typedef struct s_textures
 	t_texture	*wall;
 	t_texture	*door_open;
 	t_texture	*door_closed;
-	t_texture	*ceiling;
-	t_texture	*floor;
+	int		*ceiling_color;
+	int		*floor_color;
 }       		t_textures;
 
 typedef struct s_map_objects
@@ -112,16 +121,16 @@ typedef struct s_map_objects
 	char    **map;
 }       		t_map_objects;
 
-typedef struct s_game
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-}				t_game;
-
 /*---------- static_structs.c ----------*/
 t_map_objects	*map_objects(void);
 t_player	*player(void);
 t_textures	*textures(void);
 t_game	*game(void);
+
+
+/*---------- window.c ----------*/
+void	open_window(void);
+
+/*---------- background.c ----------*/
 
 #endif
