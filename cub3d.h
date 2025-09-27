@@ -6,16 +6,16 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/24 23:09:11 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/27 14:47:49 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "libft.h"
-# include "catch.h"
-# include "mlx.h"
+# include "libft/libft.h"
+# include "catch_lib/catch.h"
+# include "minilibx/mlx.h"
 
 # define KEY_ESC 65307
 # define KEY_W 119
@@ -64,10 +64,12 @@ typedef struct s_file
 	struct s_file	*next;
 }       		t_file;
 
+
+
 typedef struct s_img
 {
-	int		w;
-	int		h;
+	int	w;
+	int	h;
 	void	*img_ptr;
 	char	*addr;
 	int		bpp;
@@ -113,20 +115,27 @@ typedef struct s_map_objects
 	char    **map;
 }       		t_map_objects;
 
-typedef struct s_game
+typedef	struct s_game
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void	*mlx;
+	void	*win;
+	int		width;
+	int		height;
 }				t_game;
 
 /*---------- parse_file.c ----------*/
 void	parse_file(char *file);
-
 
 /*---------- static_structs.c ----------*/
 t_map_objects	*map_objects(void);
 t_player	*player(void);
 t_textures	*textures(void);
 t_game	*game(void);
+
+
+/*---------- window.c ----------*/
+void	open_window(void);
+
+/*---------- background.c ----------*/
 
 #endif
