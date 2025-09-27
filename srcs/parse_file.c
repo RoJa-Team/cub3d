@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/24 23:09:16 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/27 17:22:14 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,17 @@ void	check_filename(char *file)
 	while (file[i])
 	{
 		if (file[i] != *ber)
-			return (catch()->set("Error\n %s: File [%s] isn't a .ber file", __func__, file));
+			return ((void)catch()->set("Error\n %s: File [%s] isn't a .ber file", __func__, file));
 		i++;
 		ber++;
 	}
+}
+
+void	deallocate(void)
+{
+	catch()->print();
+	catch()->free();
+	exit(1);
 }
 
 t_file	*get_file_content(char *file)
@@ -41,16 +48,14 @@ t_file	*get_file_content(char *file)
 	
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return (NULL);
-		// deallocate(catch()->set("Error\n %s: Error opening file", __func__));
+		return (catch()->set("Error\n %s: Error opening file", __func__), deallocate(), NULL);
 	content = NULL;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
 		new_content = malloc(sizeof(t_file));
 		if (!new_content)
-			return (NULL);
-			// deallocate(catch()->set("Error\n %s: Error allocating memory", __func__));
+			return (catch()->set("Error\n %s: Error allocating memory", __func__), deallocate(), NULL);
 		new_content->line = line;
 		if (content == NULL)
 			content = new_content;
@@ -62,57 +67,93 @@ t_file	*get_file_content(char *file)
 	return (content);
 }
 
-int	static ft_len_wspc(char *str)
+char	*get_texture_path(char *line)
 {
-	int	i;
-
-	i = 0;
-	while (str && str[i] != '\0')
-	{
-		while (str[i] == ' ')
-			i++;
-		
-	}
-}
-
-char	*get_path(char *line)
-{
+	int		i;
 	int		len;
 	char	*path;
 
-	while (*line != '\0' && *line == ' ')
-		line++;
+	i = 0;
+	while (line[i] != '\0' && line[i] != '\n' && line[i] == ' ')
+		i++;
 	len = 0;
-	while (line[len] != '\0' && line[len] != ' ')
+	while (line[len + i] != '\0' && line[len + i] != ' ')
 		len++;
-	path = ft_strndup(line, len);
+	path = ft_strndup(&line[i], len);
 	if (path == NULL)
-		deallocate(catch()->set("Error\n %s: Malloc allocation failed", __func__));
+		return (catch()->set("Error\n %s: Memory allocation failed", __func__), deallocate(), NULL);
 	return (path);
+}
+
+void	get_texture(t_orientation orien, char *line)
+{
+	if (textures()->wall[orien].path == NULL)
+	{
+		textures()->wall[orien].orient = orien;
+		textures()->wall[orien].path = get_texture_path(&line[2]);
+	}
+	else
+		return (catch()->set("Error\n %s: Duplicate map element {%s}", __func__, orien), deallocate());
+}
+
+void	assign_colour(t_identifier ident, int *rgb)
+{
+	if (ident == FLOOR && textures()->fcolour == -1)
+		textures()->fcolour = create_rgb(rgb[0], rgb[1], rgb[2]);
+	else if (ident == CEILING && textures()->ccolour == -1)
+		textures()->ccolour = create_rgb(rgb[0], rgb[1], rgb[2]);
+	else
+		return (catch()->set("Error\n %s: Duplicate map element {%s}", __func__, ident), deallocate());
+}
+
+void	get_colour(t_identifier ident, char *line)
+{
+	int	i;
+	int	j;
+	int	rgb[3];
+
+	i = 0;
+	j = 0;
+	while (line[i] != '\n' && line[i] != '\0' && j < 3)
+	{
+		while (line[i] != '\0' && line[i] != '\n' && ft_isspace(line[i]))
+			i++;
+		if ((line[i] < '0' || line[i] > '9'))
+			return (catch()->set("Error\n %s: Invalid colour value {%s}", __func__, line[i]), deallocate());
+		rgb[j] = 0;
+		while (line[i] != '\0' && (line[i] >= '0' && line[i] <= '9'))
+		{
+			rgb[j] = rgb[j] * 10 + (line[i] - 48);
+			i++;
+		}
+		if (rgb[j] < 0 || rgb[j] > 255)
+			return (catch()->set("Error\n %s: Invalid colour value {%s}", __func__, line[i]), deallocate());
+		j++;
+		while (line[i] != '\0' && line[i] != '\n' && ft_isspace(line[i]))
+			i++;
+		if (line[i] == ',')
+			i++;
+	}
+	assign_colour(ident, rgb);
 }
 
 void	check_element(char *line)
 {
-	t_orientation	orien;
-
 	if (!ft_strncmp(line, "NO", 2))
-		orien = NO;
+		get_texture(NO, &line[2]);
 	else if (!ft_strncmp(line, "SO", 2))
-		orien = SO;
+		get_texture(SO, &line[2]);
 	else if (!ft_strncmp(line, "WE", 2))
-		orien = WE;
+		get_texture(WE, &line[2]);
 	else if (!ft_strncmp(line, "EA", 2))
-		orien = EA;
-	if (textures()->wall[orien].orient == NULL)
-	{
-		textures()->wall[orien].orient = orien;
-		textures()->wall[orien].path = get_path(&line[2]);
-	}
-	else
-		deallocate(catch()->set("Error\n %s: Duplicate map element {%s}", __func__, orien));
+		get_texture(EA, &line[2]);
+	else if (!ft_strncmp(line, "F", 1))
+		get_colour(FLOOR, &line[1]);
+	else if (!ft_strncmp(line, "C", 1))
+		get_colour(CEILING, &line[1]);
 }
 
-void parse_textures(t_file *content)
+void parse_textures_colours(t_file *content)
 {
 	t_file	*tmp;
 
@@ -125,21 +166,7 @@ void parse_textures(t_file *content)
 		{}
 		else
 			check_element(tmp->line);
-		
 		tmp = tmp->next;
-	}
-}
-
-void parse_colours(t_file *content)
-{
-	t_file	*tmp;
-
-	tmp = content;
-	while (1)
-	{
-		if (tmp == NULL)
-			return ;
-		if ()
 	}
 }
 
@@ -153,9 +180,9 @@ void	parse_file(char *file)
 	content = get_file_content(file);
 	if (content == NULL || catch()->error_msg != NULL)
 		return ;
-	parse_textures(content);
-	parse_colours(content);
-	parse_map(content);
+	parse_textures_colours(content);
+	printf("All done\n");
+	// parse_map(content);
 	// parse_map(content);
 	// int	i = 0;
 	// while (content != NULL)

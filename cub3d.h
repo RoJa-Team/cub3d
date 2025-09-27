@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/27 14:47:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/27 17:06:24 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ typedef enum e_orientation
 }       		t_orientation;
 
 
-// typedef enum s_identifier
-// {
-// 	WALL,
-// 	CEILING,
-// 	FLOOR,
-// 	DOOR,
-// }				t_identifier;
+typedef enum s_identifier
+{
+	WALL,
+	CEILING,
+	FLOOR,
+	DOOR,
+}				t_identifier;
 
 typedef struct s_file
 {
@@ -68,13 +68,13 @@ typedef struct s_file
 
 typedef struct s_img
 {
-	int	w;
-	int	h;
-	void	*img_ptr;
-	char	*addr;
+	int		w;
+	int		h;
 	int		bpp;
-	int		size_line;
 	int		endian;
+	int		line_len;
+	char	*addr;
+	void	*img_ptr;
 }					t_img;
 
 typedef struct s_tool
@@ -87,6 +87,7 @@ typedef struct s_player
 	// int		run;
 	double			x;
 	double			y;
+	t_orientation	orient;
 	t_tool			*tool;
 }				t_player;
 
@@ -99,26 +100,28 @@ typedef struct s_texture
 
 typedef struct s_textures
 {
-	t_texture	*wall;
-	t_texture	*door;
-	t_texture	*ceiling;
-	t_texture	*floor;
-	int			*ccolour;
-	int			*fcolour;
+	t_texture	wall[4];
+	t_texture	door[3];
+	t_texture	ceiling;
+	t_texture	floor;
+	int			ccolour;
+	int			fcolour;
 }       		t_textures;
 
 typedef struct s_map_objects
 {
-	int     player;
+	int     player_count;
 	int     map_width;
 	int     map_height;
 	char    **map;
+	t_player	player;
 }       		t_map_objects;
 
 typedef	struct s_game
 {
 	void	*mlx;
 	void	*win;
+	t_img	*img;
 	int		width;
 	int		height;
 }				t_game;
@@ -137,5 +140,22 @@ t_game	*game(void);
 void	open_window(void);
 
 /*---------- background.c ----------*/
+int		create_rgb(int r, int g, int b);
+void	put_pixel(t_img *img, int x, int y, int color);
+void	fill_background(int width, int height);
+
+/*---------- map_parse.c ----------*/
+void	init_map_objects();
+void	assign_map_lines(t_file *cub_file);
+void	allocate_map(t_file	*cub_file);
+int	map_parse(t_file *cub_file);
+char	*convert_line(char *old_line);
+int	valid_map(char **map);
+char	**empty_array(void);
+int	validate_characters(char **map);
+int	is_bounded_by_walls(char **map, int x, int y, char **visited);
+void	initial_orientation(char ori, int x, int y);
+void	free_array(char **array);
+
 
 #endif

@@ -3,84 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   map_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/03 21:41:42 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/27 16:50:37 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-typedef enum e_line_type
-{
-	TEXTURE;
-	COLOR;
-	MAP;
-}	t_line_type;
-
-typedef enum e_orientation
-{
-	NO;
-	EA
-	SO;
-	WE;
-}	t_orientation;
-
-typedef struct s_cub_file
-{
-	char	*line;
-	t_line_type	line_type;
-	s_cub_file	*next;
-}	t_cub_file;
-
-typedef struct s_map_objects
-{
-	int	player;
-	t_orientation	orientation;
-	int	player_x;
-	int	player_y;
-	int	map_width;
-	int	map_height;
-	char	**map;
-}	t_map_objects;
-
-t_cub_file	*cub_file(void)
-{
-	static	t_cub_file map_objects;
-
-	return (&cub_file);
-}
-
-t_map_objects	*map_objects(void)
-{
-	static	t_map_objects map_objects;
-
-	return (&map_objects);
-}
-
 void	init_map_objects()
 {
-	map_objects() = malloc(sizeof(t_game_objects));
-	if (!map_objects())
-	{
-		ft_printf("Memory allocation error *init_map_objects\n");
-		return (0);
-	}
-	map_objects()->player = 0;
-	map_objects()->player_x = 0;
-	map_objects()->player_y = 0;
+	map_objects()->player_count = 0;
 	map_objects()->map_width = 0;
 	map_objects()->map_height = 0;
 	map_objects()->map = NULL;
-	map_objects()->orientation = NULL;
 }
 
-int	map_parse(char *cub_file)
+void	assign_map_lines(t_file *cub_file)
 {
-	allocate_map();
-	assign_map_lines();
-	if (map_objects->map)
+	int	row;
+	t_file	*temp;
+
+	row = 0;
+	temp = cub_file;
+	while (row < map_objects()->map_height && temp)
+	{
+		map_objects()->map[row] = convert_line(temp->line);
+		row++;
+		temp = temp->next;
+	}
+}
+
+void	allocate_map(t_file	*cub_file)
+{
+	int	width;
+	t_file	*temp;
+
+	temp = cub_file;
+	while (temp)
+	{
+		width = ft_strlen(temp->line);
+		if (map_objects()->map_width < width)
+			map_objects()->map_width = width;
+		map_objects()->map_height++;
+		temp = temp->next;
+	}
+	map_objects()->map = malloc(sizeof(char *) * map_objects()->map_height + 1);
+	if (!map_objects()->map)
+	{
+		ft_printf("Memory allocation error *allocate_map*\n");
+		return ;
+	}
+}
+
+int	map_parse(t_file *cub_file)
+{
+	allocate_map(cub_file);
+	assign_map_lines(cub_file);
+	if (map_objects()->map)
 	{
 		if (!valid_map(map_objects()->map))
 		{
@@ -92,56 +73,6 @@ int	map_parse(char *cub_file)
 	else
 		return (1);
 	return (0);
-}
-
-void	allocate_map(int fd)
-{
-	t_file	*cub_file;
-	int	width;
-
-	cub_file = file();
-	while (cub_file != NULL)
-	{
-		if (cub_file->type == MAP)
-			break ;
-		cub_file = cub_file->next;
-	}
-	while (cub_file && cub_file->type == MAP)
-	{
-		width = ft_strlen(cub_file->line);
-		if (map_objects()->map_width < width)
-			map_objects()->map_width = width;
-		map_objects()->map_height++;
-		cub_file = cub_file->next;
-	}
-	map_objects()->map = malloc(sizeof(char *) * map_objects()->map_height + 1);
-	if (!map_objects()->map)
-	{
-		ft_printf("Memory allocation error *allocate_map*\n");
-		return ;
-	}
-}
-
-void	assign_map_lines(int fd)
-{
-	int	row;
-	int	size;
-	t_file	cub_file;
-
-	row = 0;
-	cub_file = file();
-	while (cub_file != NULL)
-	{
-		if (cub_file->type == MAP)
-			break ;
-		cub_file = cub_file->next;
-	}
-	while (row < map_objects()->map_height && cub_file)
-	{
-		map_objects()->map[row] = convert_line(cub_file->line);
-		row++;
-		cub_file = cub_file->next;
-	}
 }
 
 char	*convert_line(char *old_line)
@@ -163,20 +94,20 @@ char	*convert_line(char *old_line)
 
 int	valid_map(char **map)
 {
-	char	**empty_array;
+	char	**empty_arr;
 
-	if (!validate_characters(map) || map_objects()->player != 1)
+	if (!validate_characters(map) || map_objects()->player_count != 1)
 	{
 		ft_printf("Invalid or missing characters on the map\n");
 		return (0);
 	}
-	empty_array = empty_array();
-	if (!is_bounded_by_walls(map, map_objects()->player_x, map_objects()->player_y), empty_array)
+	empty_arr = empty_array();
+	if (!is_bounded_by_walls(map, map_objects()->player.x, map_objects()->player.y, empty_arr))
 	{
 		ft_printf("Map is not bounded by walls\n");
-		return (free_array(empty_array), 0);
+		return (free_array(empty_arr), 0);
 	}
-	return (free_array(empty_array), 1);
+	return (free_array(empty_arr), 1);
 }
 
 char	**empty_array(void)
@@ -203,7 +134,7 @@ int	validate_characters(char **map)
 	{
 		while (map[i][++j])
 		{
-			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == )
+			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D')
 				continue ;
 			else if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 				initial_orientation(map[i][j], i, j);
@@ -214,7 +145,7 @@ int	validate_characters(char **map)
 	return (1);
 }
 
-int	is_bounded_by_walls(char **map, int x, int y, int **visited)
+int	is_bounded_by_walls(char **map, int x, int y, char **visited)
 {
 	if (x < 0 || x >= map_objects()->map_height || y < 0 || y >= map_objects()->map_width)
 		return (0);
@@ -237,16 +168,16 @@ int	is_bounded_by_walls(char **map, int x, int y, int **visited)
 void	initial_orientation(char ori, int x, int y)
 {
 	if (ori == 'N')
-		map_objects->orientation = NO;
+		map_objects()->player.orient = NO;
 	else if (ori == 'S')
-		map_objects->orientation = SO;
+		map_objects()->player.orient = SO;
 	else if (ori == 'E')
-		map_objects->orientation = EA;
+		map_objects()->player.orient = EA;
 	else if (ori == 'W')
-		map_objects->orientation = WE;
-	map_objects()->player++;
-	map_objects()->player_x = x;
-	map_objects()->player_y = y;
+		map_objects()->player.orient = WE;
+	map_objects()->player_count++;
+	map_objects()->player.x = x;
+	map_objects()->player.y = y;
 }
 
 void	free_array(char **array)
