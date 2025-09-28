@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 13:55:31 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:05:12 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ void parse_textures_colours(t_file **content)
 				break ;
 		}
 		*content = tmp->next;
+		if (tmp->line)
+			free(tmp->line);
 		free(tmp);
 	}
 }

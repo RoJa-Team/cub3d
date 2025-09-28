@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/28 16:38:03 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:01:24 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	assign_map_lines(t_file *cub_file)
 		row++;
 		temp = temp->next;
 	}
+	map_objects()->map[row] = NULL;
 }
 
 void	allocate_map(t_file	*cub_file)
@@ -49,12 +50,9 @@ void	allocate_map(t_file	*cub_file)
 		map_objects()->map_height++;
 		temp = temp->next;
 	}
-	map_objects()->map = malloc(sizeof(char *) * map_objects()->map_height + 1);
+	map_objects()->map = malloc(sizeof(char *) * (map_objects()->map_height + 1));
 	if (!map_objects()->map)
-	{
-		ft_printf("Memory allocation error *allocate_map*\n");
-		return ;
-	}
+		return ((void)catch()->set("Error\n%s: Memory allocation error", __func__), deallocate());
 }
 
 int	map_parse(t_file *cub_file)
@@ -93,17 +91,11 @@ int	valid_map(char **map)
 	char	**empty_arr;
 
 	if (!validate_characters(map) || map_objects()->player_count != 1)
-	{
-		ft_printf("Invalid or missing characters on the map\n");
-		return (0);
-	}
+		return (free_array(map), (void)catch()->set("Error\n%s: Invalid or missing characters on the map", __func__), deallocate()), 0;
 	empty_arr = empty_array();
 	if (!flood_fill(map, map_objects()->player.x, map_objects()->player.y, empty_arr)
 			|| !is_bounded_by_walls(map, map_objects()->map_height))
-	{
-		ft_printf("Map is not bounded by walls\n");
-		return (free_array(empty_arr), 0);
-	}
+		return (free_array(empty_arr), free_array(map), (void)catch()->set("Error\n%s: Map is not bounded by walls", __func__), deallocate(), 0);
 	return (free_array(empty_arr), 1);
 }
 
@@ -128,15 +120,19 @@ int	validate_characters(char **map)
 	i = -1;
 	while (map[++i])
 	{
-		j = -1;
-		while (map[i][++j])
+		j = 0;
+		while (map[i][j] && map[i][j] != '\n')
 		{
-			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D' || ft_isspace(map[i][j]) || map[i][j] == '\0')
+			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D' || ft_isspace(map[i][j]))
+			{
+				j++;
 				continue ;
+			}
 			else if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 				initial_orientation(map[i][j], i, j);
 			else
 				return (0);
+			j++;
 		}
 	}
 	return (1);
@@ -150,8 +146,8 @@ int	is_bounded_by_walls(char **map, int height)
 	i = -1;
 	while (map[++i])
 	{
-		j = -1;
-		while (map[i][++j])
+		j = 0;
+		while (map[i][j] && map[i][j] != '\n')
 		{
 			if (i == 0 && map[i][j] == '0')
 					return (0);
@@ -163,8 +159,8 @@ int	is_bounded_by_walls(char **map, int height)
 				return (0);
 			else if (map[i][j] == '0' && (ft_isspace(map[i - 1][j]) || ft_isspace(map[i + 1][j]) || ft_isspace(map[i][j - 1]) || ft_isspace(map[i][j + 1])))
 				return (0);
+			j++;
 		}
-
 	}
 	return (1);
 }

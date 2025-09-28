@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 15:59:33 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:07:14 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ typedef struct s_file
 	t_line_type		line_type;
 	struct s_file	*next;
 }       		t_file;
-
-
 
 typedef struct s_img
 {
