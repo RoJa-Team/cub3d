@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/27 18:39:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 13:28:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,6 @@ t_file	*get_file_content(char *file)
 		tmp = new_content;
 		line = get_next_line(fd);
 	}
-	// while(content != NULL)
-	// {
-	// 	printf("%s\n", content->line);
-	// 	content = content->next;
-	// }
 	return (content);
 }
 
@@ -143,7 +138,7 @@ void	get_colour(t_identifier ident, char *line)
 	assign_colour(ident, rgb);
 }
 
-void	check_element(char *line)
+int	check_element(char *line)
 {
 	if (!ft_strncmp(line, "NO", 2))
 		get_texture(NO, &line[2]);
@@ -157,22 +152,29 @@ void	check_element(char *line)
 		get_colour(FLOOR, &line[1]);
 	else if (!ft_strncmp(line, "C", 1))
 		get_colour(CEILING, &line[1]);
+	else if (ft_strncmp(line, "\n", 1))
+		return (0);
+	return (1);
 }
 
-void parse_textures_colours(t_file *content)
+void parse_textures_colours(t_file **content)
 {
 	t_file	*tmp;
 
-	tmp = content;
 	while (1)
 	{
+		tmp = *content;
 		if (tmp == NULL || tmp->line == NULL)
 			return ;
 		if (tmp->line[0] == '\0')
 		{}
 		else
-			check_element(tmp->line);
-		tmp = tmp->next;
+		{
+			if (!check_element(tmp->line))
+				break ;
+		}
+		*content = tmp->next;
+		free(tmp);
 	}
 }
 
@@ -186,8 +188,13 @@ void	parse_file(char *file)
 	content = get_file_content(file);
 	if (content == NULL || catch()->error_msg != NULL)
 		return ;
-	parse_textures_colours(content);
-	// parse_map(content);
+	parse_textures_colours(&content);
+	while(content != NULL)
+	{
+		printf("%s\n", content->line);
+		content = content->next;
+	}
+	map_parse(content);
 	// parse_map(content);
 	// int	i = 0;
 	// while (content != NULL)
