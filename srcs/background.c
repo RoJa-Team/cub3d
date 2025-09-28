@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 13:10:03 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/27 18:43:03 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 19:06:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	create_rgb(int r, int g, int b)
 	return (((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
 }
 
-void	put_pixel(t_img *img, int x, int y, int color)
+void	put_pixel(t_image *img, int x, int y, int color)
 {
 	char	*dst;
 
@@ -32,12 +32,12 @@ void	fill_background(int width, int height)
 	int	ceiling;
 	int	floor;
 
-	x = -1;
 	y = -1;
 	ceiling = textures()->ccolour;
 	floor = textures()->fcolour;
 	while (++y < height)
 	{
+		x = -1;
 		while (++x < width)
 		{
 			if (y < height / 2)
@@ -46,4 +46,5 @@ void	fill_background(int width, int height)
 				put_pixel(&game()->img, x, y, floor);
 		}
 	}
+	mlx_put_image_to_window(game()->mlx, game()->win, game()->img.img_ptr, 0, 0);
 }

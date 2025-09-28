@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 12:24:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:23:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,29 @@
 int	close_game(void *param)
 {
 	(void)param;
+	unlock_mouse();
 	deallocate();
 	return (0);
 }
 
-int	hooks(int keycode, void *param)
+void	pause_game()
+{
+	if (game()->paused == false)
+		game()->paused = true;
+	else if (game()->paused == true)
+		game()->paused = false;
+}
+
+int	key_hooks(int keycode, void *param)
 {
 	(void)param;
-	// game->map.player.dir = keycode;
-	printf("%d\n", keycode);
-	if (keycode == KEY_ESC)
+	if (keycode == KEY_PAUSE )
+		pause_game();
+	else if (keycode == KEY_ESC)
 		close_game(NULL);
-	// else if (keycode == ARROW_L)
+	else if (game()->paused == true)
+		return (0);
+	// if (keycode == ARROW_L)
 	// 	turn_left();
 	// else if (keycode == ARROW_R)
 	// 	turn_right();
@@ -35,9 +46,9 @@ int	hooks(int keycode, void *param)
 	// else if (keycode == KEY_SPACEBAR)
 	// 	jump();
 	// else if (keycode == KEY_INTERACT)
-	// 	turn_left();
+	// 	interact();
 	// else if (keycode == KEY_SHOOT)
-	// 	turn_left();
+	// 	shoot();
 	// else if (keycode == KEY_W)
 	// 	move_front();
 	// else if (keycode == KEY_A)
@@ -46,10 +57,5 @@ int	hooks(int keycode, void *param)
 	// 	move_back();
 	// else if (keycode == KEY_D)
 	// 	move_right();
-	
-	// else if (keycode = )
-	// if (game->map.player.run == 5)
-	// 	game->map.player.run = 0;
-	// game->map.player.idle = -1;
 	return (0);
 }
