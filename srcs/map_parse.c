@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/27 16:50:37 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:38:03 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,7 @@ int	map_parse(t_file *cub_file)
 	if (map_objects()->map)
 	{
 		if (!valid_map(map_objects()->map))
-		{
 			free_array(map_objects()->map);
-			free(map_objects());
-			return (1);
-		}
 	}
 	else
 		return (1);
@@ -102,7 +98,8 @@ int	valid_map(char **map)
 		return (0);
 	}
 	empty_arr = empty_array();
-	if (!is_bounded_by_walls(map, map_objects()->player.x, map_objects()->player.y, empty_arr))
+	if (!flood_fill(map, map_objects()->player.x, map_objects()->player.y, empty_arr)
+			|| !is_bounded_by_walls(map, map_objects()->map_height))
 	{
 		ft_printf("Map is not bounded by walls\n");
 		return (free_array(empty_arr), 0);
@@ -129,12 +126,12 @@ int	validate_characters(char **map)
 	int	j;
 
 	i = -1;
-	j = -1;
 	while (map[++i])
 	{
+		j = -1;
 		while (map[i][++j])
 		{
-			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D')
+			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D' || ft_isspace(map[i][j]) || map[i][j] == '\0')
 				continue ;
 			else if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 				initial_orientation(map[i][j], i, j);
@@ -145,22 +142,49 @@ int	validate_characters(char **map)
 	return (1);
 }
 
-int	is_bounded_by_walls(char **map, int x, int y, char **visited)
+int	is_bounded_by_walls(char **map, int height)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (map[++i])
+	{
+		j = -1;
+		while (map[i][++j])
+		{
+			if (i == 0 && map[i][j] == '0')
+					return (0);
+			else if (i == (height - 1) && map[i][j] == '0')
+				return (0);
+			else if (j == 0 && map[i][j] == '0')
+				return (0);
+			else if (map[i][j] == '0' && (map[i][j + 1] == '\0' || map[i][j + 1] == '\n' || map[i][j + 1] == ' '))
+				return (0);
+			else if (map[i][j] == '0' && (ft_isspace(map[i - 1][j]) || ft_isspace(map[i + 1][j]) || ft_isspace(map[i][j - 1]) || ft_isspace(map[i][j + 1])))
+				return (0);
+		}
+
+	}
+	return (1);
+}
+
+int	flood_fill(char **map, int x, int y, char **visited)
 {
 	if (x < 0 || x >= map_objects()->map_height || y < 0 || y >= map_objects()->map_width)
 		return (0);
-	if (map[x][y] == ' ')
+	if (ft_isspace(map[x][y]))
 		return (0);
 	if (map[x][y] == '1' || visited[x][y])
 		return (1);
 	visited[x][y] = 1;
-	if (!is_bounded_by_walls(map, x+1, y, visited))
+	if (!flood_fill(map, x + 1, y, visited))
 		return (0);
-	if (!is_bounded_by_walls(map, x, y+1, visited))
+	if (!flood_fill(map, x, y + 1, visited))
 		return (0);
-	if (!is_bounded_by_walls(map, x-1, y, visited))
+	if (!flood_fill(map, x - 1, y, visited))
 		return (0);
-	if (!is_bounded_by_walls(map, x, y-1, visited))
+	if (!flood_fill(map, x, y - 1, visited))
 		return (0);
 	return (1);
 }

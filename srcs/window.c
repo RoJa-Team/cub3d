@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:32:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/27 18:54:16 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 13:40:19 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	open_window(void)
 	game()->img.img_ptr = mlx_new_image(game()->mlx, game()->width, game()->height);
 	game()->img.addr = mlx_get_data_addr(game()->img.img_ptr, &game()->img.bpp,
 		&game()->img.line_len, &game()->img.endian);
+	fill_background(game()->width, game()->height);
 	mlx_hook(game()->win, 2, (1L << 0), hooks, NULL);
 	mlx_hook(game()->win, 17, (1L << 2), close_game, NULL);
 	// mlx_hook(game()->win, 3, (1L << 1), idle, game);

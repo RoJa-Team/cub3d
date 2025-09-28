@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 12:25:08 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 15:59:33 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,9 +168,10 @@ char	*convert_line(char *old_line);
 int	valid_map(char **map);
 char	**empty_array(void);
 int	validate_characters(char **map);
-int	is_bounded_by_walls(char **map, int x, int y, char **visited);
+int	flood_fill(char **map, int x, int y, char **visited);
 void	initial_orientation(char ori, int x, int y);
 void	free_array(char **array);
+int	is_bounded_by_walls(char **map, int height);
 
 
 #endif

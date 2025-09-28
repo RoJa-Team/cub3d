@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/27 17:06:32 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 13:55:04 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_map_objects	*map_objects(void)
 
 	if (!initialized)
 	{
-		
+		map_objects.player_count = 0;
+		initialized = 1;
 	}
 
 	return (&map_objects);
@@ -33,6 +34,7 @@ t_player	*player(void)
 	if (!initialized)
 	{
 		
+		initialized = 1;
 	}
 
 	return (&player);
@@ -47,6 +49,7 @@ t_textures	*textures(void)
 	{
 		textures.ccolour = -1;
 		textures.fcolour = -1;
+		initialized = 1;
 	}
 
 	return (&textures);
@@ -59,6 +62,7 @@ t_game	*game(void)
 
 	if (!initialized)
 	{
+		initialized = 1;
 		
 	}
 

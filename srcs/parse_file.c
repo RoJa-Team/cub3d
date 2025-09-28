@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 13:28:34 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 13:55:31 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,13 +189,7 @@ void	parse_file(char *file)
 	if (content == NULL || catch()->error_msg != NULL)
 		return ;
 	parse_textures_colours(&content);
-	while(content != NULL)
-	{
-		printf("%s\n", content->line);
-		content = content->next;
-	}
 	map_parse(content);
-	// parse_map(content);
 	// int	i = 0;
 	// while (content != NULL)
 	// {
