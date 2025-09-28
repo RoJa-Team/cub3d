@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/27 17:06:24 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/28 12:25:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,18 @@
 # include "minilibx/mlx.h"
 
 # define KEY_ESC 65307
+# define ARROW_L 65361
+# define ARROW_R 65363
 # define KEY_W 119
 # define KEY_A 97
 # define KEY_S 115
 # define KEY_D 100
+# define KEY_CTRL 65507
+# define KEY_SPACEBAR 32
+# define KEY_INTERACT 101
+# define KEY_SHOOT 103
+# define WIDTH 1920
+# define HEIGHT 1080
 
 enum {
 	ON_KEYDOWN = 2,
@@ -100,12 +108,12 @@ typedef struct s_texture
 
 typedef struct s_textures
 {
+	int			ccolour;
+	int			fcolour;
 	t_texture	wall[4];
 	t_texture	door[3];
 	t_texture	ceiling;
 	t_texture	floor;
-	int			ccolour;
-	int			fcolour;
 }       		t_textures;
 
 typedef struct s_map_objects
@@ -119,11 +127,11 @@ typedef struct s_map_objects
 
 typedef	struct s_game
 {
-	void	*mlx;
-	void	*win;
-	t_img	*img;
 	int		width;
 	int		height;
+	void	*mlx;
+	void	*win;
+	t_img	img;
 }				t_game;
 
 /*---------- parse_file.c ----------*/
@@ -136,6 +144,10 @@ t_textures	*textures(void);
 t_game	*game(void);
 
 
+void	deallocate(void);
+int	close_game(void *param);
+
+
 /*---------- window.c ----------*/
 void	open_window(void);
 
@@ -143,6 +155,9 @@ void	open_window(void);
 int		create_rgb(int r, int g, int b);
 void	put_pixel(t_img *img, int x, int y, int color);
 void	fill_background(int width, int height);
+
+/*---------- background.c ----------*/
+int	hooks(int keycode, void *param);
 
 /*---------- map_parse.c ----------*/
 void	init_map_objects();

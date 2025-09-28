@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/27 17:22:14 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/27 18:39:10 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	check_filename(char *file)
 	while (file[i])
 	{
 		if (file[i] != *ber)
-			return ((void)catch()->set("Error\n %s: File [%s] isn't a .ber file", __func__, file));
+			return ((void)catch()->set("Error\n%s: File [%s] isn't a .ber file", __func__, file), deallocate());
 		i++;
 		ber++;
 	}
@@ -48,15 +48,16 @@ t_file	*get_file_content(char *file)
 	
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return (catch()->set("Error\n %s: Error opening file", __func__), deallocate(), NULL);
+		return (catch()->set("Error\n%s: Error opening file", __func__), deallocate(), NULL);
 	content = NULL;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
 		new_content = malloc(sizeof(t_file));
 		if (!new_content)
-			return (catch()->set("Error\n %s: Error allocating memory", __func__), deallocate(), NULL);
+			return (catch()->set("Error\n%s: Error allocating memory", __func__), deallocate(), NULL);
 		new_content->line = line;
+		new_content->next = NULL;
 		if (content == NULL)
 			content = new_content;
 		else
@@ -64,6 +65,11 @@ t_file	*get_file_content(char *file)
 		tmp = new_content;
 		line = get_next_line(fd);
 	}
+	// while(content != NULL)
+	// {
+	// 	printf("%s\n", content->line);
+	// 	content = content->next;
+	// }
 	return (content);
 }
 
@@ -81,7 +87,7 @@ char	*get_texture_path(char *line)
 		len++;
 	path = ft_strndup(&line[i], len);
 	if (path == NULL)
-		return (catch()->set("Error\n %s: Memory allocation failed", __func__), deallocate(), NULL);
+		return (catch()->set("Error\n%s: Memory allocation failed", __func__), deallocate(), NULL);
 	return (path);
 }
 
@@ -93,7 +99,7 @@ void	get_texture(t_orientation orien, char *line)
 		textures()->wall[orien].path = get_texture_path(&line[2]);
 	}
 	else
-		return (catch()->set("Error\n %s: Duplicate map element {%s}", __func__, orien), deallocate());
+		return (catch()->set("Error\n%s: Duplicate map element {%s}", __func__, orien), deallocate());
 }
 
 void	assign_colour(t_identifier ident, int *rgb)
@@ -103,7 +109,7 @@ void	assign_colour(t_identifier ident, int *rgb)
 	else if (ident == CEILING && textures()->ccolour == -1)
 		textures()->ccolour = create_rgb(rgb[0], rgb[1], rgb[2]);
 	else
-		return (catch()->set("Error\n %s: Duplicate map element {%s}", __func__, ident), deallocate());
+		return (catch()->set("Error\n%s: Duplicate map element {%s}", __func__, ident), deallocate());
 }
 
 void	get_colour(t_identifier ident, char *line)
@@ -119,7 +125,7 @@ void	get_colour(t_identifier ident, char *line)
 		while (line[i] != '\0' && line[i] != '\n' && ft_isspace(line[i]))
 			i++;
 		if ((line[i] < '0' || line[i] > '9'))
-			return (catch()->set("Error\n %s: Invalid colour value {%s}", __func__, line[i]), deallocate());
+			return (catch()->set("Error\n%s: Invalid colour value {%s}", __func__, line[i]), deallocate());
 		rgb[j] = 0;
 		while (line[i] != '\0' && (line[i] >= '0' && line[i] <= '9'))
 		{
@@ -127,7 +133,7 @@ void	get_colour(t_identifier ident, char *line)
 			i++;
 		}
 		if (rgb[j] < 0 || rgb[j] > 255)
-			return (catch()->set("Error\n %s: Invalid colour value {%s}", __func__, line[i]), deallocate());
+			return (catch()->set("Error\n%s: Invalid colour value {%s}", __func__, line[i]), deallocate());
 		j++;
 		while (line[i] != '\0' && line[i] != '\n' && ft_isspace(line[i]))
 			i++;
@@ -181,7 +187,6 @@ void	parse_file(char *file)
 	if (content == NULL || catch()->error_msg != NULL)
 		return ;
 	parse_textures_colours(content);
-	printf("All done\n");
 	// parse_map(content);
 	// parse_map(content);
 	// int	i = 0;

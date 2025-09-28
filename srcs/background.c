@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 13:10:03 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/27 16:46:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/27 18:43:03 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	fill_background(int width, int height)
 		while (++x < width)
 		{
 			if (y < height / 2)
-				put_pixel(game()->img, x, y, ceiling);
+				put_pixel(&game()->img, x, y, ceiling);
 			else
-				put_pixel(game()->img, x, y, floor);
+				put_pixel(&game()->img, x, y, floor);
 		}
 	}
 }
