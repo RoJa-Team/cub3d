@@ -3,4 +3,7 @@
 */*.out
 */objs/
 .vscode/
+*.o
+*.a
+*.out
 cub3D
