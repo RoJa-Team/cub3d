@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 19:02:54 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/29 22:42:39 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@
 # define KEY_PAUSE 112 //P
 # define WIDTH 300
 # define HEIGHT 300
+# define ERROR_IMAGE_ADDR "Error retrieving new image address."
 # define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
+
+// const char *ERROR_IMAGE_ADDR = "Ola";
 
 enum {
 	ON_KEYDOWN = 2,
@@ -126,10 +129,19 @@ typedef struct s_map_objects
 	t_player	player;
 }       		t_map_objects;
 
+typedef struct s_screen
+{
+	t_image	start;
+	t_image	canva;
+	t_image	paused;
+	t_image	died;
+	t_image	finish;
+	t_image	background;
+}				t_screen;
+
 typedef	struct s_game
 {
 	bool		paused;
-	t_image		img;
 	t_xvar		*mlx;
 	t_win_list	*win;
 }				t_game;
@@ -138,17 +150,27 @@ typedef	struct s_game
 void	parse_file(char *file);
 
 /*---------- static_structs.c ----------*/
+t_game			*game(void);
+t_screen		*screen(void);
+t_player		*player(void);
+t_textures		*textures(void);
 t_map_objects	*map_objects(void);
-t_player	*player(void);
-t_textures	*textures(void);
-t_game	*game(void);
 
 
+/*---------- xpms.c ----------*/
+void	xpm_to_img(t_texture *texture);
+void	load_textures();
+
+/*---------- clear.c ----------*/
 void	deallocate(void);
+
 int	close_game(void *param);
 
 /*---------- window.c ----------*/
 void	open_window(void);
+
+/*---------- window.c ----------*/
+void new_image(t_image *img, int width, int height);
 
 /*---------- mouse.c ----------*/
 int		lock_mouse();
@@ -159,7 +181,7 @@ int		mouse_hooks(int keycode, void *param);
 /*---------- background.c ----------*/
 int		create_rgb(int r, int g, int b);
 void	put_pixel(t_image *img, int x, int y, int color);
-void	fill_background(int width, int height);
+void	load_background();
 
 /*---------- background.c ----------*/
 int	key_hooks(int keycode, void *param);

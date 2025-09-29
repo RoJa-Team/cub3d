@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 18:24:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 19:08:52 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/29 22:42:54 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	free_textures()
 
 void	deallocate(void)
 {
-	if (game()->img.img_ptr)
-		mlx_destroy_image(game()->mlx, game()->img.img_ptr);
 	if (game()->win)
 		mlx_destroy_window(game()->mlx, game()->win);
 	if (game()->mlx)

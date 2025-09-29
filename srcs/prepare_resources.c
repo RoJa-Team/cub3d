@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.c                                            :+:      :+:    :+:   */
+/*   prepare_resources.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/01 19:20:37 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/29 21:56:24 by rafasant         ###   ########.fr       */
+/*   Created: 2025/09/29 21:56:14 by rafasant          #+#    #+#             */
+/*   Updated: 2025/09/29 22:33:51 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
+#include "cub3d.h"
 
-int	main(int argc, char **argv)
+void	load_screens()
 {
-	if (argc != 2)
-		return (0);
-	parse_file(argv[1]);
-	prepare_resources();
-	open_window();
-	return (0);
+	create_start();
+	create_paused();
+	create_died();
+	create_finish();
+	create_canva();
+	create_background();
 }
 
+void	prepare_resources()
+{
+	load_textures();
+	load_screens();
+}

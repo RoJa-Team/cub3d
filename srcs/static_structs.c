@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 16:45:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/09/29 21:58:40 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,19 @@ t_textures	*textures(void)
 	{
 		textures.ccolour = -1;
 		textures.fcolour = -1;
+		initialized = 1;
+	}
+
+	return (&textures);
+}
+
+t_screen	*screen(void)
+{
+	static t_screen	screen;
+	static int		initialized;
+
+	if (!initialized)
+	{
 		initialized = 1;
 	}
 
