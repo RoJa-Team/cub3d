@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 18:07:14 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/28 19:02:54 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft/libft.h"
 # include "catch_lib/catch.h"
 # include "minilibx/mlx.h"
+# include "minilibx/mlx_int.h"
 
 # define KEY_ESC 65307
 # define ARROW_L 65361
@@ -26,10 +27,12 @@
 # define KEY_D 100
 # define KEY_CTRL 65507
 # define KEY_SPACEBAR 32
-# define KEY_INTERACT 101
-# define KEY_SHOOT 103
-# define WIDTH 1920
-# define HEIGHT 1080
+# define KEY_INTERACT 101 //E
+# define KEY_SHOOT 113 //Q
+# define KEY_PAUSE 112 //P
+# define WIDTH 300
+# define HEIGHT 300
+# define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
 enum {
 	ON_KEYDOWN = 2,
@@ -72,7 +75,7 @@ typedef struct s_file
 	struct s_file	*next;
 }       		t_file;
 
-typedef struct s_img
+typedef struct s_image
 {
 	int		w;
 	int		h;
@@ -81,7 +84,7 @@ typedef struct s_img
 	int		line_len;
 	char	*addr;
 	void	*img_ptr;
-}					t_img;
+}					t_image;
 
 typedef struct s_tool
 {
@@ -100,7 +103,7 @@ typedef struct s_player
 typedef struct s_texture
 {
 	char			*path;
-	t_img			img;
+	t_image			img;
 	t_orientation	orient;
 }       		t_texture;
 
@@ -125,11 +128,10 @@ typedef struct s_map_objects
 
 typedef	struct s_game
 {
-	int		width;
-	int		height;
-	void	*mlx;
-	void	*win;
-	t_img	img;
+	bool		paused;
+	t_image		img;
+	t_xvar		*mlx;
+	t_win_list	*win;
 }				t_game;
 
 /*---------- parse_file.c ----------*/
@@ -145,17 +147,22 @@ t_game	*game(void);
 void	deallocate(void);
 int	close_game(void *param);
 
-
 /*---------- window.c ----------*/
 void	open_window(void);
 
+/*---------- mouse.c ----------*/
+int		lock_mouse();
+int		unlock_mouse();
+int		mouse_hooks(int keycode, void *param);
+
+
 /*---------- background.c ----------*/
 int		create_rgb(int r, int g, int b);
-void	put_pixel(t_img *img, int x, int y, int color);
+void	put_pixel(t_image *img, int x, int y, int color);
 void	fill_background(int width, int height);
 
 /*---------- background.c ----------*/
-int	hooks(int keycode, void *param);
+int	key_hooks(int keycode, void *param);
 
 /*---------- map_parse.c ----------*/
 void	init_map_objects();
@@ -163,13 +170,18 @@ void	assign_map_lines(t_file *cub_file);
 void	allocate_map(t_file	*cub_file);
 int	map_parse(t_file *cub_file);
 char	*convert_line(char *old_line);
-int	valid_map(char **map);
+void	valid_map(char **map);
 char	**empty_array(void);
 int	validate_characters(char **map);
 int	flood_fill(char **map, int x, int y, char **visited);
 void	initial_orientation(char ori, int x, int y);
 void	free_array(char **array);
 int	is_bounded_by_walls(char **map, int height);
+
+/*---------- map_parse.c ----------*/
+void	print_int(char *info, int data); //TODO remove this
+void	print_string(char *info, char *data); //TODO remove this
+void	print_pointer(char *info, void *data); //TODO remove this
 
 
 #endif

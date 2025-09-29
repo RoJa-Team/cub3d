@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 13:55:04 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/28 16:45:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_player	*player(void)
 
 	if (!initialized)
 	{
-		
 		initialized = 1;
 	}
 
@@ -63,7 +62,6 @@ t_game	*game(void)
 	if (!initialized)
 	{
 		initialized = 1;
-		
 	}
 
 	return (&game);

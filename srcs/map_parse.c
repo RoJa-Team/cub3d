@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/28 18:01:24 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:47:29 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ void	assign_map_lines(t_file *cub_file)
 	t_file	*temp;
 
 	row = 0;
-	temp = cub_file;
-	while (row < map_objects()->map_height && temp)
+	while (row < map_objects()->map_height && cub_file)
 	{
+		temp = cub_file;
 		map_objects()->map[row] = convert_line(temp->line);
 		row++;
-		temp = temp->next;
+		cub_file = temp->next;
+		if (temp->line)
+			free(temp->line);
+		free(temp);
 	}
 	map_objects()->map[row] = NULL;
 }
@@ -60,10 +63,7 @@ int	map_parse(t_file *cub_file)
 	allocate_map(cub_file);
 	assign_map_lines(cub_file);
 	if (map_objects()->map)
-	{
-		if (!valid_map(map_objects()->map))
-			free_array(map_objects()->map);
-	}
+		valid_map(map_objects()->map);
 	else
 		return (1);
 	return (0);
@@ -86,17 +86,17 @@ char	*convert_line(char *old_line)
 	return (new_line);
 }
 
-int	valid_map(char **map)
+void	valid_map(char **map)
 {
 	char	**empty_arr;
 
 	if (!validate_characters(map) || map_objects()->player_count != 1)
-		return (free_array(map), (void)catch()->set("Error\n%s: Invalid or missing characters on the map", __func__), deallocate()), 0;
+		return ((void)catch()->set("Error\n%s: Invalid or missing characters on the map", __func__), deallocate());
 	empty_arr = empty_array();
 	if (!flood_fill(map, map_objects()->player.x, map_objects()->player.y, empty_arr)
 			|| !is_bounded_by_walls(map, map_objects()->map_height))
-		return (free_array(empty_arr), free_array(map), (void)catch()->set("Error\n%s: Map is not bounded by walls", __func__), deallocate(), 0);
-	return (free_array(empty_arr), 1);
+		return (free_array(empty_arr), (void)catch()->set("Error\n%s: Map is not bounded by walls", __func__), deallocate());
+	return (free_array(empty_arr));
 }
 
 char	**empty_array(void)

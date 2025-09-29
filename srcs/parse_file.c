@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 18:05:12 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/09/28 18:26:42 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ void	check_filename(char *file)
 		i++;
 		ber++;
 	}
-}
-
-void	deallocate(void)
-{
-	catch()->print();
-	catch()->free();
-	exit(1);
 }
 
 t_file	*get_file_content(char *file)
@@ -192,11 +185,4 @@ void	parse_file(char *file)
 		return ;
 	parse_textures_colours(&content);
 	map_parse(content);
-	// int	i = 0;
-	// while (content != NULL)
-	// {
-	// 	ft_printf("line %d: %s\n", i, content->line);
-	// 	content = content->next;
-	// 	i++;
-	// }
 }
