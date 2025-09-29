@@ -8,10 +8,10 @@
 **So that** I can have a smooth gaming experience
 
 #### Tasks:
-- [ ] Initialize MiniLibX library
+- [x] Initialize MiniLibX library
 - [ ] Create game window with configurable dimensions
-- [ ] Implement window close functionality via ESC key
-- [ ] Implement window close functionality via red cross button
+- [x] Implement window close functionality via ESC key
+- [x] Implement window close functionality via red cross button
 - [ ] Handle window minimize/maximize events
 - [ ] Ensure smooth window switching between applications
 - [ ] Test window responsiveness under different scenarios
@@ -43,10 +43,10 @@
 **So that** the game loads valid maze layouts
 
 #### Tasks:
-- [ ] Parse map characters (0, 1, N, S, E, W)
+- [x] Parse map characters (0, 1, N, S, E, W)
 - [x] Validate map contains only allowed characters
 - [x] Identify player starting position (N, S, E, W)
-- [ ] Determine player initial orientation based on spawn character
+- [x] Determine player initial orientation based on spawn character
 - [x] Preserve spaces within the map structure
 - [x] Validate map is completely enclosed by walls
 - [x] Implement flood-fill algorithm to check map closure
@@ -97,9 +97,9 @@
 **So that** the game looks visually appealing
 
 #### Tasks:
-- [ ] Create image buffer using MiniLibX
-- [ ] Implement floor rendering with specified color
-- [ ] Implement ceiling rendering with specified color
+- [x] Create image buffer using MiniLibX
+- [x] Implement floor rendering with specified color
+- [x] Implement ceiling rendering with specified color
 - [ ] Calculate texture coordinates for wall slices
 - [ ] Apply appropriate texture based on wall direction
 - [ ] Implement texture mapping for walls
@@ -149,16 +149,16 @@
 **So that** users receive clear feedback on issues
 
 #### Tasks:
-- [ ] Create error message system
-- [ ] Handle missing texture files
-- [ ] Handle invalid map configurations
-- [ ] Handle missing player spawn point
-- [ ] Handle multiple player spawn points
-- [ ] Handle unclosed maps
-- [ ] Handle invalid RGB values
-- [ ] Handle file permission errors
-- [ ] Ensure "Error\n" prefix for all error outputs
-- [ ] Implement clean program exit on errors
+- [x] Create error message system
+- [x] Handle missing texture files
+- [x] Handle invalid map configurations
+- [x] Handle missing player spawn point
+- [x] Handle multiple player spawn points
+- [x] Handle unclosed maps
+- [x] Handle invalid RGB values
+- [x] Handle file permission errors
+- [x] Ensure "Error\n" prefix for all error outputs
+- [x] Implement clean program exit on errors
 
 ---
 
@@ -170,7 +170,7 @@
 #### Tasks:
 - [ ] Implement proper malloc/free for dynamic allocations
 - [ ] Free texture memory on program exit
-- [ ] Free map data structure
+- [x] Free map data structure
 - [ ] Free MiniLibX resources
 - [ ] Implement cleanup function for all resources
 - [ ] Test with valgrind for memory leaks
@@ -184,16 +184,15 @@
 **So that** the project compiles reliably
 
 #### Tasks:
-- [ ] Create Makefile with 'all' target
-- [ ] Implement 'clean' target to remove object files
-- [ ] Implement 'fclean' target for full cleanup
-- [ ] Implement 're' target for rebuild
-- [ ] Add 'bonus' target for extra features
-- [ ] Link math library (-lm)
-- [ ] Link MiniLibX library
-- [ ] Include libft if used
-- [ ] Set appropriate compiler flags
-- [ ] Handle dependencies correctly
+- [x] Create Makefile with 'all' target
+- [x] Implement 'clean' target to remove object files
+- [x] Implement 'fclean' target for full cleanup
+- [x] Implement 're' target for rebuild
+- [x] Link math library (-lm)
+- [x] Link MiniLibX library
+- [x] Include libft if used
+- [x] Set appropriate compiler flags
+- [x] Handle dependencies correctly
 
 ---
 
