@@ -49,6 +49,25 @@ t_textures	*textures(void)
 		textures.ccolour = -1;
 		textures.fcolour = -1;
 		initialized = 1;
+		hose_idle = 
+		textures.hose_shooting[0].path = "../textures/edited/fire_loop1.xpm"
+		textures.fire_loop[0].path = "../textures/edited/fire_loop1.xpm"; 
+		textures.fire_loop[1].path = "../textures/edited/fire_loop2.xpm"; 
+		textures.fire_loop[2].path = "../textures/edited/fire_loop3.xpm"; 
+		textures.fire_loop[3].path = "../textures/edited/fire_loop4.xpm"; 
+		textures.fire_loop[4].path = "../textures/edited/fire_loop5.xpm"; 
+		textures.fire_loop[5].path = "../textures/edited/fire_loop6.xpm"; 
+		textures.fire_loop[6].path = "../textures/edited/fire_loop7.xpm"; 
+		textures.fire_loop[7].path = "../textures/edited/fire_loop8.xpm"; 
+		textures.fire_ending[0].path = "../textures/edited/burning_end_1.xpm"; 
+		textures.fire_ending[1].path = "../textures/edited/burning_end_2.xpm"; 
+		textures.fire_ending[2].path = "../textures/edited/burning_end_3.xpm"; 
+		textures.fire_ending[3].path = "../textures/edited/burning_end_4.xpm"; 
+		textures.fire_ending[4].path = "../textures/edited/burning_end_5.xpm"; 
+		"textures/edited/burning_end_2.xpm",
+		"textures/edited/burning_end_3.xpm", "textures/edited/burning_end_4.xpm", "textures/edited/burning_end_5.xpm" }
+		door[3] = { "textures/edited/door_closed.xpm", "textures/edited/door_semi_open.xpm", "textures/edited/door_open.xpm" }
+		clouds = "textures/edited/clouds.xpm"
 	}
 
 	return (&textures);

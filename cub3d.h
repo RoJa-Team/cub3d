@@ -36,6 +36,15 @@
 # define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
 // const char *ERROR_IMAGE_ADDR = "Ola";
+const	char hose_idle = 
+const 	char hose_shooting[] = {}
+const	char fire_loop[8] = { "textures/edited/fire_loop1.xpm", "textures/edited/fire_loop2.xpm", 
+	"textures/edited/fire_loop3.xpm", "textures/edited/fire_loop4.xpm", "textures/edited/fire_loop5.xpm",
+	"textures/edited/fire_loop6.xpm", "textures/edited/fire_loop7.xpm", "textures/edited/fire_loop8.xpm" }
+const	char fire_ending[5] = { "textures/edited/burning_end_1.xpm", "textures/edited/burning_end_2.xpm",
+	"textures/edited/burning_end_3.xpm", "textures/edited/burning_end_4.xpm", "textures/edited/burning_end_5.xpm" }
+const	char door[3] = { "textures/edited/door_closed.xpm", "textures/edited/door_semi_open.xpm", "textures/edited/door_open.xpm" }
+const	char clouds = "textures/edited/clouds.xpm"
 
 enum {
 	ON_KEYDOWN = 2,
@@ -89,6 +98,8 @@ typedef struct s_image
 	void	*img_ptr;
 }					t_image;
 
+
+
 typedef struct s_tool
 {
 
@@ -116,8 +127,13 @@ typedef struct s_textures
 	int			fcolour;
 	t_texture	wall[4];
 	t_texture	door[3];
-	t_texture	ceiling;
-	t_texture	floor;
+	t_texture	clouds;
+	t_texture	fire_ending[5];
+	t_texture	fire_loop[8];
+	t_texture	idle_hose;
+	t_texture	hose_start[4];
+	t_texture	hose_firing[8];
+	t_texture	hose_ending[8];
 }       		t_textures;
 
 typedef struct s_map_objects
