@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:04:01 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/29 22:31:53 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:29:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	xpm_to_img(t_texture *texture)
 	if (texture->img.img_ptr == NULL)
 		return ((void)catch()->set("Error\n%s: Error loading xpm.", __func__), deallocate());
 	texture->img.addr = mlx_get_data_addr(texture->img.img_ptr, &texture->img.bpp, \
-	texture->img.line_len, texture->img.endian);
+	&texture->img.line_len, &texture->img.endian);
 	if (texture->img.img_ptr == NULL)
 		return ((void)catch()->set("Error\n%s: Error retrieving image address.", __func__), deallocate());
 }

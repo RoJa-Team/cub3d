@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/29 21:58:40 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:27:32 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_screen	*screen(void)
 		initialized = 1;
 	}
 
-	return (&textures);
+	return (&screen);
 }
 
 t_game	*game(void)

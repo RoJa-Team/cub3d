@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:32:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/29 22:02:39 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:27:52 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	open_window(void)
 {
 	game()->mlx = mlx_init();
 	game()->win = mlx_new_window(game()->mlx, WIDTH, HEIGHT, "cub3d");
-	new_image(&game()->canva, WIDTH, HEIGHT);
+	new_image(&screen()->canva, WIDTH, HEIGHT);
 	// lock_mouse();
 	mlx_hook(game()->win, 2, (1L << 0), key_hooks, NULL);
 	// mlx_hook(game()->win, 2, (1L << 0), mouse_hooks, NULL);

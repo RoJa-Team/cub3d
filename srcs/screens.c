@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:33:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/29 22:42:07 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:28:42 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,19 @@ void	create_background()
 	ceiling = textures()->ccolour;
 	floor = textures()->fcolour;
 	new_image(&screen()->background, WIDTH, HEIGHT);
-	while (++y < HEIGHT)
+	while (++y < HEIGHT / 2)
 	{
 		x = -1;
 		while (++x < WIDTH)
 		{
-			if (y < HEIGHT / 2)
-				put_pixel(&game()->background, x, y, ceiling);
-			else
-				put_pixel(&game()->background, x, y, floor);
+			put_pixel(&screen()->background, x, HEIGHT - y, floor);
+			put_pixel(&screen()->background, x, y, ceiling);
 		}
 	}
 	// mlx_put_image_to_window(game()->mlx, game()->win, game()->background.img_ptr, 0, 0);
 }
 
-void	create_start()
+void	create_pause()
 {
 	int	x;
 	int	y;
@@ -47,14 +45,14 @@ void	create_start()
 	y = -1;
 	ceiling = textures()->ccolour;
 	floor = textures()->fcolour;
-	new_image(&screen()->background, WIDTH, HEIGHT);
+	new_image(&screen()->pause, WIDTH, HEIGHT);
 	while (++y < HEIGHT / 2)
 	{
 		x = -1;
 		while (++x < WIDTH)
 		{
-			put_pixel(&game()->background, x, HEIGHT - y, floor);
-			put_pixel(&game()->background, x, y, ceiling);
+			put_pixel(&screen()->pause, x, HEIGHT - y, floor);
+			put_pixel(&screen()->start, x, y, ceiling);
 		}
 	}
 	// mlx_put_image_to_window(game()->mlx, game()->win, game()->background.img_ptr, 0, 0);

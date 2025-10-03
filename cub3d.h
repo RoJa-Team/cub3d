@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/29 22:42:39 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:24:55 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ typedef struct s_screen
 {
 	t_image	start;
 	t_image	canva;
-	t_image	paused;
-	t_image	died;
+	t_image	pause;
+	t_image	death;
 	t_image	finish;
 	t_image	background;
 }				t_screen;
@@ -156,6 +156,8 @@ t_player		*player(void);
 t_textures		*textures(void);
 t_map_objects	*map_objects(void);
 
+/*---------- xpms.c ----------*/
+void	prepare_resources();
 
 /*---------- xpms.c ----------*/
 void	xpm_to_img(t_texture *texture);
