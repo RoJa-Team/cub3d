@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:02:22 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/29 22:30:22 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 23:47:44 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void new_image(t_image *img, int width, int height)
 	if (!img->img_ptr)
 		return ((void)catch()->set("Error\n%s: Error creating new image.", 
 			__func__), deallocate());
+	img->w = width;
+	img->h = height;
 	img->addr = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, 
 		&img->endian);
 	if (!img->addr)

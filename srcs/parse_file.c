@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 18:26:42 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 22:32:25 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ char	*get_texture_path(char *line)
 	while (line[i] != '\0' && line[i] != '\n' && line[i] == ' ')
 		i++;
 	len = 0;
-	while (line[len + i] != '\0' && line[len + i] != ' ')
+	while (line[len + i] != '\0' && line[len + i] != '\n' && line[len + i] != ' ')
 		len++;
 	path = ft_strndup(&line[i], len);
+	printf("%s\n", path);
 	if (path == NULL)
 		return (catch()->set("Error\n%s: Memory allocation failed", __func__), deallocate(), NULL);
 	return (path);
@@ -84,7 +85,7 @@ void	get_texture(t_orientation orien, char *line)
 	if (textures()->wall[orien].path == NULL)
 	{
 		textures()->wall[orien].orient = orien;
-		textures()->wall[orien].path = get_texture_path(&line[2]);
+		textures()->wall[orien].path = get_texture_path(line);
 	}
 	else
 		return (catch()->set("Error\n%s: Duplicate map element {%s}", __func__, orien), deallocate());

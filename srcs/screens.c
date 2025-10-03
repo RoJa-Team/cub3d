@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:33:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/03 19:28:42 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/03 22:22:14 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,36 @@ void	create_background()
 	ceiling = textures()->ccolour;
 	floor = textures()->fcolour;
 	new_image(&screen()->background, WIDTH, HEIGHT);
-	while (++y < HEIGHT / 2)
+	while (++y <= HEIGHT / 2)
 	{
 		x = -1;
 		while (++x < WIDTH)
 		{
 			put_pixel(&screen()->background, x, HEIGHT - y, floor);
 			put_pixel(&screen()->background, x, y, ceiling);
+		}
+	}
+	// mlx_put_image_to_window(game()->mlx, game()->win, game()->background.img_ptr, 0, 0);
+}
+
+void	create_canva()
+{
+	int	x;
+	int	y;
+	int	ceiling;
+	int	floor;
+
+	y = -1;
+	ceiling = textures()->ccolour;
+	floor = textures()->fcolour;
+	new_image(&screen()->canva, WIDTH, HEIGHT);
+	while (++y < HEIGHT / 2)
+	{
+		x = -1;
+		while (++x < WIDTH)
+		{
+			put_pixel(&screen()->canva, x, HEIGHT - y, floor);
+			put_pixel(&screen()->canva, x, y, ceiling);
 		}
 	}
 	// mlx_put_image_to_window(game()->mlx, game()->win, game()->background.img_ptr, 0, 0);
