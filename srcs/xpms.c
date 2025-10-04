@@ -45,7 +45,7 @@ void	load_textures_fire()
 	xpm_to_img("textures/edited/burning_end_1.xpm", &(textures()->fire_ending[0].img));
 	xpm_to_img("textures/edited/burning_end_2.xpm", &(textures()->fire_ending[1].img));
 	xpm_to_img("textures/edited/burning_end_3.xpm", &(textures()->fire_ending[2].img));
-	// xpm_to_img("textures/edited/burning_end_4.xpm", &(textures()->fire_ending[3].img));
+	xpm_to_img("textures/edited/burning_end_4.xpm", &(textures()->fire_ending[3].img));
 	xpm_to_img("textures/edited/burning_end_5.xpm", &(textures()->fire_ending[4].img));
 }
 

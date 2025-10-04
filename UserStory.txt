@@ -9,7 +9,7 @@
 
 #### Tasks:
 - [x] Initialize MiniLibX library
-- [ ] Create game window with configurable dimensions
+- [x] Create game window with configurable dimensions
 - [x] Implement window close functionality via ESC key
 - [x] Implement window close functionality via red cross button
 - [ ] Handle window minimize/maximize events
@@ -24,16 +24,16 @@
 **So that** I can play different maze layouts
 
 #### Tasks:
-- [ ] Create file validation to check for .cub extension
-- [ ] Implement file opening and reading functionality
-- [ ] Parse texture paths (NO, SO, WE, EA identifiers)
-- [ ] Parse floor color (F identifier with RGB values)
-- [ ] Parse ceiling color (C identifier with RGB values)
-- [ ] Validate RGB values are within [0,255] range
-- [ ] Handle multiple spaces between elements
-- [ ] Handle empty lines between elements (except in map)
-- [ ] Ensure map is always the last element in file
-- [ ] Create error handling for file read failures
+- [x] Create file validation to check for .cub extension
+- [x] Implement file opening and reading functionality
+- [x] Parse texture paths (NO, SO, WE, EA identifiers)
+- [x] Parse floor color (F identifier with RGB values)
+- [x] Parse ceiling color (C identifier with RGB values)
+- [x] Validate RGB values are within [0,255] range
+- [x] Handle multiple spaces between elements
+- [x] Handle empty lines between elements (except in map)
+- [x] Ensure map is always the last element in file
+- [x] Create error handling for file read failures
 
 ---
 
@@ -62,14 +62,14 @@
 **So that** I can orient myself in the maze
 
 #### Tasks:
-- [ ] Load North wall texture from specified path
-- [ ] Load South wall texture from specified path
-- [ ] Load East wall texture from specified path
-- [ ] Load West wall texture from specified path
-- [ ] Validate texture files exist and are readable
-- [ ] Convert textures to MiniLibX compatible format
-- [ ] Store textures in memory for rendering
-- [ ] Handle texture loading errors gracefully
+- [x] Load North wall texture from specified path
+- [x] Load South wall texture from specified path
+- [x] Load East wall texture from specified path
+- [x] Load West wall texture from specified path
+- [x] Validate texture files exist and are readable
+- [x] Convert textures to MiniLibX compatible format
+- [x] Store textures in memory for rendering
+- [x] Handle texture loading errors gracefully
 
 ---
 
