@@ -6,13 +6,14 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/03 23:52:02 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/06 21:19:19 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include <X11/Xatom.h>
 # include "libft/libft.h"
 # include "catch_lib/catch.h"
 # include "minilibx/mlx.h"
@@ -30,8 +31,8 @@
 # define KEY_INTERACT 101 //E
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
-# define WIDTH 900
-# define HEIGHT 900
+# define WIDTH 3800
+# define HEIGHT 2600
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
 # define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
@@ -44,6 +45,14 @@ enum {
 	ON_EXPOSE = 12,
 	ON_DESTROY = 17
 };
+
+typedef struct s_resolution
+{
+	int	width;
+	int	height;
+	int	aspect_width;
+	int	aspect_height;
+}				t_resolution;
 
 typedef enum e_line_type
 {
@@ -136,16 +145,18 @@ typedef struct s_map_objects
 
 typedef struct s_screen
 {
+	t_image	minimap;
 	t_image	start;
 	t_image	canva;
 	t_image	pause;
 	t_image	death;
 	t_image	finish;
-	t_image	background;
 }				t_screen;
 
 typedef	struct s_game
 {
+	int			x;
+	int			y;
 	bool		paused;
 	t_xvar		*mlx;
 	t_win_list	*win;
@@ -178,10 +189,10 @@ int	close_game(void *param);
 
 /*---------- window.c ----------*/
 void	open_window(void);
+void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
 
 /*---------- prepare_resources.c ----------*/
 void	create_canva();
-void	create_background();
 
 
 /*---------- images.c ----------*/
@@ -218,6 +229,5 @@ int	is_bounded_by_walls(char **map, int height);
 void	print_int(char *info, int data); //TODO remove this
 void	print_string(char *info, char *data); //TODO remove this
 void	print_pointer(char *info, void *data); //TODO remove this
-
 
 #endif

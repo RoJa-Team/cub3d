@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:32:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/03 23:47:50 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/06 21:17:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	build_canva()
 
 void	open_window(void)
 {
-	game()->win = mlx_new_window(game()->mlx, WIDTH, HEIGHT, "cub3d");
+	
 	build_canva();
-	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, 0, 0);
+	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, game()->x, game()->y);
 	// mlx_put_image_to_window(game()->mlx, game()->win, textures()->hose_firing[3].img.img_ptr, 0, 0);
 	// lock_mouse();
 	mlx_hook(game()->win, 2, (1L << 0), key_hooks, NULL);
