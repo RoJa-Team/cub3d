@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:33:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/07 19:49:12 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/07 19:50:07 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,28 +146,15 @@ void	calculate_resolution(int *game_width, int *game_height)
 	t_resolution	window;
 
 	get_work_area(&display);
-	debug("display width", display.width);
-	debug("display height", display.height);
 	get_aspect_ratio(&display);
-	debug("aspect width", display.aspect_width);
-	debug("aspect height", display.aspect_height);
 	get_window_size(&display, &window);
-	debug("window width", window.width);
-	debug("window height", window.height);
 	game()->win = mlx_new_window(game()->mlx, window.width, window.height, "cub3d");
 	get_frame_extents(&w_frame_size);
-	debug("frame_size", w_frame_size);
 	if (display.height == window.height)
 		window.height = window.height - w_frame_size;
-	debug("window width", window.width);
-	debug("window height", window.height);
 	fit_aspect_ratio(&display, &window, game_width, game_height);
-	debug("game width", *game_width);
-	debug("game height", *game_height);
 	game()->x = ((window.width - *game_width) / 2);
 	game()->y = ((window.height - *game_height) / 2);
-	debug("x", game()->x);
-	debug("y", game()->y);
 }
 
 void	create_canva()
