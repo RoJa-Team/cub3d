@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:32:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/06 23:02:56 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/10 20:47:38 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,36 @@ void	put_img_to_img(t_image *dst, t_image *src, int x, int y)
 	}
 }
 
-void	build_canva()
-{
-	// new_image(&screen()->canva, WIDTH, HEIGHT);
-
-	put_img_to_img(&screen()->canva, &textures()->hose_firing[3].img, 0, 0);
-}
-
-
+// void Zoom_Filter(SDL_Surface* surface)
+// {
+// 	int newsize = 28;
+	
+// 	Uint32* pixels = surface -> pixels;
+// 	Uint32* pixels2 =  malloc(newsize*newsize*sizeof(Uint32));
+	
+// 	int cote = surface -> w;
+	
+	
+// 	double Zoom = ((double)newsize)/(double)cote;
+	
+// 	for(int i = 0; i < newsize; i++)
+// 	{
+// 		for(int j = 0; j < newsize; j++)
+// 		{
+// 			int X = j/Zoom;
+// 			int Y = i/Zoom;
+// 			Uint32 px = pixels[(Y*cote + X)];
+// 			pixels2[i * newsize + j] = px;
+// 		}
+// 	}
+	
+// 	surface -> w = newsize;
+// 	surface -> h = newsize;
+// 	surface -> pixels = pixels2;
+// }
 
 void	open_window(void)
 {
-	
-	build_canva();
 	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, game()->x, game()->y);
 	// mlx_put_image_to_window(game()->mlx, game()->win, textures()->hose_firing[3].img.img_ptr, 0, 0);
 	// lock_mouse();

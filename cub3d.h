@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/07 19:20:44 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/10 23:06:57 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
 # define WIDTH 3840
-# define HEIGHT 3840
+# define HEIGHT 2160
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
-# define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
+# define debug(info, x) _Generic((x), int: print_int, long: print_long, double: print_double, char: print_char, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
 enum {
 	ON_KEYDOWN = 2,
@@ -94,7 +94,7 @@ typedef struct s_image
 	int		line_len;
 	char	*addr;
 	void	*img_ptr;
-}					t_image;
+}				t_image;
 
 
 
@@ -172,7 +172,18 @@ t_player		*player(void);
 t_textures		*textures(void);
 t_map_objects	*map_objects(void);
 
-/*---------- xpms.c ----------*/
+/*---------- resolution.c ----------*/
+int get_frame_extents(int *w_frame_size);
+int	get_work_area(t_resolution *display);
+void	fit_aspect_ratio(t_resolution *display, t_resolution *window, int *game_width, int *game_height);
+void	calculate_resolution(int *game_width, int *game_height);
+
+/*---------- resolution_helpers.c ----------*/
+void	get_window_size(t_resolution *display, t_resolution *window);
+int	gcd(int a, int b);
+void get_aspect_ratio(t_resolution *display);
+
+/*---------- prepare_resources.c ----------*/
 void	prepare_resources();
 
 /*---------- xpms.c ----------*/
@@ -190,6 +201,7 @@ int	close_game(void *param);
 /*---------- window.c ----------*/
 void	open_window(void);
 void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
+unsigned int	get_pixel_colour(t_image *img, int x, int y);
 
 /*---------- prepare_resources.c ----------*/
 void	create_canva();
@@ -227,6 +239,9 @@ int	is_bounded_by_walls(char **map, int height);
 
 /*---------- map_parse.c ----------*/
 void	print_int(char *info, int data); //TODO remove this
+void	print_long(char *info, long data); //TODO remove this
+void	print_double(char *info, double data); //TODO remove this
+void	print_char(char *info, char data); //TODO remove this
 void	print_string(char *info, char *data); //TODO remove this
 void	print_pointer(char *info, void *data); //TODO remove this
 
