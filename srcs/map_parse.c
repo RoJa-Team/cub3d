@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/28 18:47:29 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/13 18:54:22 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	valid_map(char **map)
 	if (!validate_characters(map) || map_objects()->player_count != 1)
 		return ((void)catch()->set("Error\n%s: Invalid or missing characters on the map", __func__), deallocate());
 	empty_arr = empty_array();
-	if (!flood_fill(map, map_objects()->player.x, map_objects()->player.y, empty_arr)
+	if (!flood_fill(map, player()->x, player()->y, empty_arr)
 			|| !is_bounded_by_walls(map, map_objects()->map_height))
 		return (free_array(empty_arr), (void)catch()->set("Error\n%s: Map is not bounded by walls", __func__), deallocate());
 	return (free_array(empty_arr));
@@ -167,13 +167,13 @@ int	is_bounded_by_walls(char **map, int height)
 
 int	flood_fill(char **map, int x, int y, char **visited)
 {
-	if (x < 0 || x >= map_objects()->map_height || y < 0 || y >= map_objects()->map_width)
+	if (y < 0 || y >= map_objects()->map_height || x < 0 || x >= map_objects()->map_width)
 		return (0);
-	if (ft_isspace(map[x][y]))
+	if (ft_isspace(map[y][x]))
 		return (0);
-	if (map[x][y] == '1' || visited[x][y])
+	if (map[y][x] == '1' || visited[y][x])
 		return (1);
-	visited[x][y] = 1;
+	visited[y][x] = 1;
 	if (!flood_fill(map, x + 1, y, visited))
 		return (0);
 	if (!flood_fill(map, x, y + 1, visited))
@@ -185,19 +185,27 @@ int	flood_fill(char **map, int x, int y, char **visited)
 	return (1);
 }
 
-void	initial_orientation(char ori, int x, int y)
+void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y)
+{
+	player()->dir_x = dir_x;
+	player()->dir_y = dir_y;
+	player()->plane_x = plane_x;
+	player()->plane_y = plane_y;
+}
+
+void	initial_orientation(char ori, int y, int x)
 {
 	if (ori == 'N')
-		map_objects()->player.orient = NO;
+		raycast_init(0, -1, -FOV, 0);
 	else if (ori == 'S')
-		map_objects()->player.orient = SO;
+		raycast_init(0, 1, FOV, 0);
 	else if (ori == 'E')
-		map_objects()->player.orient = EA;
+		raycast_init(1, 0, 0, FOV);
 	else if (ori == 'W')
-		map_objects()->player.orient = WE;
+		raycast_init(-1, 0, 0, -FOV);
 	map_objects()->player_count++;
-	map_objects()->player.x = x;
-	map_objects()->player.y = y;
+	player()->x = x;
+	player()->y = y;
 }
 
 void	free_array(char **array)

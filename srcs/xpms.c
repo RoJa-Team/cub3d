@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:04:01 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/03 22:39:50 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/10 22:13:33 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	xpm_to_img(char *path, t_image *img)
 
 void	load_textures_wall()
 {
-	xpm_to_img(textures()->wall[0].path, &textures()->wall[0].img);
-	xpm_to_img(textures()->wall[1].path, &textures()->wall[1].img);
-	xpm_to_img(textures()->wall[2].path, &textures()->wall[2].img);
-	xpm_to_img(textures()->wall[3].path, &textures()->wall[3].img);
+	xpm_to_img(textures()->wall[NO].path, &textures()->wall[0].img);
+	xpm_to_img(textures()->wall[SO].path, &textures()->wall[1].img);
+	xpm_to_img(textures()->wall[WE].path, &textures()->wall[2].img);
+	xpm_to_img(textures()->wall[EA].path, &textures()->wall[3].img);
 }
 
 void	load_textures_fire()

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/04 14:41:25 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/10 22:47:06 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,16 @@ t_player	*player(void)
 	static int			initialized;
 
 	if (!initialized)
-	{
+	{	
+		player.x = 0;
+		player.y = 0;
+		player.dir_x = 0;
+		player.dir_x = 0;
+		player.plane_x = 0;
+		player.plane_y = 0;
+		//player->tool = NULL;
 		initialized = 1;
 	}
-
 	return (&player);
 }
 

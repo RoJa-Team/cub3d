@@ -1,0 +1,9 @@
+- minimap
+- raycasting (dda algorith)
+- wall rendering
+- fire rendering
+- door rendering
+- door logic
+- fire logic
+- player movement
+- hooks and animation

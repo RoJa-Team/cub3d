@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/03 23:52:02 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/13 19:54:27 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "catch_lib/catch.h"
 # include "minilibx/mlx.h"
 # include "minilibx/mlx_int.h"
+# include "math.h"
 
 # define KEY_ESC 65307
 # define ARROW_L 65361
@@ -32,6 +33,9 @@
 # define KEY_PAUSE 112 //P
 # define WIDTH 900
 # define HEIGHT 900
+# define CELL_SIZE 16
+# define FOV 0.66
+# define TEX_SIZE 32
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
 # define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
@@ -87,8 +91,6 @@ typedef struct s_image
 	void	*img_ptr;
 }					t_image;
 
-
-
 typedef struct s_tool
 {
 
@@ -99,9 +101,44 @@ typedef struct s_player
 	// int		run;
 	double			x;
 	double			y;
-	t_orientation	orient;
+	double			dir_x;
+	double			dir_y;
+	double			plane_x;
+	double			plane_y;
 	t_tool			*tool;
 }				t_player;
+
+typedef struct	s_raycast
+{
+	double			camera_x;
+	double			ray_dir_x;
+	double			ray_dir_y;
+	double			delta_dist_x;
+	double			delta_dist_y;
+	double			step_x;
+	double			step_y;
+	double			side_dist_x;
+	double			side_dist_y;
+	int			map_x;
+	int			map_y;
+	int			side;
+	int			hit;
+	double			perp_wall_dist;
+}				t_raycast;
+
+
+typedef struct	s_draw
+{
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	double			wall_x;
+	int			tex_x;
+	int			tex_y;
+	double			step;
+	double			tex_pos;
+	int			color;
+}				t_draw;
 
 typedef struct s_texture
 {
@@ -114,15 +151,15 @@ typedef struct s_textures
 {
 	int			ccolour;
 	int			fcolour;
-    t_texture	clouds;
-    t_texture	idle_hose;
-    t_texture	hose_start[4];
-    t_texture	hose_firing[8];
-    t_texture	hose_ending[8];
-    t_texture	fire_loop[8];
-    t_texture	fire_ending[5];
+    	t_texture	clouds;
+    	t_texture	idle_hose;
+    	t_texture	hose_start[4];
+    	t_texture	hose_firing[8];
+    	t_texture	hose_ending[8];
+    	t_texture	fire_loop[8];
+    	t_texture	fire_ending[5];
 	t_texture	wall[4];
-    t_texture	door[3];
+	t_texture	door[3];
 }       		t_textures;
 
 typedef struct s_map_objects
@@ -160,6 +197,8 @@ t_screen		*screen(void);
 t_player		*player(void);
 t_textures		*textures(void);
 t_map_objects	*map_objects(void);
+t_raycast			*raycast(void);
+t_draw		*draw(void);
 
 /*---------- xpms.c ----------*/
 void	prepare_resources();
@@ -170,6 +209,7 @@ void	load_textures_wall();
 void	load_textures_fire();
 void	load_textures_hose();
 void	load_textures_misc();
+void	put_pixel_img(t_image *img, int x, int y, int color);
 
 /*---------- clear.c ----------*/
 void	deallocate(void);
@@ -213,11 +253,20 @@ int	flood_fill(char **map, int x, int y, char **visited);
 void	initial_orientation(char ori, int x, int y);
 void	free_array(char **array);
 int	is_bounded_by_walls(char **map, int height);
+void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y);
 
 /*---------- map_parse.c ----------*/
 void	print_int(char *info, int data); //TODO remove this
 void	print_string(char *info, char *data); //TODO remove this
 void	print_pointer(char *info, void *data); //TODO remove this
 
-
+/*---------- raycaster.c ----------*/
+void    raycaster(void);
+void	calculate_delta_dist(void);
+void	calculate_side_dist(void);
+void	dda(void);
+void	calculate_wall(void);
+void	calculate_texture(void);
+int	get_tex_color(int tex_x, int tex_y, t_texture *text);
+void	draw_tex_pixel(int x);
 #endif
