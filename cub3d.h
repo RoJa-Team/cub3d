@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/10 23:06:57 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/15 20:24:37 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # define KEY_INTERACT 101 //E
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
-# define WIDTH 3840
-# define HEIGHT 2160
+# define WIDTH 3840 // if < 640, default 640
+# define HEIGHT 2160 // if < 360, default 360
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
 # define debug(info, x) _Generic((x), int: print_int, long: print_long, double: print_double, char: print_char, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
@@ -46,13 +46,13 @@ enum {
 	ON_DESTROY = 17
 };
 
-typedef struct s_resolution
+typedef struct s_res
 {
 	int	width;
 	int	height;
 	int	aspect_width;
 	int	aspect_height;
-}				t_resolution;
+}				t_res;
 
 typedef enum e_line_type
 {
@@ -155,8 +155,10 @@ typedef struct s_screen
 
 typedef	struct s_game
 {
-	int			x;
-	int			y;
+	int			image_x;
+	int			image_y;
+	int			game_width;
+	int			game_height;
 	bool		paused;
 	t_xvar		*mlx;
 	t_win_list	*win;
@@ -174,14 +176,14 @@ t_map_objects	*map_objects(void);
 
 /*---------- resolution.c ----------*/
 int get_frame_extents(int *w_frame_size);
-int	get_work_area(t_resolution *display);
-void	fit_aspect_ratio(t_resolution *display, t_resolution *window, int *game_width, int *game_height);
+int	get_work_area(t_res *display);
+void	fit_aspect_ratio(t_res *display, t_res *window, int *game_width, int *game_height);
 void	calculate_resolution(int *game_width, int *game_height);
 
 /*---------- resolution_helpers.c ----------*/
-void	get_window_size(t_resolution *display, t_resolution *window);
+void	get_window_size(t_res *display, t_res *window);
 int	gcd(int a, int b);
-void get_aspect_ratio(t_resolution *display);
+void get_aspect_ratio(t_res *display);
 
 /*---------- prepare_resources.c ----------*/
 void	prepare_resources();
@@ -194,6 +196,7 @@ void	load_textures_hose();
 void	load_textures_misc();
 
 /*---------- clear.c ----------*/
+void	free_texture(t_texture *texture);
 void	deallocate(void);
 
 int	close_game(void *param);

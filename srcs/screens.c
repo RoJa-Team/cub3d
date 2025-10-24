@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:33:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/10 22:39:37 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/24 20:37:13 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	add_background(int game_width, int game_height)
 	}
 }
 
-
 t_image	*resize_image(t_image *image, int ratio)
 {
     int	x;
@@ -49,8 +48,6 @@ t_image	*resize_image(t_image *image, int ratio)
     t_image *resized = malloc(sizeof(t_image));
     
     new_image(resized, image->w * ratio, image->h * ratio);
-	debug("resized w", resized->w);
-	debug("resized h", resized->h);
 	i = 0;
     while(i < image->h)
 	{
@@ -86,69 +83,28 @@ t_image	*resize_image(t_image *image, int ratio)
 	image->endian = resized->endian;
 	image->line_len = resized->line_len;
 	image->img_ptr = resized->img_ptr;
+	free(resized);
 	return (image);
 }
 
-t_image	*resize_image2(t_image *image, int ratio)
+int	calculate_zoom_ratio(t_image *img)
 {
-    int	x;
-	int	y;
-	int	i;
-	int	j;
-	int	column = 0;
-	int	row = 0;
-	unsigned int	color;
-	char	*dst;
-    t_image *resized = malloc(sizeof(t_image));
-    
-    new_image(resized, image->w * ratio, image->h * ratio);
-	debug("resized w", resized->w);
-	debug("resized h", resized->h);
-	i = 0;
-    while(i < image->h)
-	{
-		j = 0;
-        while(j < image->w)
-		{
+	int	ratio;
+	int	image_max_size;
 
-            color = *(unsigned int *)((image->addr + (i * image->line_len) + (j * image->bpp / 8)));
-			x = row;
-            while(x <= row + ratio)
-			{
-				y = column;
-                while(y <= column + ratio)
-				{
-					dst = resized->addr + (y * resized->line_len + x * (resized->bpp / 8));
-					*(unsigned int*)dst = color;
-					y++;
-                }
-				x++;
-            }
-            column += ratio;
-			j++; 
-        }
-        row += ratio;
-        column = 0;
-		i++;
-    }
-	mlx_destroy_image(game()->mlx, image->img_ptr);
-	image->addr = resized->addr;
-	image->w = resized->w;
-	image->h = resized->h;
-	image->bpp = resized->bpp;
-	image->endian = resized->endian;
-	image->line_len = resized->line_len;
-	image->img_ptr = resized->img_ptr;
-	return (image);
+	image_max_size = 0.3 * game()->game_height;
+	ratio = image_max_size / img->h;
+	return(ratio);
 }
 
 void	add_view()
 {
-	
-	put_img_to_img(&screen()->canva, resize_image(&textures()->wall[1].img, 10), screen()->canva.w - textures()->wall[1].img.w, screen()->canva.h - textures()->wall[1].img.h);
-	debug("wall[1].img w", textures()->wall[1].img.w);
-	debug("wall[1].img h", textures()->wall[1].img.h);
-	put_img_to_img(&screen()->canva, resize_image(&textures()->idle_hose.img, 10), (screen()->canva.w / 2) - (textures()->idle_hose.img.w / 2), screen()->canva.h - textures()->idle_hose.img.h);
+	int	ratio;
+
+	ratio = calculate_zoom_ratio(&textures()->wall[1].img);
+	put_img_to_img(&screen()->canva, resize_image(&textures()->wall[1].img, ratio), screen()->canva.w - textures()->wall[1].img.w, screen()->canva.h - textures()->wall[1].img.h);
+	ratio = calculate_zoom_ratio(&textures()->idle_hose.img);
+	put_img_to_img(&screen()->canva, resize_image(&textures()->idle_hose.img, ratio), (screen()->canva.w / 2) - (textures()->idle_hose.img.w / 2), screen()->canva.h - textures()->idle_hose.img.h);
 }
 
 void	add_minimap()
@@ -156,16 +112,11 @@ void	add_minimap()
 	
 }
 
-
-
 void	create_canva()
 {
-	int	game_width;
-	int	game_height;
-
-	calculate_resolution(&game_width, &game_height);
-	new_image(&screen()->canva, game_width, game_height);
-	add_background(game_width, game_height);
+	calculate_resolution(&game()->game_width, &game()->game_height);
+	new_image(&screen()->canva, game()->game_width, game()->game_height);
+	add_background(game()->game_width, game()->game_height);
 	add_view();
 	// add_minimap();
 }
