@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:45:01 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/13 22:04:54 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/24 19:51:07 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,6 @@ void    raycaster(void)
 	x = 0;
 	while (x < WIDTH)
 	{
-		printf("side=%d  ray=(%.2f, %.2f)  step=(%f,%f)  map=(%d,%d)  dist=%.2f\n",
-		    raycast()->side,
-		    raycast()->ray_dir_x, raycast()->ray_dir_y,
-		    raycast()->step_x, raycast()->step_y,
-		    raycast()->map_x, raycast()->map_y,
-		    raycast()->perp_wall_dist);
-
 		raycast()->camera_x = 2 * (x / (double)(WIDTH)) - 1;
 		calculate_delta_dist();
 		calculate_side_dist();
