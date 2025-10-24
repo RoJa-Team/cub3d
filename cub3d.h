@@ -6,13 +6,14 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/13 19:54:27 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/24 21:31:46 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include <X11/Xatom.h>
 # include "libft/libft.h"
 # include "catch_lib/catch.h"
 # include "minilibx/mlx.h"
@@ -31,13 +32,13 @@
 # define KEY_INTERACT 101 //E
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
-# define WIDTH 900
-# define HEIGHT 900
 # define CELL_SIZE 16
 # define FOV 0.66
 # define TEX_SIZE 32
+# define WIDTH 3840 // if < 640, default 640
+# define HEIGHT 2160 // if < 360, default 360
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
-# define debug(info, x) _Generic((x), int: print_int, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
+# define debug(info, x) _Generic((x), int: print_int, long: print_long, double: print_double, char: print_char, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
 enum {
 	ON_KEYDOWN = 2,
@@ -48,6 +49,14 @@ enum {
 	ON_EXPOSE = 12,
 	ON_DESTROY = 17
 };
+
+typedef struct s_res
+{
+	int	width;
+	int	height;
+	int	aspect_width;
+	int	aspect_height;
+}				t_res;
 
 typedef enum e_line_type
 {
@@ -89,7 +98,7 @@ typedef struct s_image
 	int		line_len;
 	char	*addr;
 	void	*img_ptr;
-}					t_image;
+}				t_image;
 
 typedef struct s_tool
 {
@@ -173,16 +182,20 @@ typedef struct s_map_objects
 
 typedef struct s_screen
 {
+	t_image	minimap;
 	t_image	start;
 	t_image	canva;
 	t_image	pause;
 	t_image	death;
 	t_image	finish;
-	t_image	background;
 }				t_screen;
 
 typedef	struct s_game
 {
+	int			image_x;
+	int			image_y;
+	int			game_width;
+	int			game_height;
 	bool		paused;
 	t_xvar		*mlx;
 	t_win_list	*win;
@@ -200,7 +213,18 @@ t_map_objects	*map_objects(void);
 t_raycast			*raycast(void);
 t_draw		*draw(void);
 
-/*---------- xpms.c ----------*/
+/*---------- resolution.c ----------*/
+int get_frame_extents(int *w_frame_size);
+int	get_work_area(t_res *display);
+void	fit_aspect_ratio(t_res *display, t_res *window, int *game_width, int *game_height);
+void	calculate_resolution(int *game_width, int *game_height);
+
+/*---------- resolution_helpers.c ----------*/
+void	get_window_size(t_res *display, t_res *window);
+int	gcd(int a, int b);
+void get_aspect_ratio(t_res *display);
+
+/*---------- prepare_resources.c ----------*/
 void	prepare_resources();
 
 /*---------- xpms.c ----------*/
@@ -212,16 +236,19 @@ void	load_textures_misc();
 void	put_pixel_img(t_image *img, int x, int y, int color);
 
 /*---------- clear.c ----------*/
+void	free_texture(t_texture *texture);
 void	deallocate(void);
 
 int	close_game(void *param);
 
 /*---------- window.c ----------*/
+int	game_state();
 void	open_window(void);
+void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
+unsigned int	get_pixel_colour(t_image *img, int x, int y);
 
 /*---------- prepare_resources.c ----------*/
 void	create_canva();
-void	create_background();
 
 
 /*---------- images.c ----------*/
@@ -257,6 +284,9 @@ void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y);
 
 /*---------- map_parse.c ----------*/
 void	print_int(char *info, int data); //TODO remove this
+void	print_long(char *info, long data); //TODO remove this
+void	print_double(char *info, double data); //TODO remove this
+void	print_char(char *info, char data); //TODO remove this
 void	print_string(char *info, char *data); //TODO remove this
 void	print_pointer(char *info, void *data); //TODO remove this
 
@@ -269,4 +299,5 @@ void	calculate_wall(void);
 void	calculate_texture(void);
 int	get_tex_color(int tex_x, int tex_y, t_texture *text);
 void	draw_tex_pixel(int x);
+
 #endif

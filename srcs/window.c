@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:32:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/24 20:53:40 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/24 21:31:51 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,9 @@ void	put_img_to_img(t_image *dst, t_image *src, int x, int y)
 	}
 }
 
-void	build_canva()
-{
-	// new_image(&screen()->canva, WIDTH, HEIGHT);
-
-	//put_img_to_img(&screen()->canva, &textures()->hose_firing[3].img, 0, 0);
-}
-
-
-
 void	open_window(void)
 {
-	game()->win = mlx_new_window(game()->mlx, WIDTH, HEIGHT, "cub3d");
-	build_canva();
-	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, 0, 0);
+	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, game()->image_x, game()->image_y);
 	// mlx_put_image_to_window(game()->mlx, game()->win, textures()->hose_firing[3].img.img_ptr, 0, 0);
 	// lock_mouse();
 	mlx_hook(game()->win, 2, (1L << 0), key_hooks, NULL);

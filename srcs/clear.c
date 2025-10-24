@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 18:24:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/03 22:46:23 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/24 20:57:42 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,17 @@ void	free_map()
 	free(map_objects()->map);
 }
 
+void	free_image(t_image *image)
+{
+	if (image->img_ptr)
+		mlx_destroy_image(game()->mlx, image->img_ptr);
+}
+
 void	free_texture(t_texture *texture)
 {
 	if (texture->path)
 		free(texture->path);
-	if (texture->img.img_ptr)
-		mlx_destroy_image(game()->mlx, texture->img.img_ptr);
+	free_image(&texture->img);
 }
 
 void	free_textures_wall()
@@ -100,11 +105,22 @@ void	free_textures()
 	free_textures_misc();
 }
 
+void	free_screens()
+{
+	free_image(&screen()->minimap);
+	free_image(&screen()->start);
+	free_image(&screen()->canva);
+	free_image(&screen()->pause);
+	free_image(&screen()->death);
+	free_image(&screen()->finish);
+}
+
 void	deallocate(void)
 {
 	if (map_objects()->map)
 		free_map();
 	free_textures();
+	free_screens();
 	if (game()->win)
 		mlx_destroy_window(game()->mlx, game()->win);
 	if (game()->mlx)
