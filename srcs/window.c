@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:32:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/24 21:31:51 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/24 21:43:35 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	game_state()
 {
 	raycaster();
-	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, 0, 0);
+	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, game()->image_x, game()->image_y);
 	//frame_swap();
 	if (game()->paused == 1)
 	{

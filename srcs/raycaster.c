@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:45:01 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/24 19:51:07 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/24 21:43:39 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void    raycaster(void)
  	int	x;
 
 	x = 0;
-	while (x < WIDTH)
+	while (x < game()->game_width)
 	{
-		raycast()->camera_x = 2 * (x / (double)(WIDTH)) - 1;
+		raycast()->camera_x = 2 * (x / (double)(game()->game_width)) - 1;
 		calculate_delta_dist();
 		calculate_side_dist();
 		dda();
@@ -87,7 +87,7 @@ void	draw_tex_pixel(int x)
 	t_texture	tex;
 
 	draw()->step = 1.0 * TEX_SIZE / draw()->line_height;
-	draw()->tex_pos = (draw()->draw_start - HEIGHT / 2
+	draw()->tex_pos = (draw()->draw_start - game()->game_height / 2
 		       	+ draw()->line_height / 2) * draw()->step;
 	y = draw()->draw_start;
 	if (raycast()->side == 0 && raycast()->ray_dir_x > 0)
@@ -134,13 +134,13 @@ void	calculate_wall(void)
 			* raycast()->ray_dir_x;
 	}
 	draw()->wall_x -= floor(draw()->wall_x);
-	draw()->line_height = (int)(HEIGHT / raycast()->perp_wall_dist);
-	draw()->draw_start = (-draw()->line_height / 2) + (HEIGHT / 2);
+	draw()->line_height = (int)(game()->game_height / raycast()->perp_wall_dist);
+	draw()->draw_start = (-draw()->line_height / 2) + (game()->game_height / 2);
 	if (draw()->draw_start < 0)
 		draw()->draw_start = 0;
-	draw()->draw_end = (draw()->line_height / 2) + (HEIGHT / 2);
-	if (draw()->draw_end >= HEIGHT)
-		draw()->draw_end = HEIGHT - 1;
+	draw()->draw_end = (draw()->line_height / 2) + (game()->game_height / 2);
+	if (draw()->draw_end >= game()->game_height)
+		draw()->draw_end = game()->game_height - 1;
 }
 
 void	dda(void)
