@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 18:23:36 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/24 22:41:29 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	key_hooks(int keycode, void *param)
 		close_game(NULL);
 	else if (game()->paused == true)
 		return (0);
-	// if (keycode == ARROW_L)
+	// else if (keycode == ARROW_L)
 	// 	turn_left();
 	// else if (keycode == ARROW_R)
 	// 	turn_right();

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/24 21:31:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/25 21:31:10 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
 # define CELL_SIZE 16
-# define FOV 0.66
+# define FOV 1
 # define TEX_SIZE 32
 # define WIDTH 3840 // if < 640, default 640
 # define HEIGHT 2160 // if < 360, default 360
@@ -160,13 +160,13 @@ typedef struct s_textures
 {
 	int			ccolour;
 	int			fcolour;
-    	t_texture	clouds;
-    	t_texture	idle_hose;
-    	t_texture	hose_start[4];
-    	t_texture	hose_firing[8];
-    	t_texture	hose_ending[8];
-    	t_texture	fire_loop[8];
-    	t_texture	fire_ending[5];
+	t_texture	clouds;
+	t_texture	hose_idle;
+	t_texture	hose_start[4];
+	t_texture	hose_on[8];
+	t_texture	hose_end[8];
+	t_texture	fire_loop[8];
+	t_texture	fire_end[5];
 	t_texture	wall[4];
 	t_texture	door[3];
 }       		t_textures;
@@ -180,15 +180,23 @@ typedef struct s_map_objects
 	t_player	player;
 }       		t_map_objects;
 
-typedef struct s_screen
+typedef struct s_hud
 {
-	t_image	minimap;
-	t_image	start;
+	int 	x;
+	int		y;
+	t_image	img;
+}				t_hud;
+
+typedef struct s_screens
+{
+	t_hud	hose;
+	t_hud	minimap;
 	t_image	canva;
+	t_image	start;
 	t_image	pause;
 	t_image	death;
 	t_image	finish;
-}				t_screen;
+}				t_screens;
 
 typedef	struct s_game
 {
@@ -206,7 +214,7 @@ void	parse_file(char *file);
 
 /*---------- static_structs.c ----------*/
 t_game			*game(void);
-t_screen		*screen(void);
+t_screens		*screens(void);
 t_player		*player(void);
 t_textures		*textures(void);
 t_map_objects	*map_objects(void);
@@ -217,7 +225,7 @@ t_draw		*draw(void);
 int get_frame_extents(int *w_frame_size);
 int	get_work_area(t_res *display);
 void	fit_aspect_ratio(t_res *display, t_res *window, int *game_width, int *game_height);
-void	calculate_resolution(int *game_width, int *game_height);
+void	calculate_resolution(t_game *game);
 
 /*---------- resolution_helpers.c ----------*/
 void	get_window_size(t_res *display, t_res *window);
@@ -227,23 +235,36 @@ void get_aspect_ratio(t_res *display);
 /*---------- prepare_resources.c ----------*/
 void	prepare_resources();
 
+/*---------- hud.c ----------*/
+void	create_hose(t_hud *hose);
+void	create_minimap(t_hud *minimap);
+void	render_hud(t_screens *screens);
+
+
 /*---------- xpms.c ----------*/
 void	xpm_to_img(char *path, t_image *img);
-void	load_textures_wall();
-void	load_textures_fire();
-void	load_textures_hose();
-void	load_textures_misc();
+void	load_textures_wall(t_textures *textures);
+void	load_textures_fire(t_textures *textures);
+void	load_textures_hose(t_textures *textures);
+void	load_textures_misc(t_textures *textures);
 void	put_pixel_img(t_image *img, int x, int y, int color);
 
 /*---------- clear.c ----------*/
 void	free_texture(t_texture *texture);
 void	deallocate(void);
+int		close_game(void *param);
 
-int	close_game(void *param);
+/*---------- clear_textures.c ----------*/
+void	free_textures_wall(t_textures *textures);
+void	free_textures_fire(t_textures *textures);
+void	free_textures_hose(t_textures *textures);
+void	free_textures_misc(t_textures *textures);
+void	free_textures(t_textures *textures);
 
 /*---------- window.c ----------*/
 int	game_state();
 void	open_window(void);
+void put_img_to_img_quadrants(t_image *dst, t_image *src, int x, int y);
 void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
 unsigned int	get_pixel_colour(t_image *img, int x, int y);
 

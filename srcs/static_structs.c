@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/24 21:28:40 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/25 21:14:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,34 @@ t_textures	*textures(void)
 
 	if (!initialized)
 	{
+		load_textures_fire(&textures);
+		load_textures_hose(&textures);
+		load_textures_misc(&textures);
+		scale_hose_images(&textures);
 		textures.ccolour = -1;
 		textures.fcolour = -1;
 		initialized = 1;
 	}
-
 	return (&textures);
 }
 
-t_screen	*screen(void)
+t_screens	*screens(void)
 {
-	static t_screen	screen;
+	static t_screens	screens;
 	static int		initialized;
 
 	if (!initialized)
 	{
+		create_hose(&screens.hose);
+		create_minimap(&screens.minimap);
+		create_canva(&screens.canva);
+		create_start(&screens.start);
+		create_pause(&screens.pause);
+		create_death(&screens.death);
+		create_finish(&screens.finish);
 		initialized = 1;
 	}
-
-	return (&screen);
+	return (&screens);
 }
 
 t_game	*game(void)
@@ -80,8 +89,9 @@ t_game	*game(void)
 
 	if (!initialized)
 	{
+		game.mlx = mlx_init();
+		calculate_resolution(&game);
 		initialized = 1;
 	}
-
 	return (&game);
 }
