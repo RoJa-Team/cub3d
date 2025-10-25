@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:33:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/24 20:37:13 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/24 23:07:37 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ void	add_view()
 {
 	int	ratio;
 
-	ratio = calculate_zoom_ratio(&textures()->wall[1].img);
-	put_img_to_img(&screen()->canva, resize_image(&textures()->wall[1].img, ratio), screen()->canva.w - textures()->wall[1].img.w, screen()->canva.h - textures()->wall[1].img.h);
 	ratio = calculate_zoom_ratio(&textures()->idle_hose.img);
 	put_img_to_img(&screen()->canva, resize_image(&textures()->idle_hose.img, ratio), (screen()->canva.w / 2) - (textures()->idle_hose.img.w / 2), screen()->canva.h - textures()->idle_hose.img.h);
 }
@@ -116,8 +114,6 @@ void	create_canva()
 {
 	calculate_resolution(&game()->game_width, &game()->game_height);
 	new_image(&screen()->canva, game()->game_width, game()->game_height);
-	add_background(game()->game_width, game()->game_height);
-	add_view();
 	// add_minimap();
 }
 

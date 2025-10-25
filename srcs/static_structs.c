@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/24 21:28:40 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/25 16:57:05 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,20 @@ t_player	*player(void)
 		initialized = 1;
 	}
 	return (&player);
+}
+
+t_frame	*frame(void)
+{
+	static t_frame	frame;
+	static int			initialized;
+
+	if (!initialized)
+	{	
+		frame.move_speed = 0;	
+		frame.rot_speed = 0;	
+		initialized = 1;
+	}
+	return (&frame);
 }
 
 t_textures	*textures(void)

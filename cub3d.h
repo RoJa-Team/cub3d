@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/24 21:31:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/25 19:22:13 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include <X11/Xatom.h>
+# include <sys/time.h>
 # include "libft/libft.h"
 # include "catch_lib/catch.h"
 # include "minilibx/mlx.h"
@@ -33,8 +34,9 @@
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
 # define CELL_SIZE 16
-# define FOV 0.66
+# define FOV 0.99
 # define TEX_SIZE 32
+# define MARGIN 0.2
 # define WIDTH 3840 // if < 640, default 640
 # define HEIGHT 2160 // if < 360, default 360
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
@@ -149,6 +151,12 @@ typedef struct	s_draw
 	int			color;
 }				t_draw;
 
+typedef struct s_frame
+{
+	double			move_speed;
+	double			rot_speed;
+}				t_frame;
+
 typedef struct s_texture
 {
 	char			*path;
@@ -212,6 +220,7 @@ t_textures		*textures(void);
 t_map_objects	*map_objects(void);
 t_raycast			*raycast(void);
 t_draw		*draw(void);
+t_frame		*frame(void);
 
 /*---------- resolution.c ----------*/
 int get_frame_extents(int *w_frame_size);
@@ -296,8 +305,23 @@ void	calculate_delta_dist(void);
 void	calculate_side_dist(void);
 void	dda(void);
 void	calculate_wall(void);
-void	calculate_texture(void);
+void	calculate_texture(int x);
 int	get_tex_color(int tex_x, int tex_y, t_texture *text);
-void	draw_tex_pixel(int x);
+void	draw_tex_pixel(t_texture tex, int x);
+
+/*---------- frame_managment.c ----------*/
+double	get_time(void);
+void	get_speed_modifiers();
+void	turn_left(void);
+void	turn_right(void);
+void	move_front(void);
+void	move_left(void);
+void	move_back(void);
+void	move_right(void);
+
+
+/*---------- lost ----------------*/
+void	add_background(int game_width, int game_height);
+void	add_view();
 
 #endif
