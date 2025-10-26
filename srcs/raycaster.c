@@ -6,11 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:45:01 by joafern2          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/10/26 16:22:31 by rafasant         ###   ########.fr       */
-=======
-/*   Updated: 2025/10/26 16:54:54 by joafern2         ###   ########.fr       */
->>>>>>> dev
+/*   Updated: 2025/10/26 17:35:25 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +94,7 @@ void	draw_tex_pixel(t_texture tex, int x)
 		draw()->tex_y = (int)draw()->tex_pos % tex.img.h;
 		draw()->tex_pos += draw()->step;
 		color = get_tex_color(draw()->tex_x, draw()->tex_y, &tex);
-		put_pixel_img(&screen()->canva, x, y, color);
+		put_pixel_img(&screens()->canva, x, y, color);
 		y++;
 	}
 }
@@ -115,24 +111,7 @@ void	calculate_texture(int x)
 		tex = textures()->wall[SO];
 	else if (raycast()->side == 1 && raycast()->ray_dir_y < 0)
 		tex = textures()->wall[NO];
-<<<<<<< HEAD
-	while (y < draw()->draw_end)
-	{
-		draw()->tex_y = (int)draw()->tex_pos & (TEX_SIZE -1);
-		draw()->tex_pos += draw()->step;
-		color = get_tex_color(draw()->tex_x, draw()->tex_y, &tex);
-		put_pixel_img(&screens()->canva, x, y, color);
-		//mlx_pixel_put(game()->mlx, game()->win, x, y, color);
-		y++;
-	}
-}
-
-void	calculate_texture(void)
-{
-	draw()->tex_x = (int)(draw()->wall_x * (double)TEX_SIZE);
-=======
 	draw()->tex_x = (int)(draw()->wall_x * (double)tex.img.w);
->>>>>>> dev
 	if ((raycast()->side == 0 && raycast()->ray_dir_x > 0) 
 			|| (raycast()->side == 1 && raycast()->ray_dir_y > 0))
 		draw()->tex_x = tex.img.w - draw()->tex_x - 1;
