@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:32:46 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/25 20:27:38 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:30:12 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	game_state()
 {
-	//frame_swap();
+	get_speed_modifiers();
 	if (game()->paused == 1)
 		deallocate();
 	render();

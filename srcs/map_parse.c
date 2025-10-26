@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/13 20:57:07 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/24 23:21:46 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,8 +204,8 @@ void	initial_orientation(char ori, int y, int x)
 	else if (ori == 'W')
 		raycast_init(-1, 0, 0, -FOV);
 	map_objects()->player_count++;
-	player()->x = x;
-	player()->y = y;
+	player()->x = x + 0.5;
+	player()->y = y + 0.5;
 }
 
 void	free_array(char **array)

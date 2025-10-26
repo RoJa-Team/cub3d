@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/24 22:41:29 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:31:43 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	key_hooks(int keycode, void *param)
 		close_game(NULL);
 	else if (game()->paused == true)
 		return (0);
-	// else if (keycode == ARROW_L)
-	// 	turn_left();
-	// else if (keycode == ARROW_R)
-	// 	turn_right();
+	else if (keycode == ARROW_L)
+	 	turn_left();
+	else if (keycode == ARROW_R)
+	 	turn_right();
 	// else if (keycode == KEY_CTRL)
 	// 	crouch();
 	// else if (keycode == KEY_SPACEBAR)
@@ -49,13 +49,13 @@ int	key_hooks(int keycode, void *param)
 	// 	interact();
 	// else if (keycode == KEY_SHOOT)
 	// 	shoot();
-	// else if (keycode == KEY_W)
-	// 	move_front();
-	// else if (keycode == KEY_A)
-	// 	move_left();
-	// else if (keycode == KEY_S)
-	// 	move_back();
-	// else if (keycode == KEY_D)
-	// 	move_right();
+	else if (keycode == KEY_W)
+	 	move_front();
+	else if (keycode == KEY_A)
+	 	move_left();
+	else if (keycode == KEY_S)
+		move_back();
+	else if (keycode == KEY_D)
+		move_right();
 	return (0);
 }
