@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:46:43 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/25 19:29:51 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/26 16:53:29 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,50 +74,76 @@ void	turn_right(void)
 }
 void	move_front(void)
 {
-	if (map_objects()->map[(int)(player()->y)][(int)(player()->x 
-		+ player()->dir_x * frame()->move_speed)] != '1')
-		player()->x += player()->dir_x * frame()->move_speed;
-	if (map_objects()->map[(int)(player()->y + player()->dir_y 
-		* frame()->move_speed)][(int)(player()->x)] != '1')
-		player()->y += player()->dir_y * frame()->move_speed;
+	int	sign_x;
+	int	sign_y;
+	double	step_x = player()->dir_x * frame()->move_speed;
+	double	step_y = player()->dir_y * frame()->move_speed;
+
+	sign_x = (step_x > 0);
+	if (sign_x == 0)
+		sign_x = -1;
+	sign_y = (step_y > 0);
+	if (sign_y == 0)
+		sign_y = -1;
+	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
+		player()->x += step_x;
+	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
+		player()->y += step_y;;
+
 }
 void	move_left(void)
 {
-	if (map_objects()->map[(int)(player()->y)][(int)(player()->x 
-		- player()->dir_y * frame()->move_speed)] != '1')
-		player()->x -= player()->dir_y * frame()->move_speed;
-	if (map_objects()->map[(int)(player()->y - player()->dir_x 
-		* frame()->move_speed)][(int)(player()->x)] != '1')
-		player()->y -= player()->dir_x * frame()->move_speed;
+	int	sign_x;
+	int	sign_y;
+	double	step_x = player()->dir_y * frame()->move_speed;
+	double	step_y = -player()->dir_x * frame()->move_speed;
+
+	sign_x = (step_x > 0);
+	if (sign_x == 0)
+		sign_x = -1;
+	sign_y = (step_y > 0);
+	if (sign_y == 0)
+		sign_y = -1;
+	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
+		player()->x += step_x;
+	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
+		player()->y += step_y;;
+
 
 }
 void	move_back(void)
 {
-	if (map_objects()->map[(int)(player()->y)][(int)(player()->x 
-		+ player()->dir_x * frame()->move_speed)] != '1')
-		player()->x -= player()->dir_x * frame()->move_speed;
-	if (map_objects()->map[(int)(player()->y + player()->dir_y 
-		* frame()->move_speed)][(int)(player()->x)] != '1')
-		player()->y -= player()->dir_y * frame()->move_speed;
+	int	sign_x;
+	int	sign_y;
+	double	step_x = -player()->dir_x * frame()->move_speed;
+	double	step_y = -player()->dir_y * frame()->move_speed;
 
+	sign_x = (step_x > 0);
+	if (sign_x == 0)
+		sign_x = -1;
+	sign_y = (step_y > 0);
+	if (sign_y == 0)
+		sign_y = -1;
+	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
+		player()->x += step_x;
+	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
+		player()->y += step_y;;
 }
 void	move_right(void)
 {
-	int	sign;
-	double	new_x = player()->x + player()->dir_y * frame()->move_speed;
-	double	new_y = player()->y + player()->dir_x * frame()->move_speed;
+	int	sign_x;
+	int	sign_y;
+	double	step_x = -player()->dir_y * frame()->move_speed;
+	double	step_y = player()->dir_x * frame()->move_speed;
 
-	if (player()->dir_x > 0)
-		sign = 1;
-	else
-		sign = -1;
-	if (map_objects()->map[(int)(player()->y)][(int)(new_x + sign * MARGIN)] != '1')
-		player()->x += player()->dir_y * frame()->move_speed;
-	if (player()->dir_y > 0)
-		sign = 1;
-	else
-		sign = -1;
-	if (map_objects()->map[(int)(new_y + sign * MARGIN)][(int)(player()->x)] != '1')
-		player()->y += player()->dir_x * frame()->move_speed;
-
+	sign_x = (step_x > 0);
+	if (sign_x == 0)
+		sign_x = -1;
+	sign_y = (step_y > 0);
+	if (sign_y == 0)
+		sign_y = -1;
+	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
+		player()->x += step_x;
+	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
+		player()->y += step_y;;
 }

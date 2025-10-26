@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:45:01 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/25 18:28:04 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/26 16:54:54 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	draw_tex_pixel(t_texture tex, int x)
 		       	+ draw()->line_height / 2) * draw()->step;
 	y = draw()->draw_start;
 	
-	while (y < draw()->draw_end)
+	while (y <= draw()->draw_end)
 	{
 		draw()->tex_y = (int)draw()->tex_pos % tex.img.h;
 		draw()->tex_pos += draw()->step;
