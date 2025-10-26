@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/29 19:44:47 by rafasant          #+#    #+#              #
-#    Updated: 2025/10/24 21:28:13 by joafern2         ###   ########.fr        #
+#    Updated: 2025/10/26 17:06:32 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ INCLUDE 	= catch_lib/catch.a minilibx/libmlx.a libft/libft.a
 LINKS		= -lXext -lX11 -lm -lz
 SRCS 		= $(addprefix ${SRCS_DIR}, cub3d.c parse_file.c static_structs.c \
 window.c map_parse.c hooks.c mouse.c print_functions.c clear.c \
-prepare_resources.c xpms.c color_management.c images.c screens.c resolution.c \
-resolution_helpers.c raycaster.c)
+prepare_resources.c xpms.c pixel_management.c images.c image_manipulation.c screens.c resolution.c \
+resolution_helpers.c raycaster.c render.c hud.c minimap.c clear_textures.c)
 OBJS		= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 SRCS_DIR	= srcs/
 OBJS_DIR	= objs/

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:33:33 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/25 21:15:48 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 16:42:37 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,7 @@ void	create_start(t_image *start)
 
 void	create_pause(t_image *pause)
 {
-	int	x;
-	int	y;
-	int	ceiling;
-	int	floor;
-
-	y = -1;
-	ceiling = textures()->ccolour;
-	floor = textures()->fcolour;
 	new_image(pause, game()->game_width, game()->game_height);
-	while (++y < HEIGHT / 2)
-	{
-		x = -1;
-		while (++x < WIDTH)
-		{
-			put_pixel(pause, x, HEIGHT - y, floor);
-			put_pixel(pause, x, y, ceiling);
-		}
-	}
 }
 
 void	create_death(t_image *death)

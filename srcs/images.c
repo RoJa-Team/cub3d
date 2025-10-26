@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:02:22 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/25 20:36:05 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:09:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	resize_image(t_image *image, int ratio)
 	int	column = 0;
 	int	row = 0;
 	unsigned int	color;
-	char	*dst;
     t_image	resized;
     
     new_image(&resized, image->w * ratio, image->h * ratio);
@@ -58,14 +57,14 @@ void	resize_image(t_image *image, int ratio)
 		j = 0;
         while(j < image->w)
 		{
-			color = get_pixel_colour(&image, j, i);
+			color = get_pixel_colour(image, j, i);
 			y = row;
             while(y <= row + ratio)
 			{
 				x = column;
                 while(x <= column + ratio)
 				{
-					put_pixel_img(&resized, x, y, color);
+					put_pixel(&resized, x, y, color);
 					x++;
                 }
 				y++;
@@ -95,25 +94,25 @@ void	scale_hose_images(t_textures *texs)
 	int	height;
 
 	height = game()->game_height;
-	resize_image(&texs->hose_idle, calc_zoom_ratio(&texs->hose_idle, height));
-	resize_image(&texs->hose_start[0], calc_zoom_ratio(&texs->hose_start[0], height));
-	resize_image(&texs->hose_start[1], calc_zoom_ratio(&texs->hose_start[1], height));
-	resize_image(&texs->hose_start[2], calc_zoom_ratio(&texs->hose_start[2], height));
-	resize_image(&texs->hose_start[3], calc_zoom_ratio(&texs->hose_start[3], height));
-	resize_image(&texs->hose_on[0], calc_zoom_ratio(&texs->hose_on[0], height));
-	resize_image(&texs->hose_on[1], calc_zoom_ratio(&texs->hose_on[1], height));
-	resize_image(&texs->hose_on[2], calc_zoom_ratio(&texs->hose_on[2], height));
-	resize_image(&texs->hose_on[3], calc_zoom_ratio(&texs->hose_on[3], height));
-	resize_image(&texs->hose_on[4], calc_zoom_ratio(&texs->hose_on[4], height));
-	resize_image(&texs->hose_on[5], calc_zoom_ratio(&texs->hose_on[5], height));
-	resize_image(&texs->hose_on[6], calc_zoom_ratio(&texs->hose_on[6], height));
-	resize_image(&texs->hose_on[7], calc_zoom_ratio(&texs->hose_on[7], height));
-	resize_image(&texs->hose_end[0], calc_zoom_ratio(&texs->hose_end[0], height));
-	resize_image(&texs->hose_end[1], calc_zoom_ratio(&texs->hose_end[1], height));
-	resize_image(&texs->hose_end[2], calc_zoom_ratio(&texs->hose_end[2], height));
-	resize_image(&texs->hose_end[3], calc_zoom_ratio(&texs->hose_end[3], height));
-	resize_image(&texs->hose_end[4], calc_zoom_ratio(&texs->hose_end[4], height));
-	resize_image(&texs->hose_end[5], calc_zoom_ratio(&texs->hose_end[5], height));
-	resize_image(&texs->hose_end[6], calc_zoom_ratio(&texs->hose_end[6], height));
-	resize_image(&texs->hose_end[7], calc_zoom_ratio(&texs->hose_end[7], height));
+	resize_image(&texs->hose_idle.img, calc_zoom_ratio(&texs->hose_idle.img, height));
+	resize_image(&texs->hose_start[0].img, calc_zoom_ratio(&texs->hose_start[0].img, height));
+	resize_image(&texs->hose_start[1].img, calc_zoom_ratio(&texs->hose_start[1].img, height));
+	resize_image(&texs->hose_start[2].img, calc_zoom_ratio(&texs->hose_start[2].img, height));
+	resize_image(&texs->hose_start[3].img, calc_zoom_ratio(&texs->hose_start[3].img, height));
+	resize_image(&texs->hose_on[0].img, calc_zoom_ratio(&texs->hose_on[0].img, height));
+	resize_image(&texs->hose_on[1].img, calc_zoom_ratio(&texs->hose_on[1].img, height));
+	resize_image(&texs->hose_on[2].img, calc_zoom_ratio(&texs->hose_on[2].img, height));
+	resize_image(&texs->hose_on[3].img, calc_zoom_ratio(&texs->hose_on[3].img, height));
+	resize_image(&texs->hose_on[4].img, calc_zoom_ratio(&texs->hose_on[4].img, height));
+	resize_image(&texs->hose_on[5].img, calc_zoom_ratio(&texs->hose_on[5].img, height));
+	resize_image(&texs->hose_on[6].img, calc_zoom_ratio(&texs->hose_on[6].img, height));
+	resize_image(&texs->hose_on[7].img, calc_zoom_ratio(&texs->hose_on[7].img, height));
+	resize_image(&texs->hose_end[0].img, calc_zoom_ratio(&texs->hose_end[0].img, height));
+	resize_image(&texs->hose_end[1].img, calc_zoom_ratio(&texs->hose_end[1].img, height));
+	resize_image(&texs->hose_end[2].img, calc_zoom_ratio(&texs->hose_end[2].img, height));
+	resize_image(&texs->hose_end[3].img, calc_zoom_ratio(&texs->hose_end[3].img, height));
+	resize_image(&texs->hose_end[4].img, calc_zoom_ratio(&texs->hose_end[4].img, height));
+	resize_image(&texs->hose_end[5].img, calc_zoom_ratio(&texs->hose_end[5].img, height));
+	resize_image(&texs->hose_end[6].img, calc_zoom_ratio(&texs->hose_end[6].img, height));
+	resize_image(&texs->hose_end[7].img, calc_zoom_ratio(&texs->hose_end[7].img, height));
 }

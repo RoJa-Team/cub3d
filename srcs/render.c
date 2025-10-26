@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/25 21:29:41 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:13:06 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	render()
 {
 	render_background(&screens()->canva, game()->game_width, game()->game_height);
 	raycaster();
-	render_hud();
-	mlx_put_image_to_window(game()->mlx, game()->win, screen()->canva.img_ptr, game()->image_x, game()->image_y);
-
+	render_hud(screens());
+	mlx_put_image_to_window(game()->mlx, game()->win, screens()->canva.img_ptr, game()->image_x, game()->image_y);
 }

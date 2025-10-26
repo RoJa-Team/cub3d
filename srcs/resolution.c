@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 20:11:15 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/25 20:05:33 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:07:16 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	fit_aspect_ratio(t_res *display, t_res *window, int *game_width,
 	}
 }
 
-void	calculate_resolution(t_game *game)
+void	calculate_game_resolution(t_game *game)
 {
 	int		w_frame_size;
 	t_res	display;
@@ -90,7 +90,7 @@ void	calculate_resolution(t_game *game)
 	get_frame_extents(&w_frame_size);
 	if (display.height == window.height)
 		window.height = window.height - w_frame_size;
-	fit_aspect_ratio(&display, &window, game->game_width, game->game_height);
+	fit_aspect_ratio(&display, &window, &game->game_width, &game->game_height);
 	game->image_x = ((window.width - game->game_width) / 2);
 	game->image_y = ((window.height - game->game_height) / 2);
 }

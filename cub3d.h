@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/25 21:31:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:08:06 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ t_draw		*draw(void);
 int get_frame_extents(int *w_frame_size);
 int	get_work_area(t_res *display);
 void	fit_aspect_ratio(t_res *display, t_res *window, int *game_width, int *game_height);
-void	calculate_resolution(t_game *game);
+void	calculate_game_resolution(t_game *game);
 
 /*---------- resolution_helpers.c ----------*/
 void	get_window_size(t_res *display, t_res *window);
@@ -239,6 +239,23 @@ void	prepare_resources();
 void	create_hose(t_hud *hose);
 void	create_minimap(t_hud *minimap);
 void	render_hud(t_screens *screens);
+
+
+/*---------- render.c ----------*/
+void	render_background(t_image *canva, int game_width, int game_height);
+
+void	render();
+
+
+/*---------- image_manipulation.c ----------*/
+int	create_rgb(int r, int g, int b);
+
+/*---------- screens.c ----------*/
+void	create_canva(t_image *canva);
+void	create_start(t_image *start);
+void	create_pause(t_image *pause);
+void	create_death(t_image *death);
+void	create_finish(t_image *finish);
 
 
 /*---------- xpms.c ----------*/
@@ -273,7 +290,11 @@ void	create_canva();
 
 
 /*---------- images.c ----------*/
-void new_image(t_image *img, int width, int height);
+void	new_image(t_image *img, int width, int height);
+void	copy_image(t_image *dest, t_image *src);
+void	resize_image(t_image *image, int ratio);
+int		calc_zoom_ratio(t_image *img, int game_height);
+void	scale_hose_images(t_textures *texs);
 
 /*---------- mouse.c ----------*/
 int		lock_mouse();

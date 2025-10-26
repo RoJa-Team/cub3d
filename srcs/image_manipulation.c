@@ -6,35 +6,11 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 20:20:41 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/25 20:29:09 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:06:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	create_rgb(int r, int g, int b)
-{
-	return (((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
-}
-
-unsigned int	get_pixel_colour(t_image *img, int x, int y)
-{
-	return (*(unsigned int *)((img->addr + (y * img->line_len) + (x * img->bpp / 8))));
-}
-
-void	put_pixel_img(t_image *img, int x, int y, int color)
-{
-	char	*dst;
-
-	if (color == (int)0xFF000000) {
-		return ;
-	}
-	if (x >= 0 && y >= 0 && x < img->w && y < img->h) // remover este if e fazer condicao no loop que chama esta funcao? para ser mais rapido
-	{
-		dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-		*(unsigned int *) dst = color;
-	}
-}
 
 void	put_img_to_img(t_image *dst, t_image *src, int x, int y)
 {

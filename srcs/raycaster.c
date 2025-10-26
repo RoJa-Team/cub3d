@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:45:01 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/24 21:43:39 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/26 16:22:31 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	draw_tex_pixel(int x)
 		draw()->tex_y = (int)draw()->tex_pos & (TEX_SIZE -1);
 		draw()->tex_pos += draw()->step;
 		color = get_tex_color(draw()->tex_x, draw()->tex_y, &tex);
-		put_pixel_img(&screen()->canva, x, y, color);
+		put_pixel_img(&screens()->canva, x, y, color);
 		//mlx_pixel_put(game()->mlx, game()->win, x, y, color);
 		y++;
 	}
