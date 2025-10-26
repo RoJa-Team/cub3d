@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 16:37:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 18:06:29 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ char	*get_texture_path(char *line)
 	while (line[len + i] != '\0' && line[len + i] != '\n' && line[len + i] != ' ')
 		len++;
 	path = ft_strndup(&line[i], len);
-	printf("%s\n", path);
 	if (path == NULL)
 		return (catch()->set("Error\n%s: Memory allocation failed", __func__), deallocate(), NULL);
 	return (path);

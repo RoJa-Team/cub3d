@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:13:06 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:50:00 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	render_background(t_image *canva, int game_width, int game_height)
 		x = 0;
 		while (x < game_width)
 		{
-			put_pixel(canva, x, game_height - y, floor);
 			put_pixel(canva, x, y, ceiling);
+			put_pixel(canva, x, game_height - y, floor);
 			x++;
 		}
 		y++;

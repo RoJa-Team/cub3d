@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:31:43 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:56:26 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	pause_game()
 int	key_hooks(int keycode, void *param)
 {
 	(void)param;
-	if (keycode == KEY_PAUSE )
+	if (keycode == KEY_PAUSE)
 		pause_game();
 	else if (keycode == KEY_ESC)
 		close_game(NULL);

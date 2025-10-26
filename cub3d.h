@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:59:59 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/26 18:04:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,20 +226,20 @@ t_screens		*screens(void);
 t_player		*player(void);
 t_textures		*textures(void);
 t_map_objects	*map_objects(void);
-t_raycast			*raycast(void);
-t_draw		*draw(void);
-t_frame		*frame(void);
+t_raycast		*raycast(void);
+t_draw			*draw(void);
+t_frame			*frame(void);
 
 /*---------- resolution.c ----------*/
-int get_frame_extents(int *w_frame_size);
-int	get_work_area(t_res *display);
+int 	get_frame_extents(int *w_frame_size);
+int		get_work_area(t_res *display);
 void	fit_aspect_ratio(t_res *display, t_res *window, int *game_width, int *game_height);
 void	calculate_game_resolution(t_game *game);
 
 /*---------- resolution_helpers.c ----------*/
 void	get_window_size(t_res *display, t_res *window);
-int	gcd(int a, int b);
-void get_aspect_ratio(t_res *display);
+int		gcd(int a, int b);
+void 	get_aspect_ratio(t_res *display);
 
 /*---------- prepare_resources.c ----------*/
 void	prepare_resources();
@@ -252,12 +252,11 @@ void	render_hud(t_screens *screens);
 
 /*---------- render.c ----------*/
 void	render_background(t_image *canva, int game_width, int game_height);
-
 void	render();
 
 
 /*---------- image_manipulation.c ----------*/
-int	create_rgb(int r, int g, int b);
+int		create_rgb(int r, int g, int b);
 
 /*---------- screens.c ----------*/
 void	create_canva(t_image *canva);
@@ -288,9 +287,8 @@ void	free_textures_misc(t_textures *textures);
 void	free_textures(t_textures *textures);
 
 /*---------- window.c ----------*/
-int	game_state();
+int		game_state();
 void	open_window(void);
-void put_img_to_img_quadrants(t_image *dst, t_image *src, int x, int y);
 void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
 unsigned int	get_pixel_colour(t_image *img, int x, int y);
 
@@ -316,21 +314,21 @@ int		create_rgb(int r, int g, int b);
 void	put_pixel(t_image *img, int x, int y, int color);
 
 /*---------- background.c ----------*/
-int	key_hooks(int keycode, void *param);
+int		key_hooks(int keycode, void *param);
 
 /*---------- map_parse.c ----------*/
 void	init_map_objects();
 void	assign_map_lines(t_file *cub_file);
 void	allocate_map(t_file	*cub_file);
-int	map_parse(t_file *cub_file);
+int		map_parse(t_file *cub_file);
 char	*convert_line(char *old_line);
 void	valid_map(char **map);
 char	**empty_array(void);
-int	validate_characters(char **map);
-int	flood_fill(char **map, int x, int y, char **visited);
+int		validate_characters(char **map);
+int		flood_fill(char **map, int x, int y, char **visited);
 void	initial_orientation(char ori, int x, int y);
 void	free_array(char **array);
-int	is_bounded_by_walls(char **map, int height);
+int		is_bounded_by_walls(char **map, int height);
 void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y);
 
 /*---------- map_parse.c ----------*/
@@ -360,10 +358,5 @@ void	move_front(void);
 void	move_left(void);
 void	move_back(void);
 void	move_right(void);
-
-
-/*---------- lost ----------------*/
-void	add_background(int game_width, int game_height);
-void	add_view();
 
 #endif

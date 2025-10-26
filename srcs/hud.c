@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:25:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:23:45 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 18:04:48 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,22 @@ void	create_hose(t_hud *hose)
 	hose->img = textures()->hose_idle.img;
 }
 
+// void	update_hose(t_hud *hose)
+// {
+
+// }
+
 void	create_minimap(t_hud *minimap)
 {
 	minimap->x = 0.025 * game()->game_width;
 	minimap->y = 0.025 * game()->game_width;
 	new_image(&minimap->img, game()->game_width * 0.125, game()->game_width * 0.125);
 }
+
+// void	update_minimap(t_hud *minimap)
+// {
+	
+// }
 
 void	render_hud(t_screens *screens)
 {
