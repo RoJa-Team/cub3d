@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:56:26 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 19:33:31 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,27 @@ int	close_game(void *param)
 	return (0);
 }
 
-void	pause_game()
+void	pause_game(t_game *game)
 {
-	if (game()->paused == false)
-		game()->paused = true;
-	else if (game()->paused == true)
-		game()->paused = false;
+	if (game->paused == false)
+		game->paused = true;
+	else if (game->paused == true)
+		game->paused = false;
+}
+
+void	open_full_map(t_game *game)
+{
+	if (game->open_map == false)
+		game->open_map = true;
+	else if (game->open_map == true)
+		game->open_map = false;
 }
 
 int	key_hooks(int keycode, void *param)
 {
 	(void)param;
 	if (keycode == KEY_PAUSE)
-		pause_game();
+		pause_game(game());
 	else if (keycode == KEY_ESC)
 		close_game(NULL);
 	else if (game()->paused == true)
@@ -49,6 +57,8 @@ int	key_hooks(int keycode, void *param)
 	// 	interact();
 	// else if (keycode == KEY_SHOOT)
 	// 	shoot();
+	else if (keycode == KEY_MAP)
+		open_full_map(game());
 	else if (keycode == KEY_W)
 	 	move_front();
 	else if (keycode == KEY_A)

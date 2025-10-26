@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 18:04:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 19:38:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@
 # define KEY_A 97
 # define KEY_S 115
 # define KEY_D 100
+# define KEY_MAP 109 //M
 # define KEY_CTRL 65507
 # define KEY_SPACEBAR 32
 # define KEY_INTERACT 101 //E
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
-# define CELL_SIZE 16
 # define FOV 0.99
-# define TEX_SIZE 32
 # define MARGIN 0.2
 # define WIDTH 3840 // if < 640, default 640
 # define HEIGHT 2160 // if < 360, default 360
@@ -188,17 +187,31 @@ typedef struct s_map_objects
 	t_player	player;
 }       		t_map_objects;
 
-typedef struct s_hud
+typedef struct s_map
 {
 	int 	x;
 	int		y;
-	t_image	img;
+	t_image	map;
+}       		t_map;
+
+typedef struct s_hose
+{
+	int 	x;
+	int		y;
+	bool	on;
+	t_image	curr_hose;
+}       		t_hose;
+
+typedef struct s_hud
+{
+	t_hose	hose;
+	t_map	minimap;
+	t_map	full_map;
 }				t_hud;
 
 typedef struct s_screens
 {
-	t_hud	hose;
-	t_hud	minimap;
+	t_hud	hud;
 	t_image	canva;
 	t_image	start;
 	t_image	pause;
@@ -213,6 +226,7 @@ typedef	struct s_game
 	int			game_width;
 	int			game_height;
 	bool		paused;
+	bool		open_map;
 	t_xvar		*mlx;
 	t_win_list	*win;
 }				t_game;
@@ -244,9 +258,14 @@ void 	get_aspect_ratio(t_res *display);
 /*---------- prepare_resources.c ----------*/
 void	prepare_resources();
 
+/*---------- maps.c ----------*/
+void	create_full_map(t_map *full_map, t_map_objects *map_objs);
+void	create_minimap(t_map *minimap);
+void	update_minimap(t_map *minimap, t_map *full_map, t_player *player);
+void	create_maps(t_hud *hud);
+
 /*---------- hud.c ----------*/
-void	create_hose(t_hud *hose);
-void	create_minimap(t_hud *minimap);
+void	create_hose(t_hose *hose);
 void	render_hud(t_screens *screens);
 
 

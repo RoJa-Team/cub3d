@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 18:24:23 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 16:54:26 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 19:40:04 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	free_map(void)
 
 void	free_screens(t_screens *screens)
 {
-	free_image(&screens->minimap.img);
+	free_image(&screens->hud.full_map.map);
+	free_image(&screens->hud.minimap.map);
 	free_image(&screens->start);
 	free_image(&screens->canva);
 	free_image(&screens->pause);
