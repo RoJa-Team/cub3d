@@ -12,9 +12,9 @@
 - [x] Create game window with configurable dimensions
 - [x] Implement window close functionality via ESC key
 - [x] Implement window close functionality via red cross button
-- [ ] Handle window minimize/maximize events
-- [ ] Ensure smooth window switching between applications
-- [ ] Test window responsiveness under different scenarios
+- [x] Handle window minimize/maximize events
+- [x] Ensure smooth window switching between applications
+- [x] Test window responsiveness under different scenarios
 
 ---
 

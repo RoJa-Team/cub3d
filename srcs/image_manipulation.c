@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color_management.c                                 :+:      :+:    :+:   */
+/*   image_manipulation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/27 13:10:03 by joafern2          #+#    #+#             */
-/*   Updated: 2025/09/29 22:02:18 by rafasant         ###   ########.fr       */
+/*   Created: 2025/10/25 20:20:41 by rafasant          #+#    #+#             */
+/*   Updated: 2025/10/26 17:06:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	create_rgb(int r, int g, int b)
+void	put_img_to_img(t_image *dst, t_image *src, int x, int y)
 {
-	return (((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
-}
+	int i;
+	int j;
 
-void	put_pixel(t_image *img, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	*(unsigned int*)dst = color;
+	i = 0;
+	while(i <= src->h / 2)
+	{
+		j = 0;
+		while (j < src->w)
+		{
+			put_pixel_img(dst, x + j, y + i, get_pixel_colour(src, j, i));
+			put_pixel_img(dst, x + j, y + src->h - i, get_pixel_colour(src, j, src->h - i));
+			j++;
+		}
+		i++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/25 16:57:05 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:30:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_map_objects	*map_objects(void)
 
 	if (!initialized)
 	{
-		map_objects.player_count = 0;
 		initialized = 1;
+		map_objects.player_count = 0;
 	}
 
 	return (&map_objects);
@@ -33,6 +33,7 @@ t_player	*player(void)
 
 	if (!initialized)
 	{	
+		initialized = 1;
 		player.x = 0;
 		player.y = 0;
 		player.dir_x = 0;
@@ -40,7 +41,6 @@ t_player	*player(void)
 		player.plane_x = 0;
 		player.plane_y = 0;
 		//player->tool = NULL;
-		initialized = 1;
 	}
 	return (&player);
 }
@@ -66,25 +66,23 @@ t_textures	*textures(void)
 
 	if (!initialized)
 	{
+		initialized = 1;
 		textures.ccolour = -1;
 		textures.fcolour = -1;
-		initialized = 1;
 	}
-
 	return (&textures);
 }
 
-t_screen	*screen(void)
+t_screens	*screens(void)
 {
-	static t_screen	screen;
+	static t_screens	screens;
 	static int		initialized;
 
 	if (!initialized)
 	{
 		initialized = 1;
 	}
-
-	return (&screen);
+	return (&screens);
 }
 
 t_game	*game(void)
@@ -95,7 +93,7 @@ t_game	*game(void)
 	if (!initialized)
 	{
 		initialized = 1;
+		game.mlx = mlx_init();
 	}
-
 	return (&game);
 }
