@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:28:38 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/26 17:59:59 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,13 +343,13 @@ void	print_pointer(char *info, void *data); //TODO remove this
 
 /*---------- raycaster.c ----------*/
 void    raycaster(void);
-void	calculate_delta_dist(void);
-void	calculate_side_dist(void);
-void	dda(void);
-void	calculate_wall(void);
-void	calculate_texture(int x);
+void	calculate_delta_dist(t_raycast *raycast, t_player *player);
+void	calculate_side_dist(t_raycast *raycast, t_player *player);
+void	dda(t_raycast *raycast, t_map_objects *map_objects);
+void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *game);
+void	calculate_texture(int x, t_raycast *raycast, t_textures *textures, t_draw *draw);
 int	get_tex_color(int tex_x, int tex_y, t_texture *text);
-void	draw_tex_pixel(t_texture tex, int x);
+void	draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
 
 /*---------- frame_managment.c ----------*/
 double	get_time(void);
