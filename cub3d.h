@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 19:38:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/10/27 20:27:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,9 @@ typedef struct s_map
 {
 	int 	x;
 	int		y;
+	int		map_w;
+	int		map_h;
+	int		border;
 	t_image	map;
 }       		t_map;
 
@@ -260,9 +263,8 @@ void	prepare_resources();
 
 /*---------- maps.c ----------*/
 void	create_full_map(t_map *full_map, t_map_objects *map_objs);
-void	create_minimap(t_map *minimap);
+void	create_minimap(t_map *minimap, t_map_objects *map_objs);
 void	update_minimap(t_map *minimap, t_map *full_map, t_player *player);
-void	create_maps(t_hud *hud);
 
 /*---------- hud.c ----------*/
 void	create_hose(t_hose *hose);
