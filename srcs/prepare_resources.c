@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:56:14 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/27 20:25:24 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/12 21:28:22 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	load_textures(t_textures *textures)
 void	create_screens(t_screens *screens)
 {
 	create_hose(&screens->hud.hose);
-	create_full_map(&screens->hud.full_map, map_objects());
-	create_minimap(&screens->hud.minimap, map_objects());
+	create_full_map(&screens->hud.full_map, map_objects(), player());
+	create_minimap(&screens->hud.minimap, map_objects(), player());
 	create_canva(&screens->canva);
 	create_start(&screens->start);
 	create_pause(&screens->pause);

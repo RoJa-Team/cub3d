@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/27 20:27:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/12 22:26:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,20 @@
 # define KEY_INTERACT 101 //E
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
-# define FOV 0.99
+# define FOV 1
 # define MARGIN 0.2
 # define WIDTH 3840 // if < 640, default 640
 # define HEIGHT 2160 // if < 360, default 360
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
-# define debug(info, x) _Generic((x), int: print_int, long: print_long, double: print_double, char: print_char, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
+# 	ifndef MAP
+# 		define MAP_PLAYER 0x00FF00FF
+# 		define MAP_WALL 0x00404040
+# 		define MAP_FLOOR 0x00A0A0A0
+# 		define MAP_EMPTY 0x00E0E0E0
+# 		define MAP_FIRE 0x00E64600
+# 		define MINIMAP_RADIUS 3
+# 	endif
+# define debug(info, x) _Generic((x), int: print_int, long: print_long, double: print_double, float: print_float,char: print_char, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
 
 enum {
 	ON_KEYDOWN = 2,
@@ -194,6 +202,7 @@ typedef struct s_map
 	int		map_w;
 	int		map_h;
 	int		border;
+	int		cell_size;
 	t_image	map;
 }       		t_map;
 
@@ -262,9 +271,10 @@ void 	get_aspect_ratio(t_res *display);
 void	prepare_resources();
 
 /*---------- maps.c ----------*/
-void	create_full_map(t_map *full_map, t_map_objects *map_objs);
-void	create_minimap(t_map *minimap, t_map_objects *map_objs);
-void	update_minimap(t_map *minimap, t_map *full_map, t_player *player);
+void	create_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
+void	update_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
+void	create_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
+void	update_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
 
 /*---------- hud.c ----------*/
 void	create_hose(t_hose *hose);
@@ -356,6 +366,7 @@ void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y);
 void	print_int(char *info, int data); //TODO remove this
 void	print_long(char *info, long data); //TODO remove this
 void	print_double(char *info, double data); //TODO remove this
+void	print_float(char *info, float data); //TODO remove this
 void	print_char(char *info, char data); //TODO remove this
 void	print_string(char *info, char *data); //TODO remove this
 void	print_pointer(char *info, void *data); //TODO remove this

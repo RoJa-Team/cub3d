@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:25:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 19:47:19 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/12 21:27:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,15 @@ void	render_hud(t_screens *screens)
 	put_img_to_img(&screens->canva, &screens->hud.hose.curr_hose, 
 		screens->hud.hose.x, screens->hud.hose.y);
 	if (game()->open_map == true)
+	{
+		update_full_map(&screens->hud.full_map, map_objects(), player());
 		put_img_to_img(&screens->canva, &screens->hud.full_map.map, 
 		screens->hud.full_map.x, screens->hud.full_map.y);
+	}
 	else
+	{
+		update_minimap(&screens->hud.minimap, map_objects(), player());
 		put_img_to_img(&screens->canva, &screens->hud.minimap.map, 
 		screens->hud.minimap.x, screens->hud.minimap.y);
+	}
 }

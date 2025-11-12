@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   frame_managment.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:46:43 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/26 16:53:29 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/08 17:37:52 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	get_speed_modifiers(void)
 	frame_time = (time - old_time) / 1e3;
 	//printf("FPS %f\n", (1.0 / frame_time));
 	//frame()->move_speed = frame_time * 5.0;
-	frame()->move_speed = 0.3;
+	frame()->move_speed = 0.25;
 	frame()->rot_speed = frame_time * 0.7;
 	if (frame()->rot_speed > 0.05)
 		frame()->rot_speed = 0.05;
@@ -107,7 +107,7 @@ void	move_left(void)
 	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
 		player()->x += step_x;
 	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
-		player()->y += step_y;;
+		player()->y += step_y;
 
 
 }
