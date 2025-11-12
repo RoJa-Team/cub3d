@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/24 23:21:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/27 22:10:31 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,14 @@ char	*convert_line(char *old_line)
 
 	i = -1;
 	new_line = ft_calloc(sizeof(char),  map_objects()->map_width + 1);
-	while (old_line[++i])
+	while (old_line[++i] != '\0' && old_line[i] != '\n' )
 		new_line[i] = old_line[i];
-	while (i <= map_objects()->map_width)
+	while (i < map_objects()->map_width)
 	{
 		new_line[i] = ' ';
 		i++;
 	}
+	new_line[i] = '\0';
 	return (new_line);
 }
 

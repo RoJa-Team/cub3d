@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 19:33:31 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/12 22:33:09 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int	key_hooks(int keycode, void *param)
 	else if (game()->paused == true)
 		return (0);
 	else if (keycode == ARROW_L)
-	 	turn_left();
+		player()->turn_left = 1;
 	else if (keycode == ARROW_R)
-	 	turn_right();
+		player()->turn_right = 1;
 	// else if (keycode == KEY_CTRL)
 	// 	crouch();
 	// else if (keycode == KEY_SPACEBAR)
@@ -60,12 +60,31 @@ int	key_hooks(int keycode, void *param)
 	else if (keycode == KEY_MAP)
 		open_full_map(game());
 	else if (keycode == KEY_W)
-	 	move_front();
+		player()->move_front = 1;
 	else if (keycode == KEY_A)
-	 	move_left();
+		player()->move_right = 1;
 	else if (keycode == KEY_S)
-		move_back();
+		player()->move_back = 1;
 	else if (keycode == KEY_D)
-		move_right();
+		player()->move_left = 1;
+	return (0);
+}
+
+
+int	key_release(int keycode, void *param)
+{
+	(void)param;
+	if (keycode == KEY_W)
+		player()->move_front = 0;
+	else if (keycode == KEY_A)
+		player()->move_right = 0;
+	else if (keycode == KEY_S)
+		player()->move_back = 0;
+	else if (keycode == KEY_D)
+		player()->move_left = 0;
+	else if (keycode == ARROW_L)
+		player()->turn_left = 0;
+	else if (keycode == ARROW_R)
+		player()->turn_right = 0;
 	return (0);
 }

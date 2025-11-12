@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:45:01 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/26 18:00:47 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/10/27 22:53:08 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,19 @@ t_draw		*draw(void)
 	return (&draw);
 }
 
-void    raycaster(void)
+void    raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *draw)
 {
  	int	x;
 
 	x = 0;
-	while (x < game()->game_width)
+	while (x < game->game_width)
 	{
-		raycast()->camera_x = 2 * (x / (double)(game()->game_width)) - 1;
-		calculate_delta_dist(raycast(), player());
-		calculate_side_dist(raycast(), player());
-		dda(raycast(), map_objects());
-		calculate_wall(raycast(), draw(), player(), game());
-		calculate_texture(x, raycast(), textures(), draw());
+		raycast->camera_x = 2 * (x / (double)(game->game_width)) - 1;
+		calculate_delta_dist(raycast, player);
+		calculate_side_dist(raycast, player);
+		dda(raycast, map_objects());
+		calculate_wall(raycast, draw, player, game);
+		calculate_texture(x, raycast, textures(), draw);
 		x++;
 	}
 }
@@ -180,7 +180,6 @@ void	calculate_delta_dist(t_raycast *raycast, t_player *player)
 		raycast->delta_dist_y = 1e30;
 	else
 		raycast->delta_dist_y = fabs(1 / raycast->ray_dir_y);
-
 }
 
 void	calculate_side_dist(t_raycast *raycast, t_player *player)

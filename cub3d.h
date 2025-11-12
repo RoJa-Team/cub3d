@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 19:38:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/12 22:35:21 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,12 @@ typedef struct s_player
 	double			dir_y;
 	double			plane_x;
 	double			plane_y;
+	int			move_left;
+	int			move_right;
+	int			move_front;
+	int			move_back;
+	int			turn_left;
+	int			turn_right;
 	t_tool			*tool;
 }				t_player;
 
@@ -154,7 +160,14 @@ typedef struct s_frame
 {
 	double			move_speed;
 	double			rot_speed;
-}				t_frame;
+}			t_frame;
+
+typedef struct s_sprite
+{
+	double			x;
+	double			y;
+	double			dist;
+}       		t_sprite;
 
 typedef struct s_texture
 {
@@ -332,8 +345,14 @@ int		mouse_hooks(int keycode, void *param);
 int		create_rgb(int r, int g, int b);
 void	put_pixel(t_image *img, int x, int y, int color);
 
+<<<<<<< HEAD
 /*---------- background.c ----------*/
 int		key_hooks(int keycode, void *param);
+=======
+/*---------- hooks.c ----------*/
+int	key_hooks(int keycode, void *param);
+int	key_release(int keycode, void *param);
+>>>>>>> joao
 
 /*---------- map_parse.c ----------*/
 void	init_map_objects();
@@ -359,7 +378,7 @@ void	print_string(char *info, char *data); //TODO remove this
 void	print_pointer(char *info, void *data); //TODO remove this
 
 /*---------- raycaster.c ----------*/
-void    raycaster(void);
+void    raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *draw);
 void	calculate_delta_dist(t_raycast *raycast, t_player *player);
 void	calculate_side_dist(t_raycast *raycast, t_player *player);
 void	dda(t_raycast *raycast, t_map_objects *map_objects);
@@ -370,12 +389,12 @@ void	draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
 
 /*---------- frame_managment.c ----------*/
 double	get_time(void);
-void	get_speed_modifiers();
-void	turn_left(void);
-void	turn_right(void);
-void	move_front(void);
-void	move_left(void);
-void	move_back(void);
-void	move_right(void);
+void	get_speed_modifiers(t_frame *frame);
+void	turn_left(t_player *player, t_frame *frame);
+void	turn_right(t_player *player, t_frame *frame);
+void	move_right(t_player *player, t_map_objects *map_objects, t_frame *frame);
+void	move_left(t_player *player, t_map_objects *map_objects, t_frame *frame);
+void	move_front(t_player *player, t_map_objects *map_objects, t_frame *frame);
+void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame);
 
 #endif
