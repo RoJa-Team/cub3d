@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:46:43 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/26 16:53:29 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/12 22:16:41 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,131 +19,154 @@ double	get_time(void)
 	return (tv.tv_sec + tv.tv_usec / 1e6);
 }
 
-void	get_speed_modifiers(void)
+void	get_speed_modifiers(t_frame *frame)
 {
-	double	old_time;
-	double	time;
-	double	frame_time;
+	static double	old_time = 0.0;
+	double		time;
+	double		frame_time;
 
-	time = 0.0;
-	old_time = time;
 	time = get_time();
-	frame_time = (time - old_time) / 1e3;
-	//printf("FPS %f\n", (1.0 / frame_time));
-	//frame()->move_speed = frame_time * 5.0;
-	frame()->move_speed = 0.3;
-	frame()->rot_speed = frame_time * 0.7;
-	if (frame()->rot_speed > 0.05)
-		frame()->rot_speed = 0.05;
+	if (old_time == 0.0)
+		old_time = time;
+	frame_time = time - old_time;
+	old_time = time;
+	frame->move_speed = frame_time * 5.0;
+	frame->rot_speed = frame_time * 3.0;
+	/*if (frame->rot_speed > 0.05)
+		frame->rot_speed = 0.075;
+	*/
+	printf("FPS: %.0f\n", 1.0 / frame_time);
 }
 
-void	turn_left(void)
+void	turn_left(t_player *player, t_frame *frame)
 {
 	double	old_dir_x;
 	double	old_plane_x;
 
-	old_dir_x = player()->dir_x;
-	player()->dir_x = player()->dir_x * cos(-frame()->rot_speed) 
-		- player()->dir_y * sin(-frame()->rot_speed);
-	player()->dir_y = old_dir_x * sin (-frame()->rot_speed) 
-		+ player()->dir_y * cos(-frame()->rot_speed);
-	old_plane_x = player()->plane_x;
-	player()->plane_x = player()->plane_x * cos(-frame()->rot_speed)
-		- player()->plane_y * sin(-frame()->rot_speed);
-	player()->plane_y = old_plane_x * sin(-frame()->rot_speed)
-		+ player()->plane_y * cos(-frame()->rot_speed);
+	old_dir_x = player->dir_x;
+	old_plane_x = player->plane_x;
+	if (player->turn_left)
+	{
+		player->dir_x = player->dir_x * cos(-frame->rot_speed) 
+			- player->dir_y * sin(-frame->rot_speed);
+		player->dir_y = old_dir_x * sin (-frame->rot_speed) 
+			+ player->dir_y * cos(-frame->rot_speed);
+		player->plane_x = player->plane_x * cos(-frame->rot_speed)
+			- player->plane_y * sin(-frame->rot_speed);
+		player->plane_y = old_plane_x * sin(-frame->rot_speed)
+			+ player->plane_y * cos(-frame->rot_speed);
+	}
 }
 
-void	turn_right(void)
+void	turn_right(t_player *player, t_frame *frame)
 {
 	double	old_dir_x;
 	double	old_plane_x;
 
-	old_dir_x = player()->dir_x;
-	player()->dir_x = player()->dir_x * cos(frame()->rot_speed) 
-		- player()->dir_y * sin(frame()->rot_speed);
-	player()->dir_y = old_dir_x * sin (frame()->rot_speed) 
-		+ player()->dir_y * cos(frame()->rot_speed);
-	old_plane_x = player()->plane_x;
-	player()->plane_x = player()->plane_x * cos(frame()->rot_speed)
-		- player()->plane_y * sin(frame()->rot_speed);
-	player()->plane_y = old_plane_x * sin(frame()->rot_speed)
-		+ player()->plane_y * cos(frame()->rot_speed);
-
-
+	old_dir_x = player->dir_x;
+	old_plane_x = player->plane_x;
+	if (player->turn_right)
+	{
+		player->dir_x = player->dir_x * cos(frame->rot_speed) 
+			- player->dir_y * sin(frame->rot_speed);
+		player->dir_y = old_dir_x * sin (frame->rot_speed) 
+			+ player->dir_y * cos(frame->rot_speed);
+		player->plane_x = player->plane_x * cos(frame->rot_speed)
+			- player->plane_y * sin(frame->rot_speed);
+		player->plane_y = old_plane_x * sin(frame->rot_speed)
+			+ player->plane_y * cos(frame->rot_speed);
+	}
 }
-void	move_front(void)
+
+
+int	is_wall(t_map_objects *map_objects, double x, double y)
 {
-	int	sign_x;
-	int	sign_y;
-	double	step_x = player()->dir_x * frame()->move_speed;
-	double	step_y = player()->dir_y * frame()->move_speed;
+	int	my;
+	int	mx;
 
-	sign_x = (step_x > 0);
-	if (sign_x == 0)
-		sign_x = -1;
-	sign_y = (step_y > 0);
-	if (sign_y == 0)
-		sign_y = -1;
-	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
-		player()->x += step_x;
-	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
-		player()->y += step_y;;
-
+	my = (int)y;
+	mx = (int)x;
+	if (mx < 0 || my >= map_objects->map_height || my < 0 || mx >= map_objects->map_width)
+		return (1);
+	return (map_objects->map[my][mx] == '1' || map_objects->map[my][mx] == 'D' || map_objects->map[my][mx] == 'F');
 }
-void	move_left(void)
+
+int	can_move(t_map_objects *map_objects, double x, double y)
 {
-	int	sign_x;
-	int	sign_y;
-	double	step_x = player()->dir_y * frame()->move_speed;
-	double	step_y = -player()->dir_x * frame()->move_speed;
-
-	sign_x = (step_x > 0);
-	if (sign_x == 0)
-		sign_x = -1;
-	sign_y = (step_y > 0);
-	if (sign_y == 0)
-		sign_y = -1;
-	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
-		player()->x += step_x;
-	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
-		player()->y += step_y;;
-
-
+	if (is_wall(map_objects, x - MARGIN, y - MARGIN))
+		return (0);
+	if (is_wall(map_objects, x + MARGIN, y - MARGIN))
+		return (0);
+	if (is_wall(map_objects, x - MARGIN, y + MARGIN))
+		return (0);
+	if (is_wall(map_objects, x + MARGIN, y + MARGIN))
+		return (0);
+	return (1);
 }
-void	move_back(void)
+
+void	move_left(t_player *player, t_map_objects *map_objects, t_frame *frame)
 {
-	int	sign_x;
-	int	sign_y;
-	double	step_x = -player()->dir_x * frame()->move_speed;
-	double	step_y = -player()->dir_y * frame()->move_speed;
+	double	step_x;
+	double	step_y;
 
-	sign_x = (step_x > 0);
-	if (sign_x == 0)
-		sign_x = -1;
-	sign_y = (step_y > 0);
-	if (sign_y == 0)
-		sign_y = -1;
-	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
-		player()->x += step_x;
-	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
-		player()->y += step_y;;
+	step_x = player->plane_x * frame->move_speed;
+	step_y = player->plane_y * frame->move_speed;
+	
+	if (player->move_left)
+	{
+		if (can_move(map_objects, player->x + step_x, player->y))
+			player->x += step_x;
+		if (can_move(map_objects, player->x, player->y + step_y))
+			player->y += step_y;
+	}
 }
-void	move_right(void)
+
+void	move_right(t_player *player, t_map_objects *map_objects, t_frame *frame)
 {
-	int	sign_x;
-	int	sign_y;
-	double	step_x = -player()->dir_y * frame()->move_speed;
-	double	step_y = player()->dir_x * frame()->move_speed;
+	double	step_x;
+	double	step_y;
 
-	sign_x = (step_x > 0);
-	if (sign_x == 0)
-		sign_x = -1;
-	sign_y = (step_y > 0);
-	if (sign_y == 0)
-		sign_y = -1;
-	if (map_objects()->map[(int)(player()->y)][(int)(player()->x + step_x + sign_x * MARGIN)] != '1')
-		player()->x += step_x;
-	if (map_objects()->map[(int)(player()->y + step_y + sign_y * MARGIN)][(int)(player()->x)] != '1')
-		player()->y += step_y;;
+	step_x = -player->plane_x * frame->move_speed;
+	step_y = -player->plane_y * frame->move_speed;
+	
+	if (player->move_right)
+	{
+		if (can_move(map_objects, player->x + step_x, player->y))
+			player->x += step_x;
+		if (can_move(map_objects, player->x, player->y + step_y))
+			player->y += step_y;
+	}
 }
+
+void	move_front(t_player *player, t_map_objects *map_objects, t_frame *frame)
+{
+	double	step_x;
+	double	step_y;
+
+	step_x = player->dir_x * frame->move_speed;
+	step_y = player->dir_y * frame->move_speed;
+	if (player->move_front)
+	{
+		if (can_move(map_objects, player->x + step_x, player->y))
+			player->x += step_x;
+		if (can_move(map_objects, player->x, player->y + step_y))
+			player->y += step_y;
+	}
+}
+
+void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame)
+{
+	double	step_x;
+	double	step_y;
+
+	step_x = -player->dir_x * frame->move_speed;
+	step_y = -player->dir_y * frame->move_speed;
+	if (player->move_back)
+	{
+		if (can_move(map_objects, player->x + step_x, player->y))
+			player->x += step_x;
+		if (can_move(map_objects, player->x, player->y + step_y))
+			player->y += step_y;
+	}
+}
+

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:30:18 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/12 21:03:41 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ t_player	*player(void)
 		player.dir_x = 0;
 		player.plane_x = 0;
 		player.plane_y = 0;
+		player.move_left = 0;
+		player.move_right = 0;
+		player.move_front = 0;
+		player.move_back = 0;
 		//player->tool = NULL;
 	}
 	return (&player);
