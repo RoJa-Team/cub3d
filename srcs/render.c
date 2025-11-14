@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:50:00 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/12 22:33:26 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,14 @@ void	render_background(t_image *canva, int game_width, int game_height)
 void	render()
 {
 	render_background(&screens()->canva, game()->game_width, game()->game_height);
-	raycaster();
+	raycaster(game(), raycast(), player(), draw());
+	get_speed_modifiers(frame());
 	render_hud(screens());
 	mlx_put_image_to_window(game()->mlx, game()->win, screens()->canva.img_ptr, game()->image_x, game()->image_y);
+	move_right(player(), map_objects(), frame());
+	move_left(player(), map_objects(), frame());
+	move_front(player(), map_objects(), frame());
+	move_back(player(), map_objects(), frame());
+	turn_right(player(), frame());
+	turn_left(player(), frame());
 }
