@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/12 21:41:46 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/14 23:15:23 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define KEY_PAUSE 112 //P
 # define CELL_SIZE 16
 # define FOV 0.99
-# define TEX_SIZE 32
+# define TEX_FIRE 1
 # define MARGIN 0.3
 # define WIDTH 3840 // if < 640, default 640
 # define HEIGHT 2160 // if < 360, default 360
@@ -161,6 +161,7 @@ typedef struct s_frame
 {
 	double			move_speed;
 	double			rot_speed;
+	double			frame_time;
 }			t_frame;
 
 typedef struct s_sprite
@@ -168,6 +169,18 @@ typedef struct s_sprite
 	double			x;
 	double			y;
 	double			dist;
+	int			frame;
+	double			frame_time;
+	double			anim_speed;
+	double			transform_x;
+	double			transform_y;
+	int			screen_x;
+	int			height;
+	int			width;
+	int			draw_start_x;
+	int			draw_end_x;
+	int			draw_start_y;
+	int			draw_end_y;
 }       		t_sprite;
 
 typedef struct s_texture
@@ -198,6 +211,9 @@ typedef struct s_map_objects
 	int     map_width;
 	int     map_height;
 	char    **map;
+	int	sprite_count;
+	double	*zbuff;
+	t_sprite	*sprites;
 	t_player	player;
 }       		t_map_objects;
 
@@ -242,6 +258,7 @@ t_map_objects	*map_objects(void);
 t_raycast			*raycast(void);
 t_draw		*draw(void);
 t_frame		*frame(void);
+t_sprite *sprite(void);
 
 /*---------- resolution.c ----------*/
 int get_frame_extents(int *w_frame_size);
@@ -379,5 +396,8 @@ void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame);
 /*---------- lost ----------------*/
 void	add_background(int game_width, int game_height);
 void	add_view();
+
+
+void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta);
 
 #endif

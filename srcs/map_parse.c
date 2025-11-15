@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/27 22:10:31 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/14 21:23:35 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ char	**empty_array(void)
 }
 
 
+
 int	validate_characters(char **map)
 {
 	int	i;
@@ -126,6 +127,8 @@ int	validate_characters(char **map)
 		{
 			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D' || ft_isspace(map[i][j]))
 			{
+				if (map[i][j] == 'F')
+					map_objects()->sprite_count++;
 				j++;
 				continue ;
 			}
@@ -197,9 +200,9 @@ void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y)
 void	initial_orientation(char ori, int y, int x)
 {
 	if (ori == 'N')
-		raycast_init(0, -1, -FOV, 0);
+		raycast_init(0, -1, FOV, 0);
 	else if (ori == 'S')
-		raycast_init(0, 1, FOV, 0);
+		raycast_init(0, 1, -FOV, 0);
 	else if (ori == 'E')
 		raycast_init(1, 0, 0, FOV);
 	else if (ori == 'W')

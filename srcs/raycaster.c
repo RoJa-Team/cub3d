@@ -66,6 +66,7 @@ void    raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *dr
 		dda(raycast, map_objects());
 		calculate_wall(raycast, draw, player, game);
 		calculate_texture(x, raycast, textures(), draw);
+		map_objects()->zbuff[x] = raycast->perp_wall_dist;
 		x++;
 	}
 }

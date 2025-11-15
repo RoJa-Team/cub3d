@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/12 22:28:03 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/15 15:37:09 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	render()
 	render_background(&screens()->canva, game()->game_width, game()->game_height);
 	raycaster(game(), raycast(), player(), draw());
 	get_speed_modifiers(frame());
+	render_fire_sprites(game(), map_objects(), map_objects()->sprites, frame()->frame_time);
 	render_hud(screens());
 	mlx_put_image_to_window(game()->mlx, game()->win, screens()->canva.img_ptr, game()->image_x, game()->image_y);
 	move_right(player(), map_objects(), frame());

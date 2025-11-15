@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/29 19:44:47 by rafasant          #+#    #+#              #
-#    Updated: 2025/10/26 17:29:28 by rafasant         ###   ########.fr        #
+#    Updated: 2025/11/14 23:16:41 by joafern2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LINKS		= -lXext -lX11 -lm -lz
 SRCS 		= $(addprefix ${SRCS_DIR}, cub3d.c parse_file.c static_structs.c \
 window.c map_parse.c hooks.c mouse.c print_functions.c clear.c \
 prepare_resources.c xpms.c pixel_management.c images.c image_manipulation.c screens.c resolution.c \
-resolution_helpers.c raycaster.c frame_managment.c render.c hud.c minimap.c clear_textures.c)
+resolution_helpers.c raycaster.c frame_managment.c render.c hud.c minimap.c clear_textures.c fire_sprite.c)
 OBJS		= ${SRCS:${SRCS_DIR}%.c=${OBJS_DIR}%.o}
 SRCS_DIR	= srcs/
 OBJS_DIR	= objs/

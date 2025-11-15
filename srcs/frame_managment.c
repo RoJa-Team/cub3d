@@ -6,7 +6,7 @@
 /*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:46:43 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/12 22:16:41 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/14 23:15:18 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@ void	get_speed_modifiers(t_frame *frame)
 		old_time = time;
 	frame_time = time - old_time;
 	old_time = time;
+	frame->frame_time = frame_time;
 	frame->move_speed = frame_time * 5.0;
 	frame->rot_speed = frame_time * 3.0;
-	/*if (frame->rot_speed > 0.05)
-		frame->rot_speed = 0.075;
-	*/
-	printf("FPS: %.0f\n", 1.0 / frame_time);
 }
 
 void	turn_left(t_player *player, t_frame *frame)
