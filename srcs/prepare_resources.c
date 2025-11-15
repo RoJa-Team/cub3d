@@ -59,7 +59,7 @@ void	init_sprites(t_map_objects *mo, t_sprite *s, int count)
 				s[i].x = x + 0.5;
 				s[i].y = y + 0.5;
 				s[i].frame = rand() % 8;
-				s[i].anim_speed = 0.10 + ((rand() % 40) / 1000.0);
+				s[i].anim_speed = 0.2 + ((rand() % 40) / 1000.0);
 				s[i].frame_time = (double)(rand() % 100) / 100.0
 					* s[i].anim_speed;
 				i++;
