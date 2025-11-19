@@ -64,9 +64,7 @@ void	free_textures_hose(t_textures *textures)
 
 void	free_textures_misc(t_textures *textures)
 {
-	free_texture(&textures->door[0]);
-	free_texture(&textures->door[1]);
-	free_texture(&textures->door[2]);
+	free_texture(&textures->door);
 	free_texture(&textures->clouds);
 }
 

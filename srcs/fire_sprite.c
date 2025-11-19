@@ -29,6 +29,25 @@ void	animate_sprites(t_sprite *s, t_map_objects *mo, double delta)
 	}
 }
 
+void	animate_doors(t_door *d, t_map_objects *mo, double delta)
+{
+	int	i;
+
+	i = 0;
+	while (i < mo->door_count)
+	{
+		if (d[i].opening == 1)
+			d[i].open_amount += delta * 3.0;
+		else if (d[i].opening == -1)
+			d->open_amount -= delta *0.3;
+		if (d[i].open_amount < 0)
+			d[i].open_amount = 0;
+		else if (d[i].open_amount > 1)
+			d[i].open_amount = 1;
+		i++;
+	}
+}
+
 void	transform_sprite(t_player *p, t_sprite *s, t_game *r)
 {
 	double	inv_det;

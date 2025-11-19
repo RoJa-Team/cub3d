@@ -76,16 +76,17 @@ void	turn_right(t_player *player, t_frame *frame)
 }
 
 
-int	is_wall(t_map_objects *map_objects, double x, double y)
+int	is_wall(t_map_objects *mo, double x, double y)
 {
 	int	my;
 	int	mx;
 
 	my = (int)y;
 	mx = (int)x;
-	if (mx < 0 || my >= map_objects->map_height || my < 0 || mx >= map_objects->map_width)
+	if (mx < 0 || my >= mo->map_height || my < 0 || mx >= mo->map_width)
 		return (1);
-	return (map_objects->map[my][mx] == '1' || map_objects->map[my][mx] == 'D' || map_objects->map[my][mx] == 'F');
+	return (mo->map[my][mx] == '1' || mo->map[my][mx] == 'F' ||
+		(mo->map[my][mx] == 'D' && get_door_open_amount(mo, mx, my) < 0.95));
 }
 
 int	can_move(t_map_objects *map_objects, double x, double y)

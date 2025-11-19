@@ -129,6 +129,8 @@ int	validate_characters(char **map)
 			{
 				if (map[i][j] == 'F')
 					map_objects()->sprite_count++;
+				else if (map[i][j] == 'D')
+					map_objects()->door_count++;
 				j++;
 				continue ;
 			}

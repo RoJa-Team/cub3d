@@ -22,6 +22,7 @@ t_map_objects	*map_objects(void)
 		initialized = 1;
 		map_objects.player_count = 0;
 		map_objects.sprite_count = 0;
+		map_objects.door_count = 0;
 	}
 
 	return (&map_objects);

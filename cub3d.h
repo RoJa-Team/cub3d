@@ -183,6 +183,14 @@ typedef struct s_sprite
 	int			draw_end_y;
 }       		t_sprite;
 
+typedef struct s_door 
+{
+	int		x;
+	int		y;
+	double	open_amount;
+	int		opening;
+}				t_door;
+
 typedef struct s_texture
 {
 	char			*path;
@@ -202,7 +210,7 @@ typedef struct s_textures
 	t_texture	fire_loop[8];
 	t_texture	fire_end[5];
 	t_texture	wall[4];
-	t_texture	door[3];
+	t_texture	door;
 }       		t_textures;
 
 typedef struct s_map_objects
@@ -211,9 +219,11 @@ typedef struct s_map_objects
 	int     map_width;
 	int     map_height;
 	char    **map;
-	int	sprite_count;
+	int		sprite_count;
+	int		door_count;
 	double	*zbuff;
 	t_sprite	*sprites;
+	t_door		*doors;
 	t_player	player;
 }       		t_map_objects;
 
@@ -381,6 +391,7 @@ void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *
 void	calculate_texture(int x, t_raycast *raycast, t_textures *textures, t_draw *draw);
 int	get_tex_color(int tex_x, int tex_y, t_texture *text);
 void	draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
+double get_door_open_amount(t_map_objects *mo, int x, int y);
 
 /*---------- frame_managment.c ----------*/
 double	get_time(void);

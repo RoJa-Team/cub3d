@@ -32,37 +32,57 @@ void	create_screens(t_screens *screens)
 	create_finish(&screens->finish);
 }
 
-void	init_sprites(t_map_objects *mo, t_sprite *s, int count)
+void	init_sprites(t_sprite *s, int x, int y)
+{
+	s->transform_x = 0;
+	s->transform_y = 0;
+	s->screen_x = 0;
+	s->height = 0;
+	s->width = 0;
+	s->draw_start_x = 0;
+	s->draw_end_x = 0;
+	s->draw_start_y = 0;
+	s->draw_end_y = 0;
+	s->x = x + 0.5;
+	s->y = y + 0.5;
+	s->frame = rand() % 8;
+	s->anim_speed = 0.2 + ((rand() % 40) / 1000.0);
+	s->frame_time = (double)(rand() % 100) / 100.0
+		* s->anim_speed;
+}
+
+void	init_doors(t_door *d, int x, int y)
+{
+	d->x = x;
+	d->y = y;
+	d->open_amount = 0;
+	d->opening = 0;
+}
+
+void	init_map_textures(t_map_objects *mo, t_sprite *s, t_door *d)
 {
 	int	x;
 	int	y;
 	int	i;
+	int	j;
 
 	y = 0;
 	i = 0;
+	j = 0;
 	while (y < mo->map_height)
 	{
 		x = 0;
 		while (x < mo->map_width)
 		{
-			if (mo->map[y][x] == 'F' && i < count)
+			if (mo->map[y][x] == 'F' && i < mo->sprite_count)
 			{
-				s[i].transform_x = 0;
-				s[i].transform_y = 0;
-				s[i].screen_x = 0;
-				s[i].height = 0;
-				s[i].width = 0;
-				s[i].draw_start_x = 0;
-				s[i].draw_end_x = 0;
-				s[i].draw_start_y = 0;
-				s[i].draw_end_y = 0;
-				s[i].x = x + 0.5;
-				s[i].y = y + 0.5;
-				s[i].frame = rand() % 8;
-				s[i].anim_speed = 0.2 + ((rand() % 40) / 1000.0);
-				s[i].frame_time = (double)(rand() % 100) / 100.0
-					* s[i].anim_speed;
+				init_sprites(&s[i], x, y);
 				i++;
+			}
+			else if (mo->map[y][x] == 'D' && j < mo->door_count)
+			{
+				init_doors(&d[i], x, y);
+				j++;
 			}
 			x++;
 		}
@@ -70,13 +90,17 @@ void	init_sprites(t_map_objects *mo, t_sprite *s, int count)
 	}
 }
 
-void	allocate_sprites(t_map_objects *mo)
+void	allocate_map_objects(t_map_objects *mo)
 {
 	mo->sprites = malloc(sizeof(t_sprite) * mo->sprite_count);
 	if (!mo->sprites)
 		return ((void)catch()->set("Error\n%s: Error allocating sprites.", 
 			__func__), deallocate());
-	init_sprites(mo, mo->sprites, mo->sprite_count);
+	mo->doors = malloc(sizeof(t_door) * mo->door_count);
+	if (!mo->doors)
+		return ((void)catch()->set("Error\n%s: Error allocating doors.", 
+			__func__), deallocate());
+	init_map_textures(mo, mo->sprites, mo->doors);
 }
 
 void	allocate_zbuffer(t_map_objects *mo, t_screens *sc)
@@ -92,6 +116,6 @@ void	prepare_resources()
 	calculate_game_resolution(game());
 	load_textures(textures());
 	create_screens(screens());
-	allocate_sprites(map_objects());
+	allocate_map_objects(map_objects());
 	allocate_zbuffer(map_objects(), screens());
 }
