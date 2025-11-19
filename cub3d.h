@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/12 22:35:21 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/14 23:15:23 by joafern2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
 # define FOV 0.99
-# define MARGIN 0.2
+# define MARGIN 0.3
 # define WIDTH 3840 // if < 640, default 640
 # define HEIGHT 2160 // if < 360, default 360
 # define ERROR_IMAGE_ADDR "Error retrieving new image address."
@@ -160,6 +160,7 @@ typedef struct s_frame
 {
 	double			move_speed;
 	double			rot_speed;
+	double			frame_time;
 }			t_frame;
 
 typedef struct s_sprite
@@ -167,7 +168,27 @@ typedef struct s_sprite
 	double			x;
 	double			y;
 	double			dist;
+	int			frame;
+	double			frame_time;
+	double			anim_speed;
+	double			transform_x;
+	double			transform_y;
+	int			screen_x;
+	int			height;
+	int			width;
+	int			draw_start_x;
+	int			draw_end_x;
+	int			draw_start_y;
+	int			draw_end_y;
 }       		t_sprite;
+
+typedef struct s_door 
+{
+	int		x;
+	int		y;
+	double	open_amount;
+	int		opening;
+}				t_door;
 
 typedef struct s_texture
 {
@@ -188,7 +209,7 @@ typedef struct s_textures
 	t_texture	fire_loop[8];
 	t_texture	fire_end[5];
 	t_texture	wall[4];
-	t_texture	door[3];
+	t_texture	door;
 }       		t_textures;
 
 typedef struct s_map_objects
@@ -197,6 +218,11 @@ typedef struct s_map_objects
 	int     map_width;
 	int     map_height;
 	char    **map;
+	int		sprite_count;
+	int		door_count;
+	double	*zbuff;
+	t_sprite	*sprites;
+	t_door		*doors;
 	t_player	player;
 }       		t_map_objects;
 
@@ -253,9 +279,10 @@ t_screens		*screens(void);
 t_player		*player(void);
 t_textures		*textures(void);
 t_map_objects	*map_objects(void);
-t_raycast		*raycast(void);
-t_draw			*draw(void);
-t_frame			*frame(void);
+t_raycast			*raycast(void);
+t_draw		*draw(void);
+t_frame		*frame(void);
+t_sprite *sprite(void);
 
 /*---------- resolution.c ----------*/
 int 	get_frame_extents(int *w_frame_size);
@@ -345,14 +372,9 @@ int		mouse_hooks(int keycode, void *param);
 int		create_rgb(int r, int g, int b);
 void	put_pixel(t_image *img, int x, int y, int color);
 
-<<<<<<< HEAD
-/*---------- background.c ----------*/
-int		key_hooks(int keycode, void *param);
-=======
 /*---------- hooks.c ----------*/
 int	key_hooks(int keycode, void *param);
 int	key_release(int keycode, void *param);
->>>>>>> joao
 
 /*---------- map_parse.c ----------*/
 void	init_map_objects();
@@ -386,6 +408,7 @@ void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *
 void	calculate_texture(int x, t_raycast *raycast, t_textures *textures, t_draw *draw);
 int	get_tex_color(int tex_x, int tex_y, t_texture *text);
 void	draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
+double get_door_open_amount(t_map_objects *mo, int x, int y);
 
 /*---------- frame_managment.c ----------*/
 double	get_time(void);
@@ -396,5 +419,11 @@ void	move_right(t_player *player, t_map_objects *map_objects, t_frame *frame);
 void	move_left(t_player *player, t_map_objects *map_objects, t_frame *frame);
 void	move_front(t_player *player, t_map_objects *map_objects, t_frame *frame);
 void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame);
+
+/*---------- lost ----------------*/
+void	add_background(int game_width, int game_height);
+void	add_view();
+
+void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta);
 
 #endif

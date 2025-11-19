@@ -54,6 +54,10 @@ void	deallocate(void)
 {
 	if (map_objects()->map)
 		free_map();
+	if (map_objects()->sprites)
+		free(map_objects()->sprites);
+	if (map_objects()->zbuff)
+		free(map_objects()->zbuff);
 	free_textures(textures());
 	free_screens(screens());
 	if (game()->win)

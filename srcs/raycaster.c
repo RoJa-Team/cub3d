@@ -66,6 +66,7 @@ void    raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *dr
 		dda(raycast, map_objects());
 		calculate_wall(raycast, draw, player, game);
 		calculate_texture(x, raycast, textures(), draw);
+		map_objects()->zbuff[x] = raycast->perp_wall_dist;
 		x++;
 	}
 }
@@ -144,25 +145,44 @@ void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *
 		draw->draw_end = game->game_height - 1;
 }
 
-void	dda(t_raycast *raycast, t_map_objects *map_objects)
+double get_door_open_amount(t_map_objects *mo, int x, int y)
 {
-	raycast->hit = 0;
-	while (raycast->hit == 0)
+	int	i;
+	
+	i = 0;
+	while (i < mo->door_count)
 	{
-		if (raycast->side_dist_x < raycast->side_dist_y)
+		if (mo->doors[i].x == x && mo->doors[i].y == y)
+			return (mo->doors[i].open_amount);
+		i++;
+	}
+	return (0);
+}
+
+void	dda(t_raycast *r, t_map_objects *mo)
+{
+	r->hit = 0;
+	while (r->hit == 0)
+	{
+		if (r->side_dist_x < r->side_dist_y)
 		{
-			raycast->side_dist_x += raycast->delta_dist_x;
-			raycast->map_x += raycast->step_x;
-			raycast->side = 0;
+			r->side_dist_x += r->delta_dist_x;
+			r->map_x += r->step_x;
+			r->side = 0;
 		}
 		else
 		{
-			raycast->side_dist_y += raycast->delta_dist_y;
-			raycast->map_y += raycast->step_y;
-			raycast->side = 1;
+			r->side_dist_y += r->delta_dist_y;
+			r->map_y += r->step_y;
+			r->side = 1;
 		}
-		if (map_objects->map[raycast->map_y][raycast->map_x] == '1')
-			raycast->hit = 1;
+		if (mo->map[r->map_y][r->map_x] == '1')
+			r->hit = 1;
+		else if (mo->map[r->map_y][r->map_x] == 'D')
+		{
+			if (get_door_open_amount(mo, r->map_x, r->map_y) < 0.95)
+				r->hit = 1;
+		}
 	}
 }
 

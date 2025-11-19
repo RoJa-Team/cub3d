@@ -77,8 +77,6 @@ void	load_textures_hose(t_textures *textures)
 
 void	load_textures_misc(t_textures *textures)
 {
-	xpm_to_img("textures/edited/door_closed.xpm", &(textures->door[0].img));
-	xpm_to_img("textures/edited/door_semi_open.xpm", &(textures->door[1].img));
-	xpm_to_img("textures/edited/door_open.xpm", &(textures->door[2].img));
+	xpm_to_img("textures/edited/slide_door.xpm", &(textures->door.img));
 	xpm_to_img("textures/edited/clouds.xpm", &(textures->clouds.img));
 }
