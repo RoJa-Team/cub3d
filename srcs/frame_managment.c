@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:46:43 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/15 17:50:01 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:27:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	get_speed_modifiers(t_frame *frame)
 	/*if (frame->rot_speed > 0.05)
 		frame->rot_speed = 0.075;
 	*/
-	printf("FPS: %.0f\n", 1.0 / frame_time);
 }
 
 void	turn_left(t_player *player, t_frame *frame)

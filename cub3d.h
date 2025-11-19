@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/18 21:17:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:09:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ typedef struct s_map
 	int			map_x;
 	int			map_y;
 	int			cell_size;
-	float		border;
+	int			border;
 	t_image		map;
 	t_offsets	offsets;
 }       		t_map;
