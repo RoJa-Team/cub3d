@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/14 18:53:05 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/18 21:17:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # 		define MAP_PLAYER 0x00FF00FF
 # 		define MAP_WALL 0x00404040
 # 		define MAP_FLOOR 0x00A0A0A0
-# 		define MAP_EMPTY 0x00E0E0E0
+# 		define MAP_DOOR 0x00E0A0E0
 # 		define MAP_FIRE 0x00E64600
 # 		define MINIMAP_RADIUS 3
 # 	endif
@@ -66,6 +66,15 @@ typedef struct s_res
 	int	aspect_width;
 	int	aspect_height;
 }				t_res;
+
+typedef struct s_offsets
+{
+	int	start_y;
+	int	end_y;
+	int start_x;
+	int end_x;
+	int	radius;
+}				t_offsets;
 
 typedef enum e_line_type
 {
@@ -210,13 +219,16 @@ typedef struct s_map_objects
 
 typedef struct s_map
 {
-	int 	x;
-	int		y;
-	int		map_w;
-	int		map_h;
-	int		border;
-	int		cell_size;
-	t_image	map;
+	int 		x;
+	int			y;
+	int			map_w;
+	int			map_h;
+	int			map_x;
+	int			map_y;
+	int			cell_size;
+	float		border;
+	t_image		map;
+	t_offsets	offsets;
 }       		t_map;
 
 typedef struct s_hose
@@ -283,11 +295,25 @@ void 	get_aspect_ratio(t_res *display);
 /*---------- prepare_resources.c ----------*/
 void	prepare_resources();
 
-/*---------- maps.c ----------*/
+/*---------- full_map.c ----------*/
+void    draw_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
 void	create_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
-void	update_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
+
+/*---------- minimap.c ----------*/
+void 	draw_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
+void	calc_minimap_offsets(t_offsets *offsets, t_map_objects *map_objs, t_player *player);
 void	create_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
-void	update_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
+
+/*---------- cells.c ----------*/
+float	calc_cell_size(float width1, float height1, float width2, float height2);
+int		get_cell_colour(char cell);
+void	draw_cell(t_map *map, int x, int y, int colour, int cell);
+
+/*---------- map_border.c ----------*/
+int		lerp(int a, int b, float t);
+int		gradient_brown(float t);
+void	draw_border(t_image *img, int x, int y, int border);
+
 
 /*---------- hud.c ----------*/
 void	create_hose(t_hose *hose);

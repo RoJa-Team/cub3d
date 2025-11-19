@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/14 18:53:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/15 18:58:01 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,9 @@ void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y)
 void	initial_orientation(char ori, int y, int x)
 {
 	if (ori == 'N')
-		raycast_init(0, -1, -FOV, 0);
+		raycast_init(0, -1, FOV, 0);
 	else if (ori == 'S')
-		raycast_init(0, 1, FOV, 0);
+		raycast_init(0, 1, -FOV, 0);
 	else if (ori == 'E')
 		raycast_init(1, 0, 0, FOV);
 	else if (ori == 'W')
