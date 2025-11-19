@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/14 18:53:15 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:33:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_map_objects	*map_objects(void)
 		map_objects.map_height = 0;
 		map_objects.map = NULL;
 		map_objects.player_count = 0;
+		map_objects.sprite_count = 0;
+		map_objects.door_count = 0;
 	}
 
 	return (&map_objects);

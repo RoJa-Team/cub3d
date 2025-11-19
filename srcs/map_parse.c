@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:29:27 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/15 18:58:01 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:33:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ char	**empty_array(void)
 }
 
 
+
 int	validate_characters(char **map)
 {
 	int	i;
@@ -126,6 +127,10 @@ int	validate_characters(char **map)
 		{
 			if (map[i][j] == '1' || map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D' || ft_isspace(map[i][j]))
 			{
+				if (map[i][j] == 'F')
+					map_objects()->sprite_count++;
+				else if (map[i][j] == 'D')
+					map_objects()->door_count++;
 				j++;
 				continue ;
 			}

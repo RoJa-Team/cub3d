@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:46:43 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/19 20:27:59 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:33:03 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,9 @@ void	get_speed_modifiers(t_frame *frame)
 		old_time = time;
 	frame_time = time - old_time;
 	old_time = time;
+	frame->frame_time = frame_time;
 	frame->move_speed = frame_time * 5.0;
 	frame->rot_speed = frame_time * 3.0;
-	/*if (frame->rot_speed > 0.05)
-		frame->rot_speed = 0.075;
-	*/
 }
 
 void	turn_left(t_player *player, t_frame *frame)
@@ -78,16 +76,17 @@ void	turn_right(t_player *player, t_frame *frame)
 }
 
 
-int	is_wall(t_map_objects *map_objects, double x, double y)
+int	is_wall(t_map_objects *mo, double x, double y)
 {
 	int	my;
 	int	mx;
 
 	my = (int)y;
 	mx = (int)x;
-	if (mx < 0 || my >= map_objects->map_height || my < 0 || mx >= map_objects->map_width)
+	if (mx < 0 || my >= mo->map_height || my < 0 || mx >= mo->map_width)
 		return (1);
-	return (map_objects->map[my][mx] == '1' || map_objects->map[my][mx] == 'D' || map_objects->map[my][mx] == 'F');
+	return (mo->map[my][mx] == '1' || mo->map[my][mx] == 'F' ||
+		(mo->map[my][mx] == 'D' && get_door_open_amount(mo, mx, my) < 0.95));
 }
 
 int	can_move(t_map_objects *map_objects, double x, double y)
