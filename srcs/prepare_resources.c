@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:56:14 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/12 21:28:22 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 22:29:17 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	allocate_zbuffer(t_map_objects *mo, t_screens *sc)
 			__func__), deallocate());
 }
 
-void	prepare_resources()
+void	prepare_resources(void)
 {
 	calculate_game_resolution(game());
 	load_textures(textures());

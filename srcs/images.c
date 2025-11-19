@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 22:02:22 by rafasant          #+#    #+#             */
-/*   Updated: 2025/10/26 17:09:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 21:42:59 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	calc_zoom_ratio(t_image *img, int game_height)
 	int	ratio;
 	int	image_max_size;
 
-	image_max_size = 0.3 * game_height;
+	image_max_size = 0.6 * game_height;
 	ratio = image_max_size / img->h;
 	return(ratio);
 }

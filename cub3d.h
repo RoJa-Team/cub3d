@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/19 20:35:23 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/19 22:33:22 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,6 +295,14 @@ typedef	struct s_game
 }				t_game;
 
 /*---------- parse_file.c ----------*/
+void	check_filename(char *file);
+t_file	*get_file_content(char *file);
+char	*get_texture_path(char *line);
+void	get_texture(t_orientation orien, char *line);
+void	assign_colour(t_identifier ident, int *rgb);
+void	get_colour(t_identifier ident, char *line);
+int		check_element(char *line);
+void 	parse_textures_colours(t_file **content);
 void	parse_file(char *file);
 
 /*---------- static_structs.c ----------*/
@@ -303,10 +311,9 @@ t_screens		*screens(void);
 t_player		*player(void);
 t_textures		*textures(void);
 t_map_objects	*map_objects(void);
-t_raycast			*raycast(void);
-t_draw		*draw(void);
-t_frame		*frame(void);
-t_sprite *sprite(void);
+t_raycast		*raycast(void);
+t_draw			*draw(void);
+t_frame			*frame(void);
 
 /*---------- resolution.c ----------*/
 int 	get_frame_extents(int *w_frame_size);
@@ -341,27 +348,24 @@ int		lerp(int a, int b, float t);
 int		gradient_brown(float t);
 void	draw_border(t_image *img, int x, int y, int border);
 
-
-/*---------- hud.c ----------*/
+/*------------- hose.c -------------*/
 void	create_hose(t_hose *hose);
-void	render_hud(t_screens *screens);
+void	update_hose(t_hose *hose);
 
-
-/*---------- render.c ----------*/
+/*----------- render.c -----------*/
 void	render_background(t_image *canva, int game_width, int game_height);
-void	render();
-
+void	render_hud(t_screens *screens);
+void	render(void);
 
 /*---------- image_manipulation.c ----------*/
 int		create_rgb(int r, int g, int b);
 
-/*---------- screens.c ----------*/
+/*----------- screens.c -----------*/
 void	create_canva(t_image *canva);
 void	create_start(t_image *start);
 void	create_pause(t_image *pause);
 void	create_death(t_image *death);
 void	create_finish(t_image *finish);
-
 
 /*---------- xpms.c ----------*/
 void	xpm_to_img(char *path, t_image *img);
@@ -390,8 +394,9 @@ void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
 unsigned int	get_pixel_colour(t_image *img, int x, int y);
 
 /*---------- prepare_resources.c ----------*/
-void	create_canva();
-
+void	load_textures(t_textures *textures);
+void	create_screens(t_screens *screens);
+void	prepare_resources(void);
 
 /*---------- images.c ----------*/
 void	new_image(t_image *img, int width, int height);
@@ -404,7 +409,6 @@ void	scale_hose_images(t_textures *texs);
 int		lock_mouse();
 int		unlock_mouse();
 int		mouse_hooks(int keycode, void *param);
-
 
 /*---------- background.c ----------*/
 int		create_rgb(int r, int g, int b);
@@ -459,10 +463,10 @@ void	move_left(t_player *player, t_map_objects *map_objects, t_frame *frame);
 void	move_front(t_player *player, t_map_objects *map_objects, t_frame *frame);
 void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame);
 
-/*---------- lost ----------------*/
-void	add_background(int game_width, int game_height);
-void	add_view();
-
+/*---------- fire_sprites.c ----------------*/
 void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta);
+
+/*---------- lost ----------------*/
+
 
 #endif

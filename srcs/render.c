@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/15 15:37:09 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/19 22:28:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,28 @@ void	render_background(t_image *canva, int game_width, int game_height)
 	}
 }
 
-void	render()
+void	render_hud(t_screens *screens)
+{
+	update_hose(&screens->hud.hose);
+	put_img_to_img(&screens->canva, &screens->hud.hose.curr_hose,
+		screens->hud.hose.x, screens->hud.hose.y);
+	if (game()->open_map == true)
+	{
+		draw_full_map(&screens->hud.full_map, map_objects(), player());
+		put_img_to_img(&screens->canva, &screens->hud.full_map.map,
+			screens->hud.full_map.x, screens->hud.full_map.y);
+	}
+	else
+	{
+		calc_minimap_offsets(&screens->hud.minimap.offsets, map_objects(),
+			player());
+		draw_minimap(&screens->hud.minimap, map_objects(), player());
+		put_img_to_img(&screens->canva, &screens->hud.minimap.map,
+			screens->hud.minimap.x, screens->hud.minimap.y);
+	}
+}
+
+void	render(void)
 {
 	render_background(&screens()->canva, game()->game_width, game()->game_height);
 	raycaster(game(), raycast(), player(), draw());

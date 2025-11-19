@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/12 22:33:09 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/19 21:52:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,8 @@ int	key_hooks(int keycode, void *param)
 		player()->turn_left = 1;
 	else if (keycode == ARROW_R)
 		player()->turn_right = 1;
-	// else if (keycode == KEY_CTRL)
-	// 	crouch();
-	// else if (keycode == KEY_SPACEBAR)
-	// 	jump();
-	// else if (keycode == KEY_INTERACT)
-	// 	interact();
-	// else if (keycode == KEY_SHOOT)
-	// 	shoot();
+	else if (keycode == KEY_SHOOT)
+		screens()->hud.hose.on = true;
 	else if (keycode == KEY_MAP)
 		open_full_map(game());
 	else if (keycode == KEY_W)
@@ -86,5 +80,7 @@ int	key_release(int keycode, void *param)
 		player()->turn_left = 0;
 	else if (keycode == ARROW_R)
 		player()->turn_right = 0;
+	else if (keycode == KEY_SHOOT)
+		screens()->hud.hose.on = false;
 	return (0);
 }
