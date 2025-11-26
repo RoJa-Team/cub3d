@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/19 21:52:41 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:03:47 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,17 @@ int	close_game(void *param)
 
 void	pause_game(t_game *game)
 {
+	mlx_mouse_move(game->mlx, game->win, game->game_width / 2, game->game_height / 2);
 	if (game->paused == false)
+	{
 		game->paused = true;
+		unlock_mouse();
+	}
 	else if (game->paused == true)
+	{
 		game->paused = false;
+		lock_mouse();
+	}
 }
 
 void	open_full_map(t_game *game)
@@ -36,7 +43,7 @@ void	open_full_map(t_game *game)
 		game->open_map = false;
 }
 
-int	key_hooks(int keycode, void *param)
+int	key_press(int keycode, void *param)
 {
 	(void)param;
 	if (keycode == KEY_PAUSE)
@@ -63,7 +70,6 @@ int	key_hooks(int keycode, void *param)
 		player()->move_left = 1;
 	return (0);
 }
-
 
 int	key_release(int keycode, void *param)
 {

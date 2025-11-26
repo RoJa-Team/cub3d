@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:56:14 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/19 22:29:17 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/24 20:39:38 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	create_screens(t_screens *screens)
 	create_finish(&screens->finish);
 }
 
-void	init_sprites(t_sprite *s, int x, int y)
+void	init_sprites(t_sprite *s, t_textures *textures, int x, int y)
 {
 	s->transform_x = 0;
 	s->transform_y = 0;
@@ -48,8 +48,10 @@ void	init_sprites(t_sprite *s, int x, int y)
 	s->y = y + 0.5;
 	s->frame = rand() % 8;
 	s->anim_speed = 0.2 + ((rand() % 40) / 1000.0);
-	s->frame_time = (double)(rand() % 100) / 100.0
-		* s->anim_speed;
+	s->frame_time = (double)(rand() % 100) / 100.0 * s->anim_speed;
+	s->dissip = false;
+	s->active = true;
+	s->img = textures->fire_loop[s->frame].img;
 }
 
 void	init_doors(t_door *d, int x, int y)
@@ -77,7 +79,7 @@ void	init_map_textures(t_map_objects *mo, t_sprite *s, t_door *d)
 		{
 			if (mo->map[y][x] == 'F' && i < mo->sprite_count)
 			{
-				init_sprites(&s[i], x, y);
+				init_sprites(&s[i], textures(), x, y);
 				i++;
 			}
 			else if (mo->map[y][x] == 'D' && j < mo->door_count)

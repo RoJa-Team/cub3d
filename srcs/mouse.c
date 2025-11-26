@@ -6,71 +6,89 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 14:34:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/09/28 17:26:04 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:02:57 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	lock_mouse()
+void	lock_mouse()
 {
-    // // Request to receive events (added StructureNotifyMask!)
-    // XSelectInput(game()->mlx->display, game()->win->window,
-    //              ExposureMask | KeyPressMask | StructureNotifyMask);
+	int	grab;
 
-    // // Show the window
-    // XMapWindow(game()->mlx->display, game()->win->window);
-
-    // --- Now try to grab the pointer ---
-    int grab = XGrabPointer(game()->mlx->display,
-                            game()->win->window,
-                            True,
-                            ButtonPressMask | ButtonReleaseMask | PointerMotionMask,
-                            GrabModeAsync,
-                            GrabModeAsync,
-                            game()->win->window,
-                            None,
-                            CurrentTime);
-    if (grab != GrabSuccess)
-        fprintf(stderr, "Failed to grab pointer: %d\n", grab);
-    else
-		printf("Pointer successfully grabbed!\n");
-	return 0;
+	grab = XGrabPointer(game()->mlx->display, game()->win->window, True, 
+	ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync, 
+	GrabModeAsync, game()->win->window, None, CurrentTime);
+	if (grab != GrabSuccess)
+		return ((void)catch()->set("Error\n%s: Failed locking mouse to window.", 
+			__func__), deallocate());
+	mlx_mouse_hide(game()->mlx, game()->win);
 }
 
-int	unlock_mouse()
+void	unlock_mouse()
 {
 	XUngrabPointer(game()->mlx->display, CurrentTime);
-    return 0;
+	mlx_mouse_show(game()->mlx, game()->win);
 }
 
-int	mouse_hooks(int keycode, void *param)
+int	center_mouse(t_game *game, int *last_x, int x)
 {
-	(void)param;
-	printf("%d\n", keycode);
-	// if (keycode == KEY_ESC)
-	// 	close_game(NULL);
-	// else if (keycode == ARROW_L)
-	// 	turn_left();
-	// else if (keycode == ARROW_R)
-	// 	turn_right();
-	// else if (keycode == KEY_CTRL)
-	// 	crouch();
-	// else if (keycode == KEY_SPACEBAR)
-	// 	jump();
-	// else if (keycode == KEY_INTERACT)
-	// 	interact();
-	// else if (keycode == KEY_SHOOT)
-	// 	shoot();
-	// else if (keycode == KEY_PAUSE)
-	// 	pause_game();
-	// else if (keycode == KEY_W)
-	// 	move_front();
-	// else if (keycode == KEY_A)
-	// 	move_left();
-	// else if (keycode == KEY_S)
-	// 	move_back();
-	// else if (keycode == KEY_D)
-	// 	move_right();
+	if (x <= 0 || x >= game->game_width)
+	{
+		*last_x = game->game_width / 2;
+		mlx_mouse_move(game->mlx, game->win, *last_x, game->game_height / 2);
+		return (1);
+	}
+	return (0);
+}
+
+int	mouse_movement(int x, int y, t_game *game)
+{
+	int			diff_x;
+	static int	last_x = -1;
+	
+	(void)y;
+	if (game->paused)
+		return (0);
+	if (last_x == -1)
+	{
+		last_x = x;
+		return (0);
+	}
+	if (center_mouse(game, &last_x, x))
+		return (0);
+	diff_x = x - last_x;
+	last_x = x;
+	if (diff_x != 0)
+	{
+		if (diff_x > 0)
+			rotate_camera(player(), frame()->rot_speed);
+		if (diff_x < 0)
+			rotate_camera(player(), -frame()->rot_speed);
+	}
+	return (0);
+}
+
+int mouse_press(int button, int mouse_x, int mouse_y, t_game *game)
+{
+	if (button == 1)
+	{
+		player()->hose->on = true;
+	}
+	(void)mouse_x;
+	(void)mouse_y;
+	(void)game;
+	return (0);
+}
+
+int mouse_release(int button, int mouse_x, int mouse_y, t_game *game)
+{
+	if (button == 1)
+	{
+		player()->hose->on = false;
+	}
+	(void)mouse_x;
+	(void)mouse_y;
+	(void)game;
 	return (0);
 }

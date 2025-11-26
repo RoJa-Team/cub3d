@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/19 22:28:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 20:26:49 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,21 @@ void	render_background(t_image *canva, int game_width, int game_height)
 	}
 }
 
-void	render_hud(t_screens *screens)
+void	render_hud(t_screens *screens, t_map_objects *map_objs, t_player *player)
 {
-	update_hose(&screens->hud.hose);
+	update_hose(&screens->hud.hose, textures());
 	put_img_to_img(&screens->canva, &screens->hud.hose.curr_hose,
 		screens->hud.hose.x, screens->hud.hose.y);
 	if (game()->open_map == true)
 	{
-		draw_full_map(&screens->hud.full_map, map_objects(), player());
+		draw_full_map(&screens->hud.full_map, map_objs, player);
 		put_img_to_img(&screens->canva, &screens->hud.full_map.map,
 			screens->hud.full_map.x, screens->hud.full_map.y);
 	}
 	else
 	{
-		calc_minimap_offsets(&screens->hud.minimap.offsets, map_objects(),
-			player());
-		draw_minimap(&screens->hud.minimap, map_objects(), player());
+		calc_minimap_offsets(&screens->hud.minimap.offsets, map_objs, player);
+		draw_minimap(&screens->hud.minimap, map_objs, player);
 		put_img_to_img(&screens->canva, &screens->hud.minimap.map,
 			screens->hud.minimap.x, screens->hud.minimap.y);
 	}
@@ -58,16 +57,26 @@ void	render_hud(t_screens *screens)
 
 void	render(void)
 {
-	render_background(&screens()->canva, game()->game_width, game()->game_height);
-	raycaster(game(), raycast(), player(), draw());
-	get_speed_modifiers(frame());
-	render_fire_sprites(game(), map_objects(), map_objects()->sprites, frame()->frame_time);
-	render_hud(screens());
-	mlx_put_image_to_window(game()->mlx, game()->win, screens()->canva.img_ptr, game()->image_x, game()->image_y);
-	move_right(player(), map_objects(), frame());
-	move_left(player(), map_objects(), frame());
-	move_front(player(), map_objects(), frame());
-	move_back(player(), map_objects(), frame());
-	turn_right(player(), frame());
-	turn_left(player(), frame());
+	t_game			*_game;
+	t_frame			*_frame;
+	t_player		*_player;
+	t_screens		*_screens;
+	t_map_objects 	*mo;
+	
+	_game = game();
+	_frame = frame();
+	_player = player();
+	_screens = screens();
+	mo = map_objects();
+	check_movement(_player, mo, _frame);
+	if (_player->turn_left)
+		rotate_camera(_player, -_frame->rot_speed);
+	else if (_player->turn_right)
+		rotate_camera(_player, _frame->rot_speed);
+	render_background(&_screens->canva, _game->game_width, _game->game_height);
+	get_speed_modifiers(_frame);
+	raycaster(_game, raycast(), _player, draw());
+	render_fire_sprites(_game, mo, mo->sprites, _frame->frame_time);
+	render_hud(_screens, mo, _player);
+	mlx_put_image_to_window(_game->mlx, _game->win, _screens->canva.img_ptr, _game->image_x, _game->image_y);
 }

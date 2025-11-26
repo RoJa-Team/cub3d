@@ -3,16 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   fire_sprite.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joafern2 <joafern2@student.42lisboa.c      +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 15:51:11 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/14 23:15:12 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/24 22:01:01 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	animate_sprites(t_sprite *s, t_map_objects *mo, double delta)
+void	dissipate_fire(t_sprite *sprite, t_map_objects *mo, t_textures *textures)
+{
+	if (sprite->active == false)
+		return ;
+	if (sprite->dissip <= 5)
+	{
+		sprite->img = textures->fire_end[sprite->dissip - 1].img;
+		sprite->dissip++;
+	}
+	else
+	{
+		sprite->active = false;
+		mo->map[(int)sprite->y][(int)sprite->x] = '0';
+	}
+}
+
+void	animate_sprites(t_sprite *s, t_map_objects *mo, t_textures *textures, double delta)
 {
 	int	i;
 
@@ -23,7 +39,15 @@ void	animate_sprites(t_sprite *s, t_map_objects *mo, double delta)
 		if (s[i].frame_time >= s[i].anim_speed)
 		{
 			s[i].frame_time = 0.0;
-			s[i].frame = (s[i].frame + 1) % 8; 
+			if (s[i].dissip == 0 && s[i].active == true)
+			{
+				s[i].frame = (s[i].frame + 1) % 8;
+				s[i].img = textures->fire_loop[s[i].frame].img;
+			}
+			else
+			{
+				dissipate_fire(&s[i], mo, textures);
+			}
 		}
 		i++;
 	}
@@ -80,7 +104,7 @@ void	project_sprite(t_sprite *s, t_game *r)
 		s->draw_end_x = r->game_width - 1;
 }
 
-void	draw_sprite_column(t_sprite *s, int stripe, t_game *g, t_texture *tx)
+void	draw_sprite_column(t_sprite *s, int stripe, t_game *g)
 {
 	int	y;
 	int	tex_x;
@@ -89,7 +113,7 @@ void	draw_sprite_column(t_sprite *s, int stripe, t_game *g, t_texture *tx)
 	int	color;
 
 	tex_x = (int)(256 * (stripe - (-s->width / 2 + s->screen_x))
-			* tx->img.w / s->width) / 256;
+			* s->img.w / s->width) / 256;
 	if (s->transform_y <= 0 || stripe < 0 || stripe >= g->game_width
 	|| s->transform_y > map_objects()->zbuff[stripe])
 		return ;
@@ -97,8 +121,8 @@ void	draw_sprite_column(t_sprite *s, int stripe, t_game *g, t_texture *tx)
 	while (y < s->draw_end_y)
 	{
 		d = y * 256 - g->game_height * 128 + s->height * 128;
-		tex_y = ((d * tx->img.h) / s->height) / 256;
-		color = get_pixel_colour(&tx->img, tex_x, tex_y);
+		tex_y = ((d * s->img.h) / s->height) / 256;
+		color = get_pixel_colour(&s->img, tex_x, tex_y);
 		put_pixel_img(&screens()->canva, stripe, y, color);
 		y++;
 	}
@@ -134,24 +158,27 @@ void	sort_sprites(t_sprite *s, t_map_objects *mo, t_player *p)
 
 void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta)
 {
-	int	i;
-	int	stripe;
+	int			i;
+	int			stripe;
+	t_player	*_player;
 
-	animate_sprites(s, mo, delta);
-	sort_sprites(s, mo, player());
+	_player = player();
+	animate_sprites(s, mo, textures(), delta);
+	sort_sprites(s, mo, _player);
 	i = 0;
 	while (i < mo->sprite_count)
 	{
-		transform_sprite(player(), &s[i], g);
-		project_sprite(&s[i], g);
-		stripe = s[i].draw_start_x;
-		while (stripe < s[i].draw_end_x)
+		if (s[i].active == true)
 		{
-			draw_sprite_column(&s[i], stripe, g, &textures()->fire_loop[s[i].frame]);
-			stripe++;
+			transform_sprite(_player, &s[i], g);
+			project_sprite(&s[i], g);
+			stripe = s[i].draw_start_x;
+			while (stripe < s[i].draw_end_x)
+			{
+				draw_sprite_column(&s[i], stripe, g);
+				stripe++;
+			}
 		}
 		i++;
 	}
 }
-
-

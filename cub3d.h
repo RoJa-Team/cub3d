@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/19 22:33:22 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 20:54:20 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define KEY_ESC 65307
 # define ARROW_L 65361
 # define ARROW_R 65363
+# define LM 1 // LEFT MOUSE BUTTON
 # define KEY_W 119
 # define KEY_A 97
 # define KEY_S 115
@@ -118,10 +119,14 @@ typedef struct s_image
 	void	*img_ptr;
 }				t_image;
 
-typedef struct s_tool
+typedef struct s_hose
 {
-
-}				t_tool;
+	int 	x;
+	int		y;
+	bool	on;
+	bool	power;
+	t_image	curr_hose;
+}       		t_hose;
 
 typedef struct s_player
 {
@@ -138,7 +143,7 @@ typedef struct s_player
 	int			move_back;
 	int			turn_left;
 	int			turn_right;
-	t_tool			*tool;
+	t_hose		*hose;
 }				t_player;
 
 typedef struct	s_raycast
@@ -182,14 +187,14 @@ typedef struct s_frame
 
 typedef struct s_sprite
 {
-	double			x;
-	double			y;
-	double			dist;
+	double		x;
+	double		y;
+	double		dist;
 	int			frame;
-	double			frame_time;
-	double			anim_speed;
-	double			transform_x;
-	double			transform_y;
+	double		frame_time;
+	double		anim_speed;
+	double		transform_x;
+	double		transform_y;
 	int			screen_x;
 	int			height;
 	int			width;
@@ -197,6 +202,9 @@ typedef struct s_sprite
 	int			draw_end_x;
 	int			draw_start_y;
 	int			draw_end_y;
+	int			dissip;
+	bool		active;
+	t_image		img;
 }       		t_sprite;
 
 typedef struct s_door 
@@ -231,16 +239,15 @@ typedef struct s_textures
 
 typedef struct s_map_objects
 {
-	int     player_count;
-	int     map_width;
-	int     map_height;
-	char    **map;
-	int		sprite_count;
-	int		door_count;
-	double	*zbuff;
+	int			player_count;
+	int			map_width;
+	int			map_height;
+	char		**map;
+	int			sprite_count;
+	int			door_count;
+	double		*zbuff;
 	t_sprite	*sprites;
 	t_door		*doors;
-	t_player	player;
 }       		t_map_objects;
 
 typedef struct s_map
@@ -257,29 +264,21 @@ typedef struct s_map
 	t_offsets	offsets;
 }       		t_map;
 
-typedef struct s_hose
-{
-	int 	x;
-	int		y;
-	bool	on;
-	t_image	curr_hose;
-}       		t_hose;
-
 typedef struct s_hud
 {
-	t_hose	hose;
-	t_map	minimap;
-	t_map	full_map;
+	t_hose		hose;
+	t_map		minimap;
+	t_map		full_map;
 }				t_hud;
 
 typedef struct s_screens
 {
-	t_hud	hud;
-	t_image	canva;
-	t_image	start;
-	t_image	pause;
-	t_image	death;
-	t_image	finish;
+	t_hud		hud;
+	t_image		canva;
+	t_image		start;
+	t_image		pause;
+	t_image		death;
+	t_image		finish;
 }				t_screens;
 
 typedef	struct s_game
@@ -350,11 +349,11 @@ void	draw_border(t_image *img, int x, int y, int border);
 
 /*------------- hose.c -------------*/
 void	create_hose(t_hose *hose);
-void	update_hose(t_hose *hose);
+void	update_hose(t_hose *hose, t_textures *textures);
 
 /*----------- render.c -----------*/
 void	render_background(t_image *canva, int game_width, int game_height);
-void	render_hud(t_screens *screens);
+void	render_hud(t_screens *screens, t_map_objects *map_objs, t_player *player);
 void	render(void);
 
 /*---------- image_manipulation.c ----------*/
@@ -406,16 +405,19 @@ int		calc_zoom_ratio(t_image *img, int game_height);
 void	scale_hose_images(t_textures *texs);
 
 /*---------- mouse.c ----------*/
-int		lock_mouse();
-int		unlock_mouse();
-int		mouse_hooks(int keycode, void *param);
+void	lock_mouse();
+void	unlock_mouse();
+int		center_mouse(t_game *game, int *last_x, int x);
+int		mouse_movement(int x, int y, t_game *game);
+int 	mouse_press(int button, int mouse_x, int mouse_y, t_game *game);
+int 	mouse_release(int button, int mouse_x, int mouse_y, t_game *game);
 
 /*---------- background.c ----------*/
 int		create_rgb(int r, int g, int b);
 void	put_pixel(t_image *img, int x, int y, int color);
 
 /*---------- hooks.c ----------*/
-int	key_hooks(int keycode, void *param);
+int	key_press(int keycode, void *param);
 int	key_release(int keycode, void *param);
 
 /*---------- map_parse.c ----------*/
@@ -456,12 +458,8 @@ double get_door_open_amount(t_map_objects *mo, int x, int y);
 /*---------- frame_managment.c ----------*/
 double	get_time(void);
 void	get_speed_modifiers(t_frame *frame);
-void	turn_left(t_player *player, t_frame *frame);
-void	turn_right(t_player *player, t_frame *frame);
-void	move_right(t_player *player, t_map_objects *map_objects, t_frame *frame);
-void	move_left(t_player *player, t_map_objects *map_objects, t_frame *frame);
-void	move_front(t_player *player, t_map_objects *map_objects, t_frame *frame);
-void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame);
+void	rotate_camera(t_player *player, double rot_speed);
+void	check_movement(t_player *player, t_map_objects *mo, t_frame *frame);
 
 /*---------- fire_sprites.c ----------------*/
 void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta);

@@ -6,13 +6,30 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:43:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/19 22:18:15 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/24 21:44:53 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	update_hose(t_hose *hose)
+void	check_flame(t_hose *hose, t_map_objects *mo, /*t_textures *textures,*/ int frame)
+{
+	int	i;
+
+	if (hose->on == true && hose->power != true && frame > 3)
+		hose->power = true;
+	else if (hose->on == false && hose->power != false && frame < 8)
+		hose->power = false;
+	i = 0;
+	while (i < mo->sprite_count)
+	{
+		if (hose->power == true && fabs(player()->x - mo->sprites[i].x) < 1 && fabs(player()->y - mo->sprites[i].y) < 1 && mo->sprites[i].dissip == 0)
+			mo->sprites[i].dissip = 1;
+		i++;
+	}
+}
+
+void	update_hose(t_hose *hose, t_textures *textures)
 {
 	static int	frame;
 
@@ -21,9 +38,9 @@ void	update_hose(t_hose *hose)
 		if (frame > 11)
 			frame = frame - 7;
 		if (frame < 4)
-			hose->curr_hose = textures()->hose_start[frame].img;
+			hose->curr_hose = textures->hose_start[frame].img;
 		else if (frame > 3)
-			hose->curr_hose = textures()->hose_on[frame - 4].img;
+			hose->curr_hose = textures->hose_on[frame - 4].img;
 		frame++;
 	}
 	else if (hose->on == false && frame != 0)
@@ -31,17 +48,18 @@ void	update_hose(t_hose *hose)
 		if (frame < 4)
 		{
 			frame = 0;
+			hose->curr_hose = textures->hose_idle.img;
 			return ;
 		}
-		hose->curr_hose = textures()->hose_end[frame - 4].img;
+		hose->curr_hose = textures->hose_end[frame - 4].img;
 		frame--;
 	}
-	else if (hose->on == false && frame == 0)
-		hose->curr_hose = textures()->hose_idle.img;
+	check_flame(hose, map_objects(), /*textures,*/ frame);
 }
 
 void	create_hose(t_hose *hose)
 {
+	player()->hose = hose;
 	hose->curr_hose = textures()->hose_idle.img;
 	hose->x = (game()->game_width / 2) - (hose->curr_hose.w / 2);
 	hose->y = game()->game_height - hose->curr_hose.h;

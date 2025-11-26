@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 16:46:43 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/19 20:33:03 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 20:28:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,46 +35,22 @@ void	get_speed_modifiers(t_frame *frame)
 	frame->rot_speed = frame_time * 3.0;
 }
 
-void	turn_left(t_player *player, t_frame *frame)
+void	rotate_camera(t_player *player, double rot_speed)
 {
 	double	old_dir_x;
 	double	old_plane_x;
 
 	old_dir_x = player->dir_x;
 	old_plane_x = player->plane_x;
-	if (player->turn_left)
-	{
-		player->dir_x = player->dir_x * cos(-frame->rot_speed) 
-			- player->dir_y * sin(-frame->rot_speed);
-		player->dir_y = old_dir_x * sin (-frame->rot_speed) 
-			+ player->dir_y * cos(-frame->rot_speed);
-		player->plane_x = player->plane_x * cos(-frame->rot_speed)
-			- player->plane_y * sin(-frame->rot_speed);
-		player->plane_y = old_plane_x * sin(-frame->rot_speed)
-			+ player->plane_y * cos(-frame->rot_speed);
-	}
+	player->dir_x = player->dir_x * cos(rot_speed) 
+		- player->dir_y * sin(rot_speed);
+	player->dir_y = old_dir_x * sin (rot_speed) 
+		+ player->dir_y * cos(rot_speed);
+	player->plane_x = player->plane_x * cos(rot_speed)
+		- player->plane_y * sin(rot_speed);
+	player->plane_y = old_plane_x * sin(rot_speed)
+		+ player->plane_y * cos(rot_speed);
 }
-
-void	turn_right(t_player *player, t_frame *frame)
-{
-	double	old_dir_x;
-	double	old_plane_x;
-
-	old_dir_x = player->dir_x;
-	old_plane_x = player->plane_x;
-	if (player->turn_right)
-	{
-		player->dir_x = player->dir_x * cos(frame->rot_speed) 
-			- player->dir_y * sin(frame->rot_speed);
-		player->dir_y = old_dir_x * sin (frame->rot_speed) 
-			+ player->dir_y * cos(frame->rot_speed);
-		player->plane_x = player->plane_x * cos(frame->rot_speed)
-			- player->plane_y * sin(frame->rot_speed);
-		player->plane_y = old_plane_x * sin(frame->rot_speed)
-			+ player->plane_y * cos(frame->rot_speed);
-	}
-}
-
 
 int	is_wall(t_map_objects *mo, double x, double y)
 {
@@ -102,69 +78,34 @@ int	can_move(t_map_objects *map_objects, double x, double y)
 	return (1);
 }
 
-void	move_left(t_player *player, t_map_objects *map_objects, t_frame *frame)
+void	move(t_player *player, t_map_objects *map_objects, double step_x, double step_y)
 {
-	double	step_x;
-	double	step_y;
-
-	step_x = player->plane_x * frame->move_speed;
-	step_y = player->plane_y * frame->move_speed;
-	
-	if (player->move_left)
-	{
-		if (can_move(map_objects, player->x + step_x, player->y))
-			player->x += step_x;
-		if (can_move(map_objects, player->x, player->y + step_y))
-			player->y += step_y;
-	}
+	if (can_move(map_objects, player->x + step_x, player->y))
+		player->x += step_x;
+	if (can_move(map_objects, player->x, player->y + step_y))
+		player->y += step_y;
 }
 
-void	move_right(t_player *player, t_map_objects *map_objects, t_frame *frame)
+void	check_movement(t_player *player, t_map_objects *mo, t_frame *frame)
 {
-	double	step_x;
-	double	step_y;
-
-	step_x = -player->plane_x * frame->move_speed;
-	step_y = -player->plane_y * frame->move_speed;
-	
-	if (player->move_right)
-	{
-		if (can_move(map_objects, player->x + step_x, player->y))
-			player->x += step_x;
-		if (can_move(map_objects, player->x, player->y + step_y))
-			player->y += step_y;
-	}
-}
-
-void	move_front(t_player *player, t_map_objects *map_objects, t_frame *frame)
-{
-	double	step_x;
-	double	step_y;
-
-	step_x = player->dir_x * frame->move_speed;
-	step_y = player->dir_y * frame->move_speed;
 	if (player->move_front)
 	{
-		if (can_move(map_objects, player->x + step_x, player->y))
-			player->x += step_x;
-		if (can_move(map_objects, player->x, player->y + step_y))
-			player->y += step_y;
+		move(player, mo, player->dir_x * frame->move_speed, 
+			player->dir_y * frame->move_speed);
 	}
-}
-
-void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame)
-{
-	double	step_x;
-	double	step_y;
-
-	step_x = -player->dir_x * frame->move_speed;
-	step_y = -player->dir_y * frame->move_speed;
 	if (player->move_back)
 	{
-		if (can_move(map_objects, player->x + step_x, player->y))
-			player->x += step_x;
-		if (can_move(map_objects, player->x, player->y + step_y))
-			player->y += step_y;
+		move(player, mo, -player->dir_x * frame->move_speed, 
+			-player->dir_y * frame->move_speed);
+	}
+	if (player->move_right)
+	{
+		move(player, mo, -player->plane_x * frame->move_speed, 
+			-player->plane_y * frame->move_speed);
+	}
+	if (player->move_left)
+	{
+		move(player, mo, player->plane_x * frame->move_speed, 
+			player->plane_y * frame->move_speed);
 	}
 }
-
