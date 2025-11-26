@@ -156,6 +156,8 @@ typedef struct	s_raycast
 	int			map_y;
 	int			side;
 	int			hit;
+	bool		door;
+	bool		transparent;
 	double			perp_wall_dist;
 }				t_raycast;
 
@@ -197,6 +199,7 @@ typedef struct s_sprite
 	int			draw_end_x;
 	int			draw_start_y;
 	int			draw_end_y;
+	
 }       		t_sprite;
 
 typedef struct s_door 
@@ -205,6 +208,8 @@ typedef struct s_door
 	int		y;
 	double	open_amount;
 	int		opening;
+	double	offset;
+	double	dist;
 }				t_door;
 
 typedef struct s_texture
@@ -238,6 +243,7 @@ typedef struct s_map_objects
 	int		sprite_count;
 	int		door_count;
 	double	*zbuff;
+	//double	offset;
 	t_sprite	*sprites;
 	t_door		*doors;
 	t_player	player;
@@ -448,10 +454,11 @@ void	calculate_delta_dist(t_raycast *raycast, t_player *player);
 void	calculate_side_dist(t_raycast *raycast, t_player *player);
 void	dda(t_raycast *raycast, t_map_objects *map_objects);
 void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *game);
-void	calculate_texture(int x, t_raycast *raycast, t_textures *textures, t_draw *draw);
+t_texture	calculate_texture(t_map_objects *mo, t_raycast *raycast, t_textures *textures, t_draw *draw);
 int	get_tex_color(int tex_x, int tex_y, t_texture *text);
 void	draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
 double get_door_open_amount(t_map_objects *mo, int x, int y);
+t_door	*find_door(int max, t_door *d, int x, int y);
 
 /*---------- frame_managment.c ----------*/
 double	get_time(void);
@@ -465,6 +472,7 @@ void	move_back(t_player *player, t_map_objects *map_objects, t_frame *frame);
 
 /*---------- fire_sprites.c ----------------*/
 void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta);
+void	animate_doors(t_door *d, t_map_objects *mo, t_player *p, double delta);
 
 /*---------- lost ----------------*/
 

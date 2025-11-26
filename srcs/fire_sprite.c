@@ -29,21 +29,39 @@ void	animate_sprites(t_sprite *s, t_map_objects *mo, double delta)
 	}
 }
 
-void	animate_doors(t_door *d, t_map_objects *mo, double delta)
+int		player_close_to_door(t_map_objects *mo, t_player *p)
+{
+	int		step_x;
+	int		step_y;
+
+	step_x = (int)(p->plane_x * frame()->move_speed - MARGIN);
+	step_y = (int)(p->plane_y * frame()->move_speed - MARGIN);
+
+	return (mo->map[step_y][step_x] == 'D');
+}
+
+void	animate_doors(t_door *d, t_map_objects *mo, t_player *p, double delta)
 {
 	int	i;
 
 	i = 0;
 	while (i < mo->door_count)
 	{
+		d[i].dist = ((p->x - 0.5) - d[i].x) * ((p->x - 0.5) - d[i].x) 
+			+ ((p->y - 0.5) - d[i].y) * ((p->y - 0.5) - d[i].y);
+		if (d[i].dist <= 2)
+			d[i].opening = 1;
+		else
+			d[i].opening = -1;
 		if (d[i].opening == 1)
-			d[i].open_amount += delta * 3.0;
+			d[i].open_amount += delta * 1.5;
 		else if (d[i].opening == -1)
-			d->open_amount -= delta *0.3;
-		if (d[i].open_amount < 0)
-			d[i].open_amount = 0;
-		else if (d[i].open_amount > 1)
+			d[i].open_amount -= delta * 1.5;
+		if (d[i].open_amount >= 1)
 			d[i].open_amount = 1;
+		else if (d[i].open_amount <= 0)
+			d[i].open_amount = 0;
+		d[i].offset = mo->doors[i].open_amount * 0.5;
 		i++;
 	}
 }
@@ -153,5 +171,3 @@ void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta
 		i++;
 	}
 }
-
-

@@ -33,6 +33,7 @@ t_raycast	*raycast(void)
 		raycast.side = -1;
 		raycast.hit = 0;
 		raycast.perp_wall_dist = 0;
+		raycast.door = false;
 		initialized = 1;
 	}
 	return (&raycast);
@@ -56,16 +57,19 @@ t_draw		*draw(void)
 void    raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *draw)
 {
  	int	x;
+	t_texture	tex;
 
 	x = 0;
 	while (x < game->game_width)
 	{
+		raycast->transparent = false;
 		raycast->camera_x = 2 * (x / (double)(game->game_width)) - 1;
 		calculate_delta_dist(raycast, player);
 		calculate_side_dist(raycast, player);
 		dda(raycast, map_objects());
 		calculate_wall(raycast, draw, player, game);
-		calculate_texture(x, raycast, textures(), draw);
+		tex = calculate_texture(map_objects(), raycast, textures(), draw);
+		draw_tex_pixel(draw, screens(), tex, x);
 		map_objects()->zbuff[x] = raycast->perp_wall_dist;
 		x++;
 	}
@@ -100,23 +104,36 @@ void	draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x)
 	}
 }
 
-void	calculate_texture(int x, t_raycast *raycast, t_textures *textures, t_draw *draw)
+t_texture	calculate_texture(t_map_objects *mo, t_raycast *r, t_textures *t, t_draw *d)
 {
 	t_texture	tex;
+	t_door	*door_hit;
 
-	if (raycast->side == 0 && raycast->ray_dir_x > 0)
-		tex = textures->wall[EA];
-	else if (raycast->side == 0 && raycast->ray_dir_x < 0)
-		tex = textures->wall[WE];
-	else if (raycast->side == 1 && raycast->ray_dir_y > 0)
-		tex = textures->wall[SO];
-	else if (raycast->side == 1 && raycast->ray_dir_y < 0)
-		tex = textures->wall[NO];
-	draw->tex_x = (int)(draw->wall_x * (double)tex.img.w);
-	if ((raycast->side == 0 && raycast->ray_dir_x > 0) 
-			|| (raycast->side == 1 && raycast->ray_dir_y > 0))
-		draw->tex_x = tex.img.w - draw->tex_x - 1;
-	draw_tex_pixel(draw, screens(), tex, x);
+	door_hit = find_door(mo->door_count, mo->doors, r->map_x, r->map_y);
+	if (r->door == false)
+	{
+		if (r->side == 0 && r->ray_dir_x > 0)
+			tex = t->wall[EA];
+		else if (r->side == 0 && r->ray_dir_x < 0)
+			tex = t->wall[WE];
+		else if (r->side == 1 && r->ray_dir_y > 0)
+			tex = t->wall[SO];
+		else if (r->side == 1 && r->ray_dir_y < 0)
+			tex = t->wall[NO];
+		d->tex_x = (int)(d->wall_x * (double)tex.img.w);
+		if ((r->side == 0 && r->ray_dir_x > 0) 
+				|| (r->side == 1 && r->ray_dir_y > 0))
+			d->tex_x = tex.img.w - d->tex_x - 1;
+	}
+	else 
+	{
+		tex = t->door;
+		if (d->wall_x < 0.5)
+			d->tex_x = (int)(((d->wall_x + door_hit->offset) / 0.5) * (tex.img.w / 2));
+		else
+			d->tex_x = (int)(((d->wall_x  - door_hit->offset) / 0.5) * (tex.img.w / 2));		
+	}
+	return (tex);
 }
 
 void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *game)
@@ -128,7 +145,7 @@ void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *
 		draw->wall_x = player->y + raycast->perp_wall_dist
 			* raycast->ray_dir_y;
 	}
-	else
+	else if (raycast->side == 1)
 	{
 		raycast->perp_wall_dist = raycast->side_dist_y 
 			- raycast->delta_dist_y;
@@ -153,15 +170,63 @@ double get_door_open_amount(t_map_objects *mo, int x, int y)
 	while (i < mo->door_count)
 	{
 		if (mo->doors[i].x == x && mo->doors[i].y == y)
+		{
+			mo->doors[i].offset = mo->doors[i].open_amount * 0.5; 
 			return (mo->doors[i].open_amount);
+		}
 		i++;
 	}
 	return (0);
 }
 
+int	ray_hit_door(t_map_objects *mo, t_raycast *r, t_player *p)
+{
+	double	left_edge;
+	double	right_edge;
+	double	tmp_wall_x;
+	double	perp;
+	t_door	*door_hit;
+
+	door_hit = find_door(mo->door_count, mo->doors, r->map_x, r->map_y);
+	//get_door_open_amount(mo, r->map_y, r->map_x);
+	left_edge = 0.5 - door_hit->offset;
+	right_edge = 0.5 + door_hit->offset;
+	//printf("offset: %f\n", mo->offset);
+	if (r->side == 0)
+	{
+		perp = r->side_dist_x - r->delta_dist_x;
+		tmp_wall_x = p->y + perp * r->ray_dir_y;
+	}
+	else
+	{
+		perp = r->side_dist_y - r->delta_dist_y;
+		tmp_wall_x = p->x + perp * r->ray_dir_x;
+	}
+	tmp_wall_x -= floor(tmp_wall_x);
+	if (tmp_wall_x > left_edge && tmp_wall_x < right_edge)
+		return (0);
+	r->door = true;
+	return (1);
+}
+
+t_door	*find_door(int max, t_door *d, int x, int y)
+{
+	int	i;
+
+	i = 0;
+	while (i < max)
+	{
+		if (x == d[i].x && y == d[i].y)
+			return (&d[i]);
+		i++;
+	}
+	return (NULL);
+}
+
 void	dda(t_raycast *r, t_map_objects *mo)
 {
 	r->hit = 0;
+	r->door = false;
 	while (r->hit == 0)
 	{
 		if (r->side_dist_x < r->side_dist_y)
@@ -179,10 +244,7 @@ void	dda(t_raycast *r, t_map_objects *mo)
 		if (mo->map[r->map_y][r->map_x] == '1')
 			r->hit = 1;
 		else if (mo->map[r->map_y][r->map_x] == 'D')
-		{
-			if (get_door_open_amount(mo, r->map_x, r->map_y) < 0.95)
-				r->hit = 1;
-		}
+			r->hit = ray_hit_door(mo, r, player());
 	}
 }
 
