@@ -38,6 +38,7 @@ void	render_background(t_image *canva, int game_width, int game_height)
 void	render()
 {
 	render_background(&screens()->canva, game()->game_width, game()->game_height);
+	animate_doors(map_objects()->doors, map_objects(), player(), frame()->frame_time);
 	raycaster(game(), raycast(), player(), draw());
 	get_speed_modifiers(frame());
 	render_fire_sprites(game(), map_objects(), map_objects()->sprites, frame()->frame_time);

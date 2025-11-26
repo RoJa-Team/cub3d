@@ -56,6 +56,8 @@ void	deallocate(void)
 		free_map();
 	if (map_objects()->sprites)
 		free(map_objects()->sprites);
+	if (map_objects()->doors)
+		free(map_objects()->doors);
 	if (map_objects()->zbuff)
 		free(map_objects()->zbuff);
 	free_textures(textures());

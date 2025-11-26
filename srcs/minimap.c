@@ -84,12 +84,5 @@ void	create_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player)
 	minimap->cell_size = minimap->map_w / (minimap->offsets.radius * 2 + 1);
 	minimap->map_x = minimap->border + 1 + ((minimap->map_w - ((minimap->offsets.end_x - minimap->offsets.start_x) * minimap->cell_size)) / 2);
 	minimap->map_y = minimap->border + 1 + ((minimap->map_h - ((minimap->offsets.end_y - minimap->offsets.start_y) * minimap->cell_size)) / 2);
-	debug("minimap->offsets.start_x", minimap->offsets.start_x);
-	debug("minimap->offsets.start_y", minimap->offsets.start_y);
-	debug("minimap->offsets.end_x", minimap->offsets.end_x);
-	debug("minimap->offsets.end_y", minimap->offsets.end_y);
-	debug("player->y", player->y);
-	debug("player->x", player->x);
-	debug("minimap->cell_size", minimap->cell_size);
 	draw_minimap(minimap, map_objs, player);
 }
