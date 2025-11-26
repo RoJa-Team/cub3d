@@ -59,7 +59,9 @@ void	init_doors(t_door *d, int x, int y)
 	d->x = x;
 	d->y = y;
 	d->open_amount = 0;
-	d->opening = 0;
+	d->opening = -1;
+	d->offset = 0;
+	d->dist = 0;
 }
 
 void	init_map_textures(t_map_objects *mo, t_sprite *s, t_door *d)
@@ -84,7 +86,7 @@ void	init_map_textures(t_map_objects *mo, t_sprite *s, t_door *d)
 			}
 			else if (mo->map[y][x] == 'D' && j < mo->door_count)
 			{
-				init_doors(&d[i], x, y);
+				init_doors(&d[j], x, y);
 				j++;
 			}
 			x++;

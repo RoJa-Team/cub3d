@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/26 20:26:49 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:08:13 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	render(void)
 		rotate_camera(_player, _frame->rot_speed);
 	render_background(&_screens->canva, _game->game_width, _game->game_height);
 	get_speed_modifiers(_frame);
+	animate_doors(mo->doors, mo, _player, _frame->frame_time);
 	raycaster(_game, raycast(), _player, draw());
 	render_fire_sprites(_game, mo, mo->sprites, _frame->frame_time);
 	render_hud(_screens, mo, _player);
