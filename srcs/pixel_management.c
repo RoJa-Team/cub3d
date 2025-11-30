@@ -22,7 +22,7 @@ void	put_pixel(t_image *img, int x, int y, int color)
 	char	*dst;
 
 	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
 void	put_pixel_img(t_image *img, int x, int y, int color)
@@ -50,5 +50,6 @@ void	put_pixel_img_safe(t_image *img, int x, int y, int color)
 
 unsigned int	get_pixel_colour(t_image *img, int x, int y)
 {
-	return (*(unsigned int *)((img->addr + (y * img->line_len) + (x * img->bpp / 8))));
+	return (*(unsigned int *)
+		((img->addr + (y * img->line_len) + (x * img->bpp / 8))));
 }

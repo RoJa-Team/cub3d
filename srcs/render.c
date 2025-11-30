@@ -35,9 +35,10 @@ void	render_background(t_image *canva, int game_width, int game_height)
 	}
 }
 
-void	render_hud(t_screens *screens, t_map_objects *map_objs, t_player *player)
+void	render_hud(t_screens *screens, t_map_objects *map_objs,
+	t_player *player, double delta)
 {
-	update_hose(&screens->hud.hose, textures());
+	update_hose(&screens->hud.hose, textures(), delta);
 	put_img_to_img(&screens->canva, &screens->hud.hose.curr_hose,
 		screens->hud.hose.x, screens->hud.hose.y);
 	if (game()->open_map == true)
@@ -61,8 +62,8 @@ void	render(void)
 	t_frame			*_frame;
 	t_player		*_player;
 	t_screens		*_screens;
-	t_map_objects 	*mo;
-	
+	t_map_objects	*mo;
+
 	_game = game();
 	_frame = frame();
 	_player = player();
@@ -78,6 +79,7 @@ void	render(void)
 	animate_doors(mo->doors, mo, _player, _frame->frame_time);
 	raycaster(_game, raycast(), _player, draw());
 	render_fire_sprites(_game, mo, mo->sprites, _frame->frame_time);
-	render_hud(_screens, mo, _player);
-	mlx_put_image_to_window(_game->mlx, _game->win, _screens->canva.img_ptr, _game->image_x, _game->image_y);
+	render_hud(_screens, mo, _player, _frame->frame_time);
+	mlx_put_image_to_window(_game->mlx, _game->win,
+		_screens->canva.img_ptr, _game->image_x, _game->image_y);
 }
