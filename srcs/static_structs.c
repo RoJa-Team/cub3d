@@ -6,15 +6,15 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 19:31:35 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_maps_objects	*map_objects(void)
+t_map_objects	*map_objects(void)
 {
-	static t_maps_objects	map_objects;
+	static t_map_objects	map_objects;
 	static int				initialized;
 
 	if (!initialized)

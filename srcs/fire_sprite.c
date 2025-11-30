@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 15:51:11 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/30 19:31:35 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	draw_sprite_column(t_sprite *s, int stripe, t_game *g)
 	}
 }
 
-void	render_fire_sprites(t_game *g, t_maps_objects *mo,
+void	render_fire_sprites(t_game *g, t_map_objects *mo,
 	t_sprite *s, double delta)
 {
 	int			i;

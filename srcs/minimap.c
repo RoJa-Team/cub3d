@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 19:33:30 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 19:40:15 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_minimap(t_map *minimap, t_maps_objects *map_objs, t_player *player)
+void	draw_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player)
 {
 	t_helper	h;
 
@@ -39,7 +39,7 @@ minimap->cell - minimap->cell / 4);
 	draw_player(minimap, h.x, h.y, MAP_PLAYER);
 }
 
-void	calc_minimap_offsets(t_offsets *offsets, t_maps_objects *mo,
+void	calc_minimap_offsets(t_offsets *offsets, t_map_objects *mo,
 	t_player *player)
 {
 	offsets->start_y = (int)floor(player->y - offsets->radius - 0.5);
@@ -68,7 +68,7 @@ void	calc_minimap_offsets(t_offsets *offsets, t_maps_objects *mo,
 		offsets->end_x = mo->map_width;
 }
 
-void	create_minimap(t_map *minimap, t_maps_objects *map_objs,
+void	create_minimap(t_map *minimap, t_map_objects *map_objs,
 	t_player *player)
 {
 	new_image(&minimap->map, game()->game_height * 0.2,

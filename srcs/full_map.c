@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 13:32:36 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/30 19:31:35 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_full_map(t_map *full_map, t_maps_objects *map_objs,
+void	draw_full_map(t_map *full_map, t_map_objects *map_objs,
 	t_player *player)
 {
 	int	i;
@@ -61,7 +61,7 @@ void	draw_map_background(t_map *map)
 	}
 }
 
-void	create_full_map(t_map *full_map, t_maps_objects *map_objs,
+void	create_full_map(t_map *full_map, t_map_objects *map_objs,
 	t_player *player)
 {
 	new_image(&full_map->map, game()->game_height * 0.8,

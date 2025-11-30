@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:56:14 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 19:31:21 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	create_screens(t_screens *screens)
 	create_finish(&screens->finish);
 }
 
-void	allocate_map_objects(t_maps_objects *mo)
+void	allocate_map_objects(t_map_objects *mo)
 {
 	mo->sprites = malloc(sizeof(t_sprite) * mo->sprite_count);
 	if (!mo->sprites)
@@ -46,7 +46,7 @@ void	allocate_map_objects(t_maps_objects *mo)
 	init_map_textures(mo, mo->sprites, mo->doors);
 }
 
-void	allocate_zbuffer(t_maps_objects *mo, t_screens *sc)
+void	allocate_zbuffer(t_map_objects *mo, t_screens *sc)
 {
 	mo->zbuff = malloc(sizeof(double) * sc->canva.w);
 	if (!mo->zbuff)

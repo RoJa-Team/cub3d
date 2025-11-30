@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 19:43:40 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ typedef struct s_map_objects
 	char		**map;
 	t_sprite	*sprites;
 	t_door		*doors;
-}				t_maps_objects;
+}				t_map_objects;
 
 typedef struct s_map
 {
@@ -316,7 +316,7 @@ t_player		*player(void);
 t_frame			*frame(void);
 t_textures		*textures(void);
 t_screens		*screens(void);
-t_maps_objects	*map_objects(void);
+t_map_objects	*map_objects(void);
 
 /*---------- static_structs_2.c ----------*/
 t_game			*game(void);
@@ -339,27 +339,27 @@ void			get_aspect_ratio(t_res *display);
 /*---------- prepare_resources.c ----------*/
 void			load_textures(t_textures *textures);
 void			create_screens(t_screens *screens);
-void			allocate_map_objects(t_maps_objects *mo);
-void			allocate_zbuffer(t_maps_objects *mo, t_screens *sc);
+void			allocate_map_objects(t_map_objects *mo);
+void			allocate_zbuffer(t_map_objects *mo, t_screens *sc);
 void			prepare_resources(void);
 
 /*---------- init_visuals.c ----------*/
 void			init_sprites(t_sprite *s, t_textures *textures, int x, int y);
 void			init_doors(t_door *d, int x, int y);
-void			init_map_textures(t_maps_objects *mo, t_sprite *s, t_door *d);
+void			init_map_textures(t_map_objects *mo, t_sprite *s, t_door *d);
 
 /*---------- full_map.c ----------*/
-void			draw_full_map(t_map *full_map, t_maps_objects *map_objs,
+void			draw_full_map(t_map *full_map, t_map_objects *map_objs,
 					t_player *player);
-void			create_full_map(t_map *full_map, t_maps_objects *map_objs,
+void			create_full_map(t_map *full_map, t_map_objects *map_objs,
 					t_player *player);
 
 /*---------- minimap.c ----------*/
-void			draw_minimap(t_map *minimap, t_maps_objects *map_objs,
+void			draw_minimap(t_map *minimap, t_map_objects *map_objs,
 					t_player *player);
 void			calc_minimap_offsets(t_offsets *offsets,
-					t_maps_objects *map_objs, t_player *player);
-void			create_minimap(t_map *minimap, t_maps_objects *map_objs,
+					t_map_objects *map_objs, t_player *player);
+void			create_minimap(t_map *minimap, t_map_objects *map_objs,
 					t_player *player);
 
 /*---------- cells.c ----------*/
@@ -381,7 +381,7 @@ void			update_hose(t_hose *hose, t_textures *textures, double delta);
 /*----------- render.c -----------*/
 void			render_background(t_image *canva, int game_width,
 					int game_height);
-void			render_hud(t_screens *screens, t_maps_objects *map_objs,
+void			render_hud(t_screens *screens, t_map_objects *map_objs,
 					t_player *player, double delta);
 void			render(void);
 
@@ -480,18 +480,18 @@ void			calculate_wall(t_raycast *raycast, t_draw *draw,
 					t_player *player, t_game *game);
 void			calculate_delta_dist(t_raycast *raycast, t_player *player);
 void			calculate_side_dist(t_raycast *raycast, t_player *player);
-t_texture		calculate_texture(t_maps_objects *mo, t_raycast *raycast,
+t_texture		calculate_texture(t_map_objects *mo, t_raycast *raycast,
 					t_textures *textures, t_draw *draw);
 
 /*---------- raycaster_2.c ----------*/
 void			draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex,
 					int x);
-void			dda(t_raycast *raycast, t_maps_objects *map_objects);
+void			dda(t_raycast *raycast, t_map_objects *map_objects);
 t_texture		get_wall_texture(t_raycast *r, t_textures *t, t_draw *d);
 
 /*---------- raycast_utils.c ----------*/
-double			get_door_open_amount(t_maps_objects *mo, int x, int y);
-int				ray_hit_door(t_maps_objects *mo, t_raycast *r, t_player *p);
+double			get_door_open_amount(t_map_objects *mo, int x, int y);
+int				ray_hit_door(t_map_objects *mo, t_raycast *r, t_player *p);
 t_door			*find_door(int max, t_door *d, int x, int y);
 int				get_tex_color(int tex_x, int tex_y, t_texture *text);
 
@@ -499,28 +499,28 @@ int				get_tex_color(int tex_x, int tex_y, t_texture *text);
 double			get_time(void);
 void			get_speed_modifiers(t_frame *frame);
 void			rotate_camera(t_player *player, double rot_speed);
-int				is_wall(t_maps_objects *mo, double x, double y);
-int				can_move(t_maps_objects *map_objects, double x, double y);
-void			move(t_player *player, t_maps_objects *map_objects,
+int				is_wall(t_map_objects *mo, double x, double y);
+int				can_move(t_map_objects *map_objects, double x, double y);
+void			move(t_player *player, t_map_objects *map_objects,
 					double step_x, double step_y);
-void			check_movement(t_player *player, t_maps_objects *mo,
+void			check_movement(t_player *player, t_map_objects *mo,
 					t_frame *frame);
 
 /*---------- fire_sprite.c ----------------*/
 void			transform_sprite(t_player *p, t_sprite *s, t_game *r);
 void			project_sprite(t_sprite *s, t_game *r);
 void			draw_sprite_column(t_sprite *s, int stripe, t_game *g);
-void			render_fire_sprites(t_game *g, t_maps_objects *mo, t_sprite *s,
+void			render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s,
 					double delta);
 
 /*---------- fire_sprite_utils.c ----------------*/
-void			animate_sprites(t_sprite *s, t_maps_objects *mo,
+void			animate_sprites(t_sprite *s, t_map_objects *mo,
 					t_textures *textures, double delta);
-void			animate_doors(t_door *d, t_maps_objects *mo, t_player *p,
+void			animate_doors(t_door *d, t_map_objects *mo, t_player *p,
 					double delta);
-void			dissipate_fire(t_sprite *sprite, t_maps_objects *mo,
+void			dissipate_fire(t_sprite *sprite, t_map_objects *mo,
 					t_textures *textures);
-int				player_close_to_door(t_maps_objects *mo, t_player *p);
-void			sort_sprites(t_sprite *s, t_maps_objects *mo, t_player *p);
+int				player_close_to_door(t_map_objects *mo, t_player *p);
+void			sort_sprites(t_sprite *s, t_map_objects *mo, t_player *p);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 18:22:44 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 19:31:35 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	render_background(t_image *canva, int game_width, int game_height)
 	}
 }
 
-void	render_hud(t_screens *screens, t_maps_objects *map_objs,
+void	render_hud(t_screens *screens, t_map_objects *map_objs,
 	t_player *player, double delta)
 {
 	update_hose(&screens->hud.hose, textures(), delta);
@@ -62,7 +62,7 @@ void	render(void)
 	t_frame			*_frame;
 	t_player		*_player;
 	t_screens		*_screens;
-	t_maps_objects	*mo;
+	t_map_objects	*mo;
 
 	_game = game();
 	_frame = frame();
