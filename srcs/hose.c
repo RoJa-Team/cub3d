@@ -29,32 +29,39 @@ void	check_flame(t_hose *hose, t_map_objects *mo, /*t_textures *textures,*/ int 
 	}
 }
 
-void	update_hose(t_hose *hose, t_textures *textures)
+void	update_hose(t_hose *h, t_textures *textures, double delta)
 {
-	static int	frame;
-
-	if (hose->on == true)
+	h->frame_time += delta;
+	if (h->on == true)
 	{
-		if (frame > 11)
-			frame = frame - 7;
-		if (frame < 4)
-			hose->curr_hose = textures->hose_start[frame].img;
-		else if (frame > 3)
-			hose->curr_hose = textures->hose_on[frame - 4].img;
-		frame++;
-	}
-	else if (hose->on == false && frame != 0)
-	{
-		if (frame < 4)
+		if (h->frame > 11)
+			h->frame = h->frame - 7;
+		if (h->frame < 4)
+			h->curr_hose = textures->hose_start[h->frame].img;
+		else if (h->frame > 3)
+			h->curr_hose = textures->hose_on[h->frame - 4].img;
+		if (h->frame_time >= h->anim_speed)
 		{
-			frame = 0;
-			hose->curr_hose = textures->hose_idle.img;
+			h->frame_time = 0.0;
+			h->frame++;
+		}	
+	}
+	else if (h->on == false && h->frame != 0)
+	{
+		if (h->frame < 4)
+		{
+			h->frame = 0;
+			h->curr_hose = textures->hose_idle.img;
 			return ;
 		}
-		hose->curr_hose = textures->hose_end[frame - 4].img;
-		frame--;
+		h->curr_hose = textures->hose_end[h->frame - 4].img;
+		if (h->frame_time >= h->anim_speed)
+		{
+			h->frame_time = 0.0;
+			h->frame--;
+		}
 	}
-	check_flame(hose, map_objects(), /*textures,*/ frame);
+	check_flame(h, map_objects(), /*textures,*/ h->frame);
 }
 
 void	create_hose(t_hose *hose)
@@ -64,4 +71,7 @@ void	create_hose(t_hose *hose)
 	hose->x = (game()->game_width / 2) - (hose->curr_hose.w / 2);
 	hose->y = game()->game_height - hose->curr_hose.h;
 	hose->on = false;
+	hose->frame = 0;
+	hose->frame_time = 0;
+	hose->anim_speed = 0.066;
 }
