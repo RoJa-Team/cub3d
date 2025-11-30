@@ -125,6 +125,9 @@ typedef struct s_hose
 	int		y;
 	bool	on;
 	bool	power;
+	int			frame;
+	double		frame_time;
+	double		anim_speed;
 	t_image	curr_hose;
 }       		t_hose;
 
@@ -353,11 +356,11 @@ void	draw_border(t_image *img, int x, int y, int border);
 
 /*------------- hose.c -------------*/
 void	create_hose(t_hose *hose);
-void	update_hose(t_hose *hose, t_textures *textures);
+void	update_hose(t_hose *hose, t_textures *textures, double delta);
 
 /*----------- render.c -----------*/
 void	render_background(t_image *canva, int game_width, int game_height);
-void	render_hud(t_screens *screens, t_map_objects *map_objs, t_player *player);
+void	render_hud(t_screens *screens, t_map_objects *map_objs, t_player *player, double delta);
 void	render(void);
 
 /*---------- image_manipulation.c ----------*/
