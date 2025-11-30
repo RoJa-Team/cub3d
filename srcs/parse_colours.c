@@ -34,19 +34,34 @@ void	get_colour(t_identifier ident, char *line, int i, int j)
 		while (line[i] != '\0' && line[i] != '\n' && ft_isspace(line[i]))
 			i++;
 		if ((line[i] < '0' || line[i] > '9'))
-			return (catch()->set("Error\n%s: Invalid colour value {%s}",
+			return (catch()->set("Error\n%s: Invalid colour value {%c}",
 					__func__, line[i]), deallocate());
 		rgb[j] = 0;
-		while (line[i] != '\0' && (line[i] >= '0' && line[i] <= '9'))
-			rgb[j] = rgb[j] * 10 + (line[i++] - 48);
-		if (rgb[j] < 0 || rgb[j] > 255)
-			return (catch()->set("Error\n%s: Invalid colour value {%s}",
-					__func__, line[i]), deallocate());
+		check_rgb(line, &rgb[j], &i);
 		j++;
 		while (line[i] != '\0' && line[i] != '\n' && ft_isspace(line[i]))
 			i++;
 		if (line[i] == ',')
 			i++;
 	}
+	if (line[i] != '\0' && line[i] != '\n')
+	{
+		return (catch()->set("Error\n%s: Invalid char for rgb",
+				__func__), deallocate());
+	}
 	assign_colour(ident, rgb);
+}
+
+void	check_rgb(char *line, int *rgb, int *i)
+{
+	while (line[*i] != '\0' && line[*i] != ',' && line[*i] != '\n')
+	{
+		if ((line[*i] < '0' || line[*i] > '9'))
+			return (catch()->set("Error\n%s: Invalid colour value {%c}",
+					__func__, line[*i]), deallocate());
+		*rgb = *rgb * 10 + (line[(*i)++] - 48);
+	}
+	if (*rgb < 0 || *rgb > 255)
+		return (catch()->set("Error\n%s: Invalid colour value {%d}",
+				__func__, *rgb), deallocate());
 }
