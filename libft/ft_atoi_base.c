@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 01:40:32 by rafasant          #+#    #+#             */
-/*   Updated: 2025/01/04 16:53:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:51:15 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	check_base(char *base)
 	i = 0;
 	while (base[i] != '\0')
 	{
-		if (base[i] == '-' || base[i] == '+' || base[i] == ' ' || \
-		(base[i] >= 9 && base[i] <= 13))
+		if (base[i] == '-' || base[i] == '+' || base[i] == ' '
+			|| (base[i] >= 9 && base[i] <= 13))
 			return (1);
 		j = 1;
 		while (base[i + j] != '\0')
