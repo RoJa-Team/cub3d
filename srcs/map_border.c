@@ -6,24 +6,27 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 20:26:50 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/14 20:27:08 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 16:24:53 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int lerp(int a, int b, float t)
+int	lerp(int a, int b, float t)
 {
-    return a + (int)((b - a) * t);
+	return (a + (int)((b - a) * t));
 }
 
-int gradient_brown(float t)
+int	gradient_brown(float t)
 {
-    // Dark → light brown
-    int r = lerp(60, 160, t);
-    int g = lerp(35, 110, t);
-    int b = lerp(20, 60, t);
-    return create_rgb(r, g, b);
+	int	r;
+	int	g;
+	int	b;
+
+	r = lerp(60, 160, t);
+	g = lerp(35, 110, t);
+	b = lerp(20, 60, t);
+	return (create_rgb(r, g, b));
 }
 
 void	draw_border(t_image *img, int x, int y, int border)

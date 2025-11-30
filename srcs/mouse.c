@@ -6,49 +6,11 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 14:34:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/26 22:08:34 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 14:41:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	mouse_hide(t_xvar *xvar, t_win_list *win)
-{
-	static char data[1] = {0};
-	Cursor cursor;
-	Pixmap blank;
-	XColor dummy;
-
-	blank = XCreateBitmapFromData(xvar->display, win->window, data, 1, 1);
-	cursor = XCreatePixmapCursor(xvar->display, blank, blank, &dummy, &dummy, 0, 0);
-	XDefineCursor(xvar->display, win->window, cursor);
-	XFreePixmap(xvar->display, blank);
-	XFreeCursor(xvar->display, cursor);
-}
-
-void	mouse_show(t_xvar *xvar, t_win_list *win)
-{
-	XUndefineCursor(xvar->display, win->window);
-}
-
-void	lock_mouse()
-{
-	int	grab;
-
-	grab = XGrabPointer(game()->mlx->display, game()->win->window, True, 
-	ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync, 
-	GrabModeAsync, game()->win->window, None, CurrentTime);
-	if (grab != GrabSuccess)
-		return ((void)catch()->set("Error\n%s: Failed locking mouse to window.", 
-			__func__), deallocate());
-	// mlx_mouse_hide(game()->mlx, game()->win);
-}
-
-void	unlock_mouse()
-{
-	XUngrabPointer(game()->mlx->display, CurrentTime);
-	// mouse_show(game()->mlx, game()->win);
-}
 
 int	center_mouse(t_game *game, int *last_x, int x)
 {
@@ -65,7 +27,7 @@ int	mouse_movement(int x, int y, t_game *game)
 {
 	int			diff_x;
 	static int	last_x = -1;
-	
+
 	(void)y;
 	if (game->paused)
 		return (0);
@@ -88,7 +50,7 @@ int	mouse_movement(int x, int y, t_game *game)
 	return (0);
 }
 
-int mouse_press(int button, int mouse_x, int mouse_y, t_game *game)
+int	mouse_press(int button, int mouse_x, int mouse_y, t_game *game)
 {
 	if (button == 1)
 	{
@@ -100,7 +62,7 @@ int mouse_press(int button, int mouse_x, int mouse_y, t_game *game)
 	return (0);
 }
 
-int mouse_release(int button, int mouse_x, int mouse_y, t_game *game)
+int	mouse_release(int button, int mouse_x, int mouse_y, t_game *game)
 {
 	if (button == 1)
 	{

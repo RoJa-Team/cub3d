@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 20:02:51 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/15 18:32:20 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 14:47:02 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ float	calc_cell_size(float width1, float height1, float width2, float height2)
 		cell = cell_x;
 	else
 		cell = cell_y;
-	return cell;
+	return (cell);
 }
 
 int	get_cell_colour(char cell)
@@ -42,11 +42,32 @@ int	get_cell_colour(char cell)
 	return (MAP_WALL);
 }
 
-void	draw_cell(t_map *map, int x, int y, int colour, int cell)
+void	draw_cell(t_map *map, int x, int y, int colour)
 {
 	int	c_x;
 	int	c_y;
-	
+
+	c_y = 0;
+	while (c_y <= map->cell / 2)
+	{
+		c_x = 0;
+		while (c_x < map->cell)
+		{
+			put_pixel_img(&map->map, x + c_x, y + c_y, colour);
+			put_pixel_img(&map->map, x + c_x, (y + map->cell) - c_y, colour);
+			c_x++;
+		}
+		c_y++;
+	}
+}
+
+void	draw_player(t_map *map, int x, int y, int colour)
+{
+	int	c_x;
+	int	c_y;
+	int	cell;
+
+	cell = map->cell / 2;
 	c_y = 0;
 	while (c_y <= cell / 2)
 	{

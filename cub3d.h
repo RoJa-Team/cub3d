@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/26 21:07:01 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 17:41:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <X11/Xatom.h>
 # include <sys/time.h>
+# include <X11/extensions/Xfixes.h>
 # include "libft/libft.h"
 # include "catch_lib/catch.h"
 # include "minilibx/mlx.h"
@@ -59,6 +60,16 @@ enum {
 	ON_EXPOSE = 12,
 	ON_DESTROY = 17
 };
+
+typedef struct s_helper
+{
+	int			i;
+	int			j;
+	int			x;
+	int			y;
+	int			column;
+	int			row;
+}				t_helper;
 
 typedef struct s_res
 {
@@ -262,7 +273,7 @@ typedef struct s_map
 	int			map_h;
 	int			map_x;
 	int			map_y;
-	int			cell_size;
+	int			cell;
 	int			border;
 	t_image		map;
 	t_offsets	offsets;
@@ -299,14 +310,22 @@ typedef	struct s_game
 
 /*---------- parse_file.c ----------*/
 void	check_filename(char *file);
-t_file	*get_file_content(char *file);
+t_file	*get_file_content(char *file, int fd);
+void	parse_textures_colours(t_file **content);
+int		check_element(char *line);
+void	parse_file(char *file);
+
+/*---------- parse_file_utils.c ----------*/
+t_file	*new_file_content(char *line);
+void	clear_list(t_file *content);
+
+/*---------- parse_textures.c ----------*/
 char	*get_texture_path(char *line);
 void	get_texture(t_orientation orien, char *line);
+
+/*---------- parse_colours.c ----------*/
 void	assign_colour(t_identifier ident, int *rgb);
-void	get_colour(t_identifier ident, char *line);
-int		check_element(char *line);
-void 	parse_textures_colours(t_file **content);
-void	parse_file(char *file);
+void	get_colour(t_identifier ident, char *line, int i, int j);
 
 /*---------- static_structs.c ----------*/
 t_game			*game(void);
@@ -317,6 +336,7 @@ t_map_objects	*map_objects(void);
 t_raycast		*raycast(void);
 t_draw			*draw(void);
 t_frame			*frame(void);
+t_helper		*helper(void);
 
 /*---------- resolution.c ----------*/
 int 	get_frame_extents(int *w_frame_size);
@@ -344,7 +364,8 @@ void	create_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
 /*---------- cells.c ----------*/
 float	calc_cell_size(float width1, float height1, float width2, float height2);
 int		get_cell_colour(char cell);
-void	draw_cell(t_map *map, int x, int y, int colour, int cell);
+void	draw_cell(t_map *map, int x, int y, int colour);
+void	draw_player(t_map *map, int x, int y, int colour);
 
 /*---------- map_border.c ----------*/
 int		lerp(int a, int b, float t);
@@ -381,7 +402,7 @@ void	put_pixel_img(t_image *img, int x, int y, int color);
 /*---------- clear.c ----------*/
 void	free_texture(t_texture *texture);
 void	deallocate(void);
-int		close_game(void *param);
+int		close_game(t_game *game);
 
 /*---------- clear_textures.c ----------*/
 void	free_textures_wall(t_textures *textures);
@@ -391,8 +412,8 @@ void	free_textures_misc(t_textures *textures);
 void	free_textures(t_textures *textures);
 
 /*---------- window.c ----------*/
-int		game_state();
-void	open_window(void);
+int		game_state(t_game *game);
+void	open_window(t_game *game);
 void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
 unsigned int	get_pixel_colour(t_image *img, int x, int y);
 
@@ -406,11 +427,11 @@ void	new_image(t_image *img, int width, int height);
 void	copy_image(t_image *dest, t_image *src);
 void	resize_image(t_image *image, int ratio);
 int		calc_zoom_ratio(t_image *img, int game_height);
-void	scale_hose_images(t_textures *texs);
+void	scale_hose_images(t_textures *texs, int (*f)(t_image *img, int game_height));
 
 /*---------- mouse.c ----------*/
-void	lock_mouse();
-void	unlock_mouse();
+void	lock_mouse(t_game *game);
+void	unlock_mouse(t_game *game);
 int		center_mouse(t_game *game, int *last_x, int x);
 int		mouse_movement(int x, int y, t_game *game);
 int 	mouse_press(int button, int mouse_x, int mouse_y, t_game *game);
@@ -421,8 +442,8 @@ int		create_rgb(int r, int g, int b);
 void	put_pixel(t_image *img, int x, int y, int color);
 
 /*---------- hooks.c ----------*/
-int	key_press(int keycode, void *param);
-int	key_release(int keycode, void *param);
+int		key_press(int keycode, t_game *game);
+int		key_release(int keycode, void *param);
 
 /*---------- map_parse.c ----------*/
 void	init_map_objects();

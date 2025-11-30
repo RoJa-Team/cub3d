@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:43:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/24 21:44:53 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 14:54:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	check_flame(t_hose *hose, t_map_objects *mo, /*t_textures *textures,*/ int frame)
+void	check_flame(t_hose *hose, t_map_objects *mo, int frame)
 {
 	int	i;
 
@@ -23,7 +23,9 @@ void	check_flame(t_hose *hose, t_map_objects *mo, /*t_textures *textures,*/ int 
 	i = 0;
 	while (i < mo->sprite_count)
 	{
-		if (hose->power == true && fabs(player()->x - mo->sprites[i].x) < 1 && fabs(player()->y - mo->sprites[i].y) < 1 && mo->sprites[i].dissip == 0)
+		if (hose->power == true && fabs(player()->x - mo->sprites[i].x) < 1.5
+			&& fabs(player()->y - mo->sprites[i].y) < 1.5
+			&& mo->sprites[i].dissip == 0)
 			mo->sprites[i].dissip = 1;
 		i++;
 	}
@@ -54,7 +56,7 @@ void	update_hose(t_hose *hose, t_textures *textures)
 		hose->curr_hose = textures->hose_end[frame - 4].img;
 		frame--;
 	}
-	check_flame(hose, map_objects(), /*textures,*/ frame);
+	check_flame(hose, map_objects(), frame);
 }
 
 void	create_hose(t_hose *hose)

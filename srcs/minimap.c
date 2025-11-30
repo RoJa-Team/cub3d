@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 19:33:30 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/26 21:13:10 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 16:16:26 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,29 @@
 
 void	draw_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player)
 {
-	int	i;
-	int	j;
-	int	x;
-	int	y;
+	t_helper	h;
 
-	i = minimap->offsets.start_y;
-	y = minimap->map_y;
-	while (i < minimap->offsets.end_y)
+	h.i = minimap->offsets.start_y;
+	h.y = minimap->map_y;
+	while (h.i < minimap->offsets.end_y)
 	{
-		j = minimap->offsets.start_x;
-		x = minimap->map_x;
-		while (j < minimap->offsets.end_x)
+		h.j = minimap->offsets.start_x;
+		h.x = minimap->map_x;
+		while (h.j < minimap->offsets.end_x)
 		{
-			draw_cell(minimap, x, y, get_cell_colour(map_objs->map[i][j]),
-				minimap->cell_size);
-			x = x + minimap->cell_size;
-			j++;
+			draw_cell(minimap, h.x, h.y,
+				get_cell_colour(map_objs->map[h.i][h.j]));
+			h.x = h.x + minimap->cell;
+			h.j++;
 		}
-		y = y + minimap->cell_size;
-		i++;
+		h.y = h.y + minimap->cell;
+		h.i++;
 	}
-	x = minimap->map_x + ((player->x - minimap->offsets.start_x) * \
-minimap->cell_size - minimap->cell_size / 4);
-	y = minimap->map_y + ((player->y - minimap->offsets.start_y) * \
-minimap->cell_size - minimap->cell_size / 4);
-	draw_cell(minimap, x, y, MAP_PLAYER, minimap->cell_size / 2);
+	h.x = minimap->map_x + ((player->x - minimap->offsets.start_x) * \
+minimap->cell - minimap->cell / 4);
+	h.y = minimap->map_y + ((player->y - minimap->offsets.start_y) * \
+minimap->cell - minimap->cell / 4);
+	draw_player(minimap, h.x, h.y, MAP_PLAYER);
 }
 
 void	calc_minimap_offsets(t_offsets *offsets, t_map_objects *mo,
@@ -86,12 +83,12 @@ void	create_minimap(t_map *minimap, t_map_objects *map_objs,
 	if (minimap->offsets.radius < 1)
 		minimap->offsets.radius = 1;
 	calc_minimap_offsets(&minimap->offsets, map_objs, player);
-	minimap->cell_size = minimap->map_w / (minimap->offsets.radius * 2 + 1);
+	minimap->cell = minimap->map_w / (minimap->offsets.radius * 2 + 1);
 	minimap->map_x = minimap->border + ((minimap->map_w - \
 ((minimap->offsets.end_x - minimap->offsets.start_x) * \
-minimap->cell_size)) / 2);
+minimap->cell)) / 2);
 	minimap->map_y = minimap->border + ((minimap->map_h - \
 ((minimap->offsets.end_y - minimap->offsets.start_y) * \
-minimap->cell_size)) / 2);
+minimap->cell)) / 2);
 	draw_minimap(minimap, map_objs, player);
 }

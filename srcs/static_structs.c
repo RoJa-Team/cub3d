@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 21:39:39 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/26 20:32:34 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 16:14:18 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,17 @@ t_game	*game(void)
 		game.mlx = mlx_init();
 	}
 	return (&game);
+}
+
+t_helper	*helper(void)
+{
+	static t_helper	helper;
+
+	helper.i = 0;
+	helper.j = 0;
+	helper.x = 0;
+	helper.y = 0;
+	helper.column = 0;
+	helper.row = 0;
+	return (&helper);
 }

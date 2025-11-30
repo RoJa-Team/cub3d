@@ -6,7 +6,7 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/29 19:44:47 by rafasant          #+#    #+#              #
-#    Updated: 2025/11/19 22:34:48 by rafasant         ###   ########.fr        #
+#    Updated: 2025/11/30 17:16:10 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,10 @@ NAME 		= cub3D
 RM			= rm -rf
 HEADERS 	= $(addprefix -I, . catch_lib minilibx libft)
 INCLUDE 	= catch_lib/catch.a minilibx/libmlx.a libft/libft.a
-LINKS		= -lXext -lX11 -lm -lz
-SRCS 		= $(addprefix ${SRCS_DIR}, cub3d.c parse_file.c static_structs.c \
-window.c map_parse.c hooks.c mouse.c print_functions.c clear.c \
+LINKS		= -lXext -lXfixes -lX11 -lm -lz
+SRCS 		= $(addprefix ${SRCS_DIR}, cub3d.c parse_file.c parse_file_utils.c \
+parse_textures.c parse_colours.c static_structs.c \
+window.c map_parse.c hooks.c mouse.c mouse_utils.c print_functions.c clear.c \
 prepare_resources.c xpms.c pixel_management.c images.c image_manipulation.c \
 screens.c resolution.c resolution_helpers.c raycaster.c frame_managment.c \
 render.c full_map.c minimap.c clear_textures.c cells.c map_border.c \

@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 21:56:14 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/24 20:39:38 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 15:20:41 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	load_textures(t_textures *textures)
 	load_textures_fire(textures);
 	load_textures_hose(textures);
 	load_textures_misc(textures);
-	scale_hose_images(textures);
+	scale_hose_images(textures, calc_zoom_ratio);
 }
 
 void	create_screens(t_screens *screens)

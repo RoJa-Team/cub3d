@@ -1,23 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.c                                            :+:      :+:    :+:   */
+/*   parse_file_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/01 19:20:37 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 17:05:11 by rafasant         ###   ########.fr       */
+/*   Created: 2025/11/30 17:09:13 by rafasant          #+#    #+#             */
+/*   Updated: 2025/11/30 17:18:21 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	main(int argc, char **argv)
+t_file	*new_file_content(char *line)
 {
-	if (argc != 2)
-		return (0);
-	parse_file(argv[1]);
-	prepare_resources();
-	open_window(game());
-	return (0);
+	t_file	*new;
+
+	new = malloc(sizeof(t_file));
+	if (!new)
+		return (catch()->set("Error\n%s: Error allocating memory",
+				__func__), NULL);
+	new->line = line;
+	new->next = NULL;
+	return (new);
+}
+
+void	clear_list(t_file *content)
+{
+	t_file	*tmp;
+
+	if (!content)
+		return ;
+	while (content != NULL)
+	{
+		tmp = content;
+		content = content->next;
+		free(tmp->line);
+		free(tmp);
+	}
+	return ;
 }
