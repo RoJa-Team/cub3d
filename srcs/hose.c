@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:43:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 17:47:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 17:54:40 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@ void	check_flame(t_hose *hose, t_map_objects *mo, int frame)
 	}
 }
 
+void	check_frame_time(t_hose *h)
+{
+	if (h->on == true && h->frame_time >= h->anim_speed)
+	{
+		h->frame_time = 0.0;
+		h->frame++;
+	}
+	else if (h->on == false && h->frame_time >= h->anim_speed)
+	{
+		h->frame_time = 0.0;
+		h->frame--;
+	}
+}
+
 void	update_hose(t_hose *h, t_textures *textures, double delta)
 {
 	h->frame_time += delta;
@@ -42,11 +56,7 @@ void	update_hose(t_hose *h, t_textures *textures, double delta)
 			h->curr_hose = textures->hose_start[h->frame].img;
 		else if (h->frame > 3)
 			h->curr_hose = textures->hose_on[h->frame - 4].img;
-		if (h->frame_time >= h->anim_speed)
-		{
-			h->frame_time = 0.0;
-			h->frame++;
-		}	
+		check_frame_time(h);
 	}
 	else if (h->on == false && h->frame != 0)
 	{
@@ -57,13 +67,9 @@ void	update_hose(t_hose *h, t_textures *textures, double delta)
 			return ;
 		}
 		h->curr_hose = textures->hose_end[h->frame - 4].img;
-		if (h->frame_time >= h->anim_speed)
-		{
-			h->frame_time = 0.0;
-			h->frame--;
-		}
+		check_frame_time(h);
 	}
-	check_flame(h, map_objects(), frame);
+	check_flame(h, map_objects(), h->frame);
 }
 
 void	create_hose(t_hose *hose)
