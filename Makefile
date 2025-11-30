@@ -19,7 +19,7 @@ INCLUDE 	= catch_lib/catch.a minilibx/libmlx.a libft/libft.a
 LINKS		= -lXext -lXfixes -lX11 -lm -lz
 SRCS 		= $(addprefix ${SRCS_DIR}, cub3d.c parse_file.c parse_file_utils.c \
 parse_textures.c parse_colours.c static_structs.c \
-window.c map_parse.c hooks.c mouse.c mouse_utils.c print_functions.c clear.c \
+window.c map_parse.c hooks.c mouse.c mouse_utils.c clear.c \
 prepare_resources.c xpms.c pixel_management.c images.c image_manipulation.c \
 screens.c resolution.c resolution_helpers.c raycaster.c frame_managment.c \
 render.c full_map.c minimap.c clear_textures.c cells.c map_border.c \

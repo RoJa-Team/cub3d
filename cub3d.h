@@ -329,6 +329,7 @@ void	get_texture(t_orientation orien, char *line);
 /*---------- parse_colours.c ----------*/
 void	assign_colour(t_identifier ident, int *rgb);
 void	get_colour(t_identifier ident, char *line, int i, int j);
+void		check_rgb(char *line, int *rgb, int *i);
 
 /*---------- static_structs.c ----------*/
 t_map_objects	*map_objects(void);
