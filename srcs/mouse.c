@@ -6,11 +6,30 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 14:34:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/26 21:02:57 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 22:08:34 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	mouse_hide(t_xvar *xvar, t_win_list *win)
+{
+	static char data[1] = {0};
+	Cursor cursor;
+	Pixmap blank;
+	XColor dummy;
+
+	blank = XCreateBitmapFromData(xvar->display, win->window, data, 1, 1);
+	cursor = XCreatePixmapCursor(xvar->display, blank, blank, &dummy, &dummy, 0, 0);
+	XDefineCursor(xvar->display, win->window, cursor);
+	XFreePixmap(xvar->display, blank);
+	XFreeCursor(xvar->display, cursor);
+}
+
+void	mouse_show(t_xvar *xvar, t_win_list *win)
+{
+	XUndefineCursor(xvar->display, win->window);
+}
 
 void	lock_mouse()
 {
@@ -22,13 +41,13 @@ void	lock_mouse()
 	if (grab != GrabSuccess)
 		return ((void)catch()->set("Error\n%s: Failed locking mouse to window.", 
 			__func__), deallocate());
-	mlx_mouse_hide(game()->mlx, game()->win);
+	// mlx_mouse_hide(game()->mlx, game()->win);
 }
 
 void	unlock_mouse()
 {
 	XUngrabPointer(game()->mlx->display, CurrentTime);
-	mlx_mouse_show(game()->mlx, game()->win);
+	// mouse_show(game()->mlx, game()->win);
 }
 
 int	center_mouse(t_game *game, int *last_x, int x)

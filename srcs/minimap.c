@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 19:33:30 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/19 22:25:36 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:13:10 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void	create_minimap(t_map *minimap, t_map_objects *map_objs,
 		minimap->offsets.radius = 1;
 	calc_minimap_offsets(&minimap->offsets, map_objs, player);
 	minimap->cell_size = minimap->map_w / (minimap->offsets.radius * 2 + 1);
-	minimap->map_x = minimap->border + 1 + ((minimap->map_w - \
+	minimap->map_x = minimap->border + ((minimap->map_w - \
 ((minimap->offsets.end_x - minimap->offsets.start_x) * \
 minimap->cell_size)) / 2);
-	minimap->map_y = minimap->border + 1 + ((minimap->map_h - \
+	minimap->map_y = minimap->border + ((minimap->map_h - \
 ((minimap->offsets.end_y - minimap->offsets.start_y) * \
 minimap->cell_size)) / 2);
 	draw_minimap(minimap, map_objs, player);

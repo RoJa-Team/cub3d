@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 13:32:36 by joafern2          #+#    #+#             */
-/*   Updated: 2025/11/15 18:46:55 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/26 21:12:26 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	draw_map_background(t_map *map)
 		x = 0;
 		while (x <= map->map_w)
 		{
-			put_pixel_img(&map->map, x + map->border + 1, y + map->border + 1, MAP_WALL);
-			put_pixel_img(&map->map, x + map->border + 1, map->map_h - y + map->border + 1, MAP_WALL);
+			put_pixel_img(&map->map, x + map->border, y + map->border, MAP_WALL);
+			put_pixel_img(&map->map, x + map->border, map->map_h - y + map->border, MAP_WALL);
 			x++;
 		}
 		y++;
@@ -71,7 +71,7 @@ void	create_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player)
 	full_map->cell_size = calc_cell_size(full_map->map_w, full_map->map_h, 
 		map_objs->map_width, map_objs->map_height);
 	draw_map_background(full_map);
-	full_map->map_x = full_map->border + 1 + ((full_map->map_w - (map_objs->map_width * full_map->cell_size)) / 2);
-	full_map->map_y = full_map->border + 1 + ((full_map->map_h - (map_objs->map_height * full_map->cell_size)) / 2);
+	full_map->map_x = full_map->border + ((full_map->map_w - (map_objs->map_width * full_map->cell_size)) / 2);
+	full_map->map_y = full_map->border + ((full_map->map_h - (map_objs->map_height * full_map->cell_size)) / 2);
     draw_full_map(full_map, map_objs, player);
 }
