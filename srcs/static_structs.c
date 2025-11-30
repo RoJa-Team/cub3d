@@ -27,17 +27,16 @@ t_map_objects	*map_objects(void)
 		map_objects.sprite_count = 0;
 		map_objects.door_count = 0;
 	}
-
 	return (&map_objects);
 }
 
 t_player	*player(void)
 {
-	static t_player	player;
+	static t_player		player;
 	static int			initialized;
 
 	if (!initialized)
-	{	
+	{
 		initialized = 1;
 		player.x = 0;
 		player.y = 0;
@@ -49,20 +48,19 @@ t_player	*player(void)
 		player.move_right = 0;
 		player.move_front = 0;
 		player.move_back = 0;
-		//player->tool = NULL;
 	}
 	return (&player);
 }
 
 t_frame	*frame(void)
 {
-	static t_frame	frame;
+	static t_frame		frame;
 	static int			initialized;
 
 	if (!initialized)
-	{	
-		frame.move_speed = 0;	
-		frame.rot_speed = 0;	
+	{
+		frame.move_speed = 0;
+		frame.rot_speed = 0;
 		initialized = 1;
 	}
 	return (&frame);
@@ -85,24 +83,11 @@ t_textures	*textures(void)
 t_screens	*screens(void)
 {
 	static t_screens	screens;
-	static int		initialized;
+	static int			initialized;
 
 	if (!initialized)
 	{
 		initialized = 1;
 	}
 	return (&screens);
-}
-
-t_game	*game(void)
-{
-	static t_game	game;
-	static int		initialized;
-
-	if (!initialized)
-	{
-		initialized = 1;
-		game.mlx = mlx_init();
-	}
-	return (&game);
 }

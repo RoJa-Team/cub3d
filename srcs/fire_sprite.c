@@ -12,84 +12,6 @@
 
 #include "cub3d.h"
 
-void	dissipate_fire(t_sprite *sprite, t_map_objects *mo, t_textures *textures)
-{
-	if (sprite->active == false)
-		return ;
-	if (sprite->dissip <= 5)
-	{
-		sprite->img = textures->fire_end[sprite->dissip - 1].img;
-		sprite->dissip++;
-	}
-	else
-	{
-		sprite->active = false;
-		mo->map[(int)sprite->y][(int)sprite->x] = '0';
-	}
-}
-
-void	animate_sprites(t_sprite *s, t_map_objects *mo, t_textures *textures, double delta)
-{
-	int	i;
-
-	i = 0;
-	while (i < mo->sprite_count)
-	{
-		s[i].frame_time += delta;
-		if (s[i].frame_time >= s[i].anim_speed)
-		{
-			s[i].frame_time = 0.0;
-			if (s[i].dissip == 0 && s[i].active == true)
-			{
-				s[i].frame = (s[i].frame + 1) % 8;
-				s[i].img = textures->fire_loop[s[i].frame].img;
-			}
-			else
-			{
-				dissipate_fire(&s[i], mo, textures);
-			}
-		}
-		i++;
-	}
-}
-
-int		player_close_to_door(t_map_objects *mo, t_player *p)
-{
-	int		step_x;
-	int		step_y;
-
-	step_x = (int)(p->plane_x * frame()->move_speed - MARGIN);
-	step_y = (int)(p->plane_y * frame()->move_speed - MARGIN);
-
-	return (mo->map[step_y][step_x] == 'D');
-}
-
-void	animate_doors(t_door *d, t_map_objects *mo, t_player *p, double delta)
-{
-	int	i;
-
-	i = 0;
-	while (i < mo->door_count)
-	{
-		d[i].dist = ((p->x - 0.5) - d[i].x) * ((p->x - 0.5) - d[i].x) 
-			+ ((p->y - 0.5) - d[i].y) * ((p->y - 0.5) - d[i].y);
-		if (d[i].dist <= 2)
-			d[i].opening = 1;
-		else
-			d[i].opening = -1;
-		if (d[i].opening == 1)
-			d[i].open_amount += delta * 1.5;
-		else if (d[i].opening == -1)
-			d[i].open_amount -= delta * 1.5;
-		if (d[i].open_amount >= 1)
-			d[i].open_amount = 1;
-		else if (d[i].open_amount <= 0)
-			d[i].open_amount = 0;
-		d[i].offset = mo->doors[i].open_amount * 0.5;
-		i++;
-	}
-}
-
 void	transform_sprite(t_player *p, t_sprite *s, t_game *r)
 {
 	double	inv_det;
@@ -101,7 +23,8 @@ void	transform_sprite(t_player *p, t_sprite *s, t_game *r)
 	inv_det = 1.0 / (p->plane_x * p->dir_y - p->dir_x * p->plane_y);
 	s->transform_x = inv_det * (p->dir_y * sx - p->dir_x * sy);
 	s->transform_y = inv_det * (-p->plane_y * sx + p->plane_x * sy);
-	s->screen_x = (int)((r->game_width / 2) * (1 + s->transform_x / s->transform_y));
+	s->screen_x = (int)((r->game_width / 2)
+			* (1 + s->transform_x / s->transform_y));
 }
 
 void	project_sprite(t_sprite *s, t_game *r)
@@ -111,7 +34,7 @@ void	project_sprite(t_sprite *s, t_game *r)
 	s->draw_start_y = -s->height / 2 + r->game_height / 2;
 	if (s->draw_start_y < 0)
 		s->draw_start_y = 0;
-	s->draw_end_y = s->height / 2 + r->game_height /2;
+	s->draw_end_y = s->height / 2 + r->game_height / 2;
 	if (s->draw_end_y >= r->game_height)
 		s->draw_end_y = r->game_height - 1;
 	s->draw_start_x = -s->width / 2 + s->screen_x;
@@ -133,7 +56,7 @@ void	draw_sprite_column(t_sprite *s, int stripe, t_game *g)
 	tex_x = (int)(256 * (stripe - (-s->width / 2 + s->screen_x))
 			* s->img.w / s->width) / 256;
 	if (s->transform_y <= 0 || stripe < 0 || stripe >= g->game_width
-	|| s->transform_y > map_objects()->zbuff[stripe])
+		|| s->transform_y > map_objects()->zbuff[stripe])
 		return ;
 	y = s->draw_start_y;
 	while (y < s->draw_end_y)
@@ -146,35 +69,8 @@ void	draw_sprite_column(t_sprite *s, int stripe, t_game *g)
 	}
 }
 
-void	sort_sprites(t_sprite *s, t_map_objects *mo, t_player *p)
-{
-	int		i;
-	int		j;
-	t_sprite	tmp;
-
-	i = -1;
-	while (++i < mo->sprite_count)
-	{
-		s[i].dist = (p->x - s[i].x) * (p->x - s[i].x) 
-			+ (p->y - s[i].y) * (p->y - s[i].y);
-	}
-	i = -1;
-	while (++i < mo->sprite_count - 1)
-	{
-		j = i;
-		while (++j < mo->sprite_count)
-		{
-			if (s[i].dist < s[j].dist)
-			{
-				tmp = s[i];
-				s[i] = s[j];
-				s[j] = tmp;
-			}
-		}
-	}
-}
-
-void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta)
+void	render_fire_sprites(t_game *g, t_map_objects *mo,
+	t_sprite *s, double delta)
 {
 	int			i;
 	int			stripe;

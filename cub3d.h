@@ -312,14 +312,18 @@ void 	parse_textures_colours(t_file **content);
 void	parse_file(char *file);
 
 /*---------- static_structs.c ----------*/
-t_game			*game(void);
-t_screens		*screens(void);
-t_player		*player(void);
-t_textures		*textures(void);
 t_map_objects	*map_objects(void);
+t_player		*player(void);
+t_frame			*frame(void);
+t_textures		*textures(void);
+t_screens		*screens(void);
+
+/*---------- static_structs_2.c ----------*/
+t_game			*game(void);
 t_raycast		*raycast(void);
 t_draw			*draw(void);
-t_frame			*frame(void);
+t_raycast		*raycast(void);
+t_draw			*draw(void);
 
 /*---------- resolution.c ----------*/
 int 	get_frame_extents(int *w_frame_size);
@@ -333,7 +337,16 @@ int		gcd(int a, int b);
 void 	get_aspect_ratio(t_res *display);
 
 /*---------- prepare_resources.c ----------*/
-void	prepare_resources();
+void	load_textures(t_textures *textures);
+void	create_screens(t_screens *screens);
+void	allocate_map_objects(t_map_objects *mo);
+void	allocate_zbuffer(t_map_objects *mo, t_screens *sc);
+void	prepare_resources(void);
+
+/*---------- init_visuals.c ----------*/
+void	init_sprites(t_sprite *s, t_textures *textures, int x, int y);
+void	init_doors(t_door *d, int x, int y);
+void	init_map_textures(t_map_objects *mo, t_sprite *s, t_door *d);
 
 /*---------- full_map.c ----------*/
 void    draw_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
@@ -428,52 +441,63 @@ int	key_press(int keycode, void *param);
 int	key_release(int keycode, void *param);
 
 /*---------- map_parse.c ----------*/
-void	init_map_objects();
-void	assign_map_lines(t_file *cub_file);
-void	allocate_map(t_file	*cub_file);
 int		map_parse(t_file *cub_file);
-char	*convert_line(char *old_line);
 void	valid_map(char **map);
-char	**empty_array(void);
 int		validate_characters(char **map);
 int		flood_fill(char **map, int x, int y, char **visited);
+int		is_bounded_by_walls(char **map, int height);
+
+/*---------- map_parse_2.c ----------*/
+void	assign_map_lines(t_file *cub_file);
+void	allocate_map(t_file	*cub_file);
+char	*convert_line(char *old_line);
+void	sprite_door_count(char **map, int i, int j);
+
+/*---------- map_parse_utils.c ----------*/
+void	init_map_objects();
+void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y);
 void	initial_orientation(char ori, int x, int y);
 void	free_array(char **array);
-int		is_bounded_by_walls(char **map, int height);
-void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y);
-
-/*---------- map_parse.c ----------*/
-void	print_int(char *info, int data); //TODO remove this
-void	print_long(char *info, long data); //TODO remove this
-void	print_double(char *info, double data); //TODO remove this
-void	print_float(char *info, float data); //TODO remove this
-void	print_char(char *info, char data); //TODO remove this
-void	print_string(char *info, char *data); //TODO remove this
-void	print_pointer(char *info, void *data); //TODO remove this
+char	**empty_array(void);
 
 /*---------- raycaster.c ----------*/
-void    raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *draw);
-void	calculate_delta_dist(t_raycast *raycast, t_player *player);
-void	calculate_side_dist(t_raycast *raycast, t_player *player);
-void	dda(t_raycast *raycast, t_map_objects *map_objects);
-void	calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *game);
+void    	raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *draw);
 t_texture	calculate_texture(t_map_objects *mo, t_raycast *raycast, t_textures *textures, t_draw *draw);
-int	get_tex_color(int tex_x, int tex_y, t_texture *text);
-void	draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
-double get_door_open_amount(t_map_objects *mo, int x, int y);
-t_door	*find_door(int max, t_door *d, int x, int y);
+void		calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *game);
+void		calculate_delta_dist(t_raycast *raycast, t_player *player);
+void		calculate_side_dist(t_raycast *raycast, t_player *player);
+
+/*---------- raycaster_2.c ----------*/
+void		draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
+t_texture	get_wall_texture(t_raycast *r, t_textures *t, t_draw *d);
+void		dda(t_raycast *raycast, t_map_objects *map_objects);
+
+/*---------- raycast_utils.c ----------*/
+double		get_door_open_amount(t_map_objects *mo, int x, int y);
+int			ray_hit_door(t_map_objects *mo, t_raycast *r, t_player *p);
+t_door		*find_door(int max, t_door *d, int x, int y);
+int			get_tex_color(int tex_x, int tex_y, t_texture *text);
 
 /*---------- frame_managment.c ----------*/
-double	get_time(void);
-void	get_speed_modifiers(t_frame *frame);
-void	rotate_camera(t_player *player, double rot_speed);
-void	check_movement(t_player *player, t_map_objects *mo, t_frame *frame);
+double		get_time(void);
+void		get_speed_modifiers(t_frame *frame);
+void		rotate_camera(t_player *player, double rot_speed);
+int			is_wall(t_map_objects *mo, double x, double y);
+int			can_move(t_map_objects *map_objects, double x, double y);
+void		move(t_player *player, t_map_objects *map_objects, double step_x, double step_y);
+void		check_movement(t_player *player, t_map_objects *mo, t_frame *frame);
 
-/*---------- fire_sprites.c ----------------*/
+/*---------- fire_sprite.c ----------------*/
+void	transform_sprite(t_player *p, t_sprite *s, t_game *r);
+void	project_sprite(t_sprite *s, t_game *r);
+void	draw_sprite_column(t_sprite *s, int stripe, t_game *g);
 void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta);
+
+/*---------- fire_sprite_utils.c ----------------*/
+void	animate_sprites(t_sprite *s, t_map_objects *mo, t_textures *textures, double delta);
 void	animate_doors(t_door *d, t_map_objects *mo, t_player *p, double delta);
-
-/*---------- lost ----------------*/
-
+void	dissipate_fire(t_sprite *sprite, t_map_objects *mo, t_textures *textures);
+int		player_close_to_door(t_map_objects *mo, t_player *p);
+void	sort_sprites(t_sprite *s, t_map_objects *mo, t_player *p);
 
 #endif

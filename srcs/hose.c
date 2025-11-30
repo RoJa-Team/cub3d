@@ -23,7 +23,7 @@ void	check_flame(t_hose *hose, t_map_objects *mo, /*t_textures *textures,*/ int 
 	i = 0;
 	while (i < mo->sprite_count)
 	{
-		if (hose->power == true && fabs(player()->x - mo->sprites[i].x) < 1 && fabs(player()->y - mo->sprites[i].y) < 1 && mo->sprites[i].dissip == 0)
+		if (hose->power == true && fabs(player()->x - mo->sprites[i].x) < 1.5 && fabs(player()->y - mo->sprites[i].y) < 1.5 && mo->sprites[i].dissip == 0)
 			mo->sprites[i].dissip = 1;
 		i++;
 	}
