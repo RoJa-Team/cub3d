@@ -6,13 +6,13 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:43:17 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 17:54:40 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:30:58 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	check_flame(t_hose *hose, t_map_objects *mo, int frame)
+void	check_flame(t_hose *hose, t_maps_objects *mo, int frame)
 {
 	int	i;
 

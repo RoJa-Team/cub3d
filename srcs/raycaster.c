@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:45:01 by joafern2          #+#    #+#             */
-/*   Updated: 2025/10/27 22:53:08 by joafern2         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:31:35 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	raycaster(t_game *game, t_raycast *raycast,
 	}
 }
 
-t_texture	calculate_texture(t_map_objects *mo, t_raycast *r,
+t_texture	calculate_texture(t_maps_objects *mo, t_raycast *r,
 	t_textures *t, t_draw *d)
 {
 	t_texture	tex;

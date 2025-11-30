@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 17:45:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:41:22 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,69 +31,25 @@
 # define KEY_S 115
 # define KEY_D 100
 # define KEY_MAP 109 //M
-# define KEY_CTRL 65507
-# define KEY_SPACEBAR 32
-# define KEY_INTERACT 101 //E
 # define KEY_SHOOT 113 //Q
 # define KEY_PAUSE 112 //P
 # define FOV 0.99
 # define MARGIN 0.3
 # define WIDTH 3840 // if < 640, default 640
 # define HEIGHT 2160 // if < 360, default 360
-# define ERROR_IMAGE_ADDR "Error retrieving new image address."
-# 	ifndef MAP
-# 		define MAP_PLAYER 0x00FF00FF
-# 		define MAP_WALL 0x00404040
-# 		define MAP_FLOOR 0x00A0A0A0
-# 		define MAP_DOOR 0x00E0A0E0
-# 		define MAP_FIRE 0x00E64600
-# 		define MINIMAP_RADIUS 3
-# 	endif
-# define debug(info, x) _Generic((x), int: print_int, long: print_long, double: print_double, float: print_float,char: print_char, char *: print_string, void *: print_pointer)(info, x) //TODO remove this
-
-enum {
-	ON_KEYDOWN = 2,
-	ON_KEYUP = 3,
-	ON_MOUSEDOWN = 4,
-	ON_MOUSEUP = 5,
-	ON_MOUSEMOVE = 6,
-	ON_EXPOSE = 12,
-	ON_DESTROY = 17
-};
-
-typedef struct s_helper
-{
-	int			i;
-	int			j;
-	int			x;
-	int			y;
-	int			column;
-	int			row;
-}				t_helper;
-
-typedef struct s_res
-{
-	int	width;
-	int	height;
-	int	aspect_width;
-	int	aspect_height;
-}				t_res;
-
-typedef struct s_offsets
-{
-	int	start_y;
-	int	end_y;
-	int start_x;
-	int end_x;
-	int	radius;
-}				t_offsets;
+# define MAP_PLAYER 0x00FF00FF
+# define MAP_WALL 0x00404040
+# define MAP_FLOOR 0x00A0A0A0
+# define MAP_DOOR 0x00E0A0E0
+# define MAP_FIRE 0x00E64600
+# define MINIMAP_RADIUS 3
 
 typedef enum e_line_type
 {
 	TEXTURE,
 	COLOR,
 	MAP
-}       		t_line_type;
+}				t_line_type;
 
 typedef enum e_orientation
 {
@@ -101,10 +57,9 @@ typedef enum e_orientation
 	SO,
 	WE,
 	EA
-}       		t_orientation;
+}				t_orientation;
 
-
-typedef enum s_identifier
+typedef enum e_identifier
 {
 	WALL,
 	CEILING,
@@ -112,12 +67,39 @@ typedef enum s_identifier
 	DOOR,
 }				t_identifier;
 
+typedef struct s_helper
+{
+	int	i;
+	int	j;
+	int	x;
+	int	y;
+	int	column;
+	int	row;
+}		t_helper;
+
+typedef struct s_res
+{
+	int	width;
+	int	height;
+	int	aspect_width;
+	int	aspect_height;
+}		t_res;
+
+typedef struct s_offsets
+{
+	int	start_y;
+	int	end_y;
+	int	start_x;
+	int	end_x;
+	int	radius;
+}		t_offsets;
+
 typedef struct s_file
 {
 	char			*line;
 	t_line_type		line_type;
 	struct s_file	*next;
-}       		t_file;
+}					t_file;
 
 typedef struct s_image
 {
@@ -128,117 +110,115 @@ typedef struct s_image
 	int		line_len;
 	char	*addr;
 	void	*img_ptr;
-}				t_image;
+}			t_image;
 
 typedef struct s_hose
 {
-	int 	x;
+	int		x;
 	int		y;
+	int		frame;
 	bool	on;
 	bool	power;
-	int			frame;
-	double		frame_time;
-	double		anim_speed;
+	double	frame_time;
+	double	anim_speed;
 	t_image	curr_hose;
-}       		t_hose;
+}			t_hose;
 
 typedef struct s_player
 {
-	// int		run;
-	double			x;
-	double			y;
-	double			dir_x;
-	double			dir_y;
-	double			plane_x;
-	double			plane_y;
-	int			move_left;
-	int			move_right;
-	int			move_front;
-	int			move_back;
-	int			turn_left;
-	int			turn_right;
-	t_hose		*hose;
-}				t_player;
+	int		move_left;
+	int		move_right;
+	int		move_front;
+	int		move_back;
+	int		turn_left;
+	int		turn_right;
+	double	x;
+	double	y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	t_hose	*hose;
+}			t_player;
 
-typedef struct	s_raycast
+typedef struct s_raycast
 {
-	double			camera_x;
-	double			ray_dir_x;
-	double			ray_dir_y;
-	double			delta_dist_x;
-	double			delta_dist_y;
-	double			step_x;
-	double			step_y;
-	double			side_dist_x;
-	double			side_dist_y;
-	int			map_x;
-	int			map_y;
-	int			side;
-	int			hit;
-	bool		door;
-	bool		transparent;
-	double			perp_wall_dist;
-}				t_raycast;
+	int		map_x;
+	int		map_y;
+	int		side;
+	int		hit;
+	bool	door;
+	bool	transparent;
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	step_x;
+	double	step_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	perp_wall_dist;
+}			t_raycast;
 
-
-typedef struct	s_draw
+typedef struct s_draw
 {
-	int			line_height;
-	int			draw_start;
-	int			draw_end;
-	double			wall_x;
-	int			tex_x;
-	int			tex_y;
-	double			step;
-	double			tex_pos;
-	int			color;
-}				t_draw;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		tex_x;
+	int		tex_y;
+	int		color;
+	double	wall_x;
+	double	step;
+	double	tex_pos;
+}			t_draw;
 
 typedef struct s_frame
 {
-	double			move_speed;
-	double			rot_speed;
-	double			frame_time;
+	double	move_speed;
+	double	rot_speed;
+	double	frame_time;
 }			t_frame;
 
 typedef struct s_sprite
 {
-	double		x;
-	double		y;
-	double		dist;
-	int			frame;
-	double		frame_time;
-	double		anim_speed;
-	double		transform_x;
-	double		transform_y;
-	int			screen_x;
-	int			height;
-	int			width;
-	int			draw_start_x;
-	int			draw_end_x;
-	int			draw_start_y;
-	int			draw_end_y;
-	int			dissip;
-	bool		active;
-	t_image		img;
-}       		t_sprite;
+	int		screen_x;
+	int		height;
+	int		width;
+	int		draw_start_x;
+	int		draw_end_x;
+	int		draw_start_y;
+	int		draw_end_y;
+	int		dissip;
+	int		frame;
+	bool	active;
+	double	x;
+	double	y;
+	double	dist;
+	double	frame_time;
+	double	anim_speed;
+	double	transform_x;
+	double	transform_y;
+	t_image	img;
+}			t_sprite;
 
-typedef struct s_door 
+typedef struct s_door
 {
 	int		x;
 	int		y;
-	double	open_amount;
 	int		opening;
+	double	open_amount;
 	double	offset;
 	double	dist;
-}				t_door;
+}			t_door;
 
 typedef struct s_texture
 {
 	char			*path;
 	t_image			img;
 	t_orientation	orient;
-}       		t_texture;
+}					t_texture;
 
 typedef struct s_textures
 {
@@ -253,24 +233,24 @@ typedef struct s_textures
 	t_texture	fire_end[5];
 	t_texture	wall[4];
 	t_texture	door;
-}       		t_textures;
+}				t_textures;
 
 typedef struct s_map_objects
 {
 	int			player_count;
 	int			map_width;
 	int			map_height;
-	char		**map;
 	int			sprite_count;
 	int			door_count;
 	double		*zbuff;
+	char		**map;
 	t_sprite	*sprites;
 	t_door		*doors;
-}       		t_map_objects;
+}				t_maps_objects;
 
 typedef struct s_map
 {
-	int 		x;
+	int			x;
 	int			y;
 	int			map_w;
 	int			map_h;
@@ -280,13 +260,13 @@ typedef struct s_map
 	int			border;
 	t_image		map;
 	t_offsets	offsets;
-}       		t_map;
+}				t_map;
 
 typedef struct s_hud
 {
-	t_hose		hose;
 	t_map		minimap;
 	t_map		full_map;
+	t_hose		hose;
 }				t_hud;
 
 typedef struct s_screens
@@ -299,7 +279,7 @@ typedef struct s_screens
 	t_image		finish;
 }				t_screens;
 
-typedef	struct s_game
+typedef struct s_game
 {
 	int			image_x;
 	int			image_y;
@@ -312,214 +292,234 @@ typedef	struct s_game
 }				t_game;
 
 /*---------- parse_file.c ----------*/
-void	check_filename(char *file);
-t_file	*get_file_content(char *file, int fd);
-void	parse_textures_colours(t_file **content);
-int		check_element(char *line);
-void	parse_file(char *file);
+void			check_filename(char *file);
+t_file			*get_file_content(char *file, int fd);
+void			parse_textures_colours(t_file **content);
+int				check_element(char *line);
+void			parse_file(char *file);
 
 /*---------- parse_file_utils.c ----------*/
-t_file	*new_file_content(char *line);
-void	clear_list(t_file *content);
+t_file			*new_file_content(char *line);
+void			clear_list(t_file *content);
 
 /*---------- parse_textures.c ----------*/
-char	*get_texture_path(char *line);
-void	get_texture(t_orientation orien, char *line);
+char			*get_texture_path(char *line);
+void			get_texture(t_orientation orien, char *line);
 
 /*---------- parse_colours.c ----------*/
-void	assign_colour(t_identifier ident, int *rgb);
-void	get_colour(t_identifier ident, char *line, int i, int j);
+void			assign_colour(t_identifier ident, int *rgb);
+void			get_colour(t_identifier ident, char *line, int i, int j);
 
 /*---------- static_structs.c ----------*/
-t_map_objects	*map_objects(void);
 t_player		*player(void);
 t_frame			*frame(void);
 t_textures		*textures(void);
 t_screens		*screens(void);
+t_maps_objects	*map_objects(void);
 
 /*---------- static_structs_2.c ----------*/
 t_game			*game(void);
 t_raycast		*raycast(void);
 t_draw			*draw(void);
-t_raycast		*raycast(void);
-t_draw			*draw(void);
-t_frame			*frame(void);
 t_helper		*helper(void);
 
 /*---------- resolution.c ----------*/
-int 	get_frame_extents(int *w_frame_size);
-int		get_work_area(t_res *display);
-void	fit_aspect_ratio(t_res *display, t_res *window, int *game_width, int *game_height);
-void	calculate_game_resolution(t_game *game);
+int				get_frame_extents(int *w_frame_size);
+int				get_work_area(t_res *display);
+void			fit_aspect_ratio(t_res *display, t_res *window,
+					int *game_width, int *game_height);
+void			calculate_game_resolution(t_game *game);
 
 /*---------- resolution_helpers.c ----------*/
-void	get_window_size(t_res *display, t_res *window);
-int		gcd(int a, int b);
-void 	get_aspect_ratio(t_res *display);
+void			get_window_size(t_res *display, t_res *window);
+int				gcd(int a, int b);
+void			get_aspect_ratio(t_res *display);
 
 /*---------- prepare_resources.c ----------*/
-void	load_textures(t_textures *textures);
-void	create_screens(t_screens *screens);
-void	allocate_map_objects(t_map_objects *mo);
-void	allocate_zbuffer(t_map_objects *mo, t_screens *sc);
-void	prepare_resources(void);
+void			load_textures(t_textures *textures);
+void			create_screens(t_screens *screens);
+void			allocate_map_objects(t_maps_objects *mo);
+void			allocate_zbuffer(t_maps_objects *mo, t_screens *sc);
+void			prepare_resources(void);
 
 /*---------- init_visuals.c ----------*/
-void	init_sprites(t_sprite *s, t_textures *textures, int x, int y);
-void	init_doors(t_door *d, int x, int y);
-void	init_map_textures(t_map_objects *mo, t_sprite *s, t_door *d);
+void			init_sprites(t_sprite *s, t_textures *textures, int x, int y);
+void			init_doors(t_door *d, int x, int y);
+void			init_map_textures(t_maps_objects *mo, t_sprite *s, t_door *d);
 
 /*---------- full_map.c ----------*/
-void    draw_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
-void	create_full_map(t_map *full_map, t_map_objects *map_objs, t_player *player);
+void			draw_full_map(t_map *full_map, t_maps_objects *map_objs,
+					t_player *player);
+void			create_full_map(t_map *full_map, t_maps_objects *map_objs,
+					t_player *player);
 
 /*---------- minimap.c ----------*/
-void 	draw_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
-void	calc_minimap_offsets(t_offsets *offsets, t_map_objects *map_objs, t_player *player);
-void	create_minimap(t_map *minimap, t_map_objects *map_objs, t_player *player);
+void			draw_minimap(t_map *minimap, t_maps_objects *map_objs,
+					t_player *player);
+void			calc_minimap_offsets(t_offsets *offsets,
+					t_maps_objects *map_objs, t_player *player);
+void			create_minimap(t_map *minimap, t_maps_objects *map_objs,
+					t_player *player);
 
 /*---------- cells.c ----------*/
-float	calc_cell_size(float width1, float height1, float width2, float height2);
-int		get_cell_colour(char cell);
-void	draw_cell(t_map *map, int x, int y, int colour);
-void	draw_player(t_map *map, int x, int y, int colour);
+float			calc_cell_size(float width1, float height1, float width2,
+					float height2);
+int				get_cell_colour(char cell);
+void			draw_cell(t_map *map, int x, int y, int colour);
+void			draw_player(t_map *map, int x, int y, int colour);
 
 /*---------- map_border.c ----------*/
-int		lerp(int a, int b, float t);
-int		gradient_brown(float t);
-void	draw_border(t_image *img, int x, int y, int border);
+int				lerp(int a, int b, float t);
+int				gradient_brown(float t);
+void			draw_border(t_image *img, int x, int y, int border);
 
 /*------------- hose.c -------------*/
-void	create_hose(t_hose *hose);
-void	update_hose(t_hose *hose, t_textures *textures, double delta);
+void			create_hose(t_hose *hose);
+void			update_hose(t_hose *hose, t_textures *textures, double delta);
 
 /*----------- render.c -----------*/
-void	render_background(t_image *canva, int game_width, int game_height);
-void	render_hud(t_screens *screens, t_map_objects *map_objs, t_player *player, double delta);
-void	render(void);
+void			render_background(t_image *canva, int game_width,
+					int game_height);
+void			render_hud(t_screens *screens, t_maps_objects *map_objs,
+					t_player *player, double delta);
+void			render(void);
 
 /*---------- image_manipulation.c ----------*/
-int		create_rgb(int r, int g, int b);
+int				create_rgb(int r, int g, int b);
 
 /*----------- screens.c -----------*/
-void	create_canva(t_image *canva);
-void	create_start(t_image *start);
-void	create_pause(t_image *pause);
-void	create_death(t_image *death);
-void	create_finish(t_image *finish);
+void			create_canva(t_image *canva);
+void			create_start(t_image *start);
+void			create_pause(t_image *pause);
+void			create_death(t_image *death);
+void			create_finish(t_image *finish);
 
 /*---------- xpms.c ----------*/
-void	xpm_to_img(char *path, t_image *img);
-void	load_textures_wall(t_textures *textures);
-void	load_textures_fire(t_textures *textures);
-void	load_textures_hose(t_textures *textures);
-void	load_textures_misc(t_textures *textures);
-void	put_pixel_img(t_image *img, int x, int y, int color);
+void			xpm_to_img(char *path, t_image *img);
+void			load_textures_wall(t_textures *textures);
+void			load_textures_fire(t_textures *textures);
+void			load_textures_hose(t_textures *textures);
+void			load_textures_misc(t_textures *textures);
+void			put_pixel_img(t_image *img, int x, int y, int color);
 
 /*---------- clear.c ----------*/
-void	free_texture(t_texture *texture);
-void	deallocate(void);
-int		close_game(t_game *game);
+void			free_texture(t_texture *texture);
+void			deallocate(void);
+int				close_game(t_game *game);
 
 /*---------- clear_textures.c ----------*/
-void	free_textures_wall(t_textures *textures);
-void	free_textures_fire(t_textures *textures);
-void	free_textures_hose(t_textures *textures);
-void	free_textures_misc(t_textures *textures);
-void	free_textures(t_textures *textures);
+void			free_textures_wall(t_textures *textures);
+void			free_textures_fire(t_textures *textures);
+void			free_textures_hose(t_textures *textures);
+void			free_textures_misc(t_textures *textures);
+void			free_textures(t_textures *textures);
 
 /*---------- window.c ----------*/
-int		game_state(t_game *game);
-void	open_window(t_game *game);
-void	put_img_to_img(t_image *dst, t_image *src, int x, int y);
+int				game_state(t_game *game);
+void			open_window(t_game *game);
+void			put_img_to_img(t_image *dst, t_image *src, int x, int y);
 unsigned int	get_pixel_colour(t_image *img, int x, int y);
 
 /*---------- prepare_resources.c ----------*/
-void	load_textures(t_textures *textures);
-void	create_screens(t_screens *screens);
-void	prepare_resources(void);
+void			load_textures(t_textures *textures);
+void			create_screens(t_screens *screens);
+void			prepare_resources(void);
 
 /*---------- images.c ----------*/
-void	new_image(t_image *img, int width, int height);
-void	copy_image(t_image *dest, t_image *src);
-void	resize_image(t_image *image, int ratio);
-int		calc_zoom_ratio(t_image *img, int game_height);
-void	scale_hose_images(t_textures *texs, int (*f)(t_image *img, int game_height));
+void			new_image(t_image *img, int width, int height);
+void			copy_image(t_image *dest, t_image *src);
+void			resize_image(t_image *image, int ratio);
+int				calc_zoom_ratio(t_image *img, int game_height);
+void			scale_hose_images(t_textures *texs, int (*f)(t_image *img,
+						int game_height));
 
 /*---------- mouse.c ----------*/
-void	lock_mouse(t_game *game);
-void	unlock_mouse(t_game *game);
-int		center_mouse(t_game *game, int *last_x, int x);
-int		mouse_movement(int x, int y, t_game *game);
-int 	mouse_press(int button, int mouse_x, int mouse_y, t_game *game);
-int 	mouse_release(int button, int mouse_x, int mouse_y, t_game *game);
+void			lock_mouse(t_game *game);
+void			unlock_mouse(t_game *game);
+int				center_mouse(t_game *game, int *last_x, int x);
+int				mouse_movement(int x, int y, t_game *game);
+int				mouse_press(int button, int mouse_x, int mouse_y,
+					t_game *game);
+int				mouse_release(int button, int mouse_x, int mouse_y,
+					t_game *game);
 
 /*---------- background.c ----------*/
-int		create_rgb(int r, int g, int b);
-void	put_pixel(t_image *img, int x, int y, int color);
+int				create_rgb(int r, int g, int b);
+void			put_pixel(t_image *img, int x, int y, int color);
 
 /*---------- hooks.c ----------*/
-int		key_press(int keycode, t_game *game);
-int		key_release(int keycode, void *param);
+int				key_press(int keycode, t_game *game);
+int				key_release(int keycode, void *param);
 
 /*---------- map_parse.c ----------*/
-int		map_parse(t_file *cub_file);
-void	valid_map(char **map);
-int		validate_characters(char **map);
-int		flood_fill(char **map, int x, int y, char **visited);
-int		is_bounded_by_walls(char **map, int height);
+int				map_parse(t_file *cub_file);
+void			valid_map(char **map);
+int				validate_characters(char **map);
+int				flood_fill(char **map, int x, int y, char **visited);
+int				is_bounded_by_walls(char **map, int height);
 
 /*---------- map_parse_2.c ----------*/
-void	assign_map_lines(t_file *cub_file);
-void	allocate_map(t_file	*cub_file);
-char	*convert_line(char *old_line);
-void	sprite_door_count(char **map, int i, int j);
+void			assign_map_lines(t_file *cub_file);
+void			allocate_map(t_file	*cub_file);
+char			*convert_line(char *old_line);
+void			sprite_door_count(char **map, int i, int j);
 
 /*---------- map_parse_utils.c ----------*/
-void	init_map_objects();
-void	raycast_init(double dir_x, double dir_y, double plane_x, double plane_y);
-void	initial_orientation(char ori, int x, int y);
-void	free_array(char **array);
-char	**empty_array(void);
+void			init_map_objects(void);
+void			raycast_init(double dir_x, double dir_y, double plane_x,
+					double plane_y);
+void			initial_orientation(char ori, int x, int y);
+void			free_array(char **array);
+char			**empty_array(void);
 
 /*---------- raycaster.c ----------*/
-void    	raycaster(t_game *game, t_raycast *raycast, t_player *player, t_draw *draw);
-t_texture	calculate_texture(t_map_objects *mo, t_raycast *raycast, t_textures *textures, t_draw *draw);
-void		calculate_wall(t_raycast *raycast, t_draw *draw, t_player *player, t_game *game);
-void		calculate_delta_dist(t_raycast *raycast, t_player *player);
-void		calculate_side_dist(t_raycast *raycast, t_player *player);
+void			raycaster(t_game *game, t_raycast *raycast, t_player *player,
+					t_draw *draw);
+void			calculate_wall(t_raycast *raycast, t_draw *draw,
+					t_player *player, t_game *game);
+void			calculate_delta_dist(t_raycast *raycast, t_player *player);
+void			calculate_side_dist(t_raycast *raycast, t_player *player);
+t_texture		calculate_texture(t_maps_objects *mo, t_raycast *raycast,
+					t_textures *textures, t_draw *draw);
 
 /*---------- raycaster_2.c ----------*/
-void		draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex, int x);
-t_texture	get_wall_texture(t_raycast *r, t_textures *t, t_draw *d);
-void		dda(t_raycast *raycast, t_map_objects *map_objects);
+void			draw_tex_pixel(t_draw *draw, t_screens *screen, t_texture tex,
+					int x);
+void			dda(t_raycast *raycast, t_maps_objects *map_objects);
+t_texture		get_wall_texture(t_raycast *r, t_textures *t, t_draw *d);
 
 /*---------- raycast_utils.c ----------*/
-double		get_door_open_amount(t_map_objects *mo, int x, int y);
-int			ray_hit_door(t_map_objects *mo, t_raycast *r, t_player *p);
-t_door		*find_door(int max, t_door *d, int x, int y);
-int			get_tex_color(int tex_x, int tex_y, t_texture *text);
+double			get_door_open_amount(t_maps_objects *mo, int x, int y);
+int				ray_hit_door(t_maps_objects *mo, t_raycast *r, t_player *p);
+t_door			*find_door(int max, t_door *d, int x, int y);
+int				get_tex_color(int tex_x, int tex_y, t_texture *text);
 
 /*---------- frame_managment.c ----------*/
-double		get_time(void);
-void		get_speed_modifiers(t_frame *frame);
-void		rotate_camera(t_player *player, double rot_speed);
-int			is_wall(t_map_objects *mo, double x, double y);
-int			can_move(t_map_objects *map_objects, double x, double y);
-void		move(t_player *player, t_map_objects *map_objects, double step_x, double step_y);
-void		check_movement(t_player *player, t_map_objects *mo, t_frame *frame);
+double			get_time(void);
+void			get_speed_modifiers(t_frame *frame);
+void			rotate_camera(t_player *player, double rot_speed);
+int				is_wall(t_maps_objects *mo, double x, double y);
+int				can_move(t_maps_objects *map_objects, double x, double y);
+void			move(t_player *player, t_maps_objects *map_objects,
+					double step_x, double step_y);
+void			check_movement(t_player *player, t_maps_objects *mo,
+					t_frame *frame);
 
 /*---------- fire_sprite.c ----------------*/
-void	transform_sprite(t_player *p, t_sprite *s, t_game *r);
-void	project_sprite(t_sprite *s, t_game *r);
-void	draw_sprite_column(t_sprite *s, int stripe, t_game *g);
-void	render_fire_sprites(t_game *g, t_map_objects *mo, t_sprite *s, double delta);
+void			transform_sprite(t_player *p, t_sprite *s, t_game *r);
+void			project_sprite(t_sprite *s, t_game *r);
+void			draw_sprite_column(t_sprite *s, int stripe, t_game *g);
+void			render_fire_sprites(t_game *g, t_maps_objects *mo, t_sprite *s,
+					double delta);
 
 /*---------- fire_sprite_utils.c ----------------*/
-void	animate_sprites(t_sprite *s, t_map_objects *mo, t_textures *textures, double delta);
-void	animate_doors(t_door *d, t_map_objects *mo, t_player *p, double delta);
-void	dissipate_fire(t_sprite *sprite, t_map_objects *mo, t_textures *textures);
-int		player_close_to_door(t_map_objects *mo, t_player *p);
-void	sort_sprites(t_sprite *s, t_map_objects *mo, t_player *p);
+void			animate_sprites(t_sprite *s, t_maps_objects *mo,
+					t_textures *textures, double delta);
+void			animate_doors(t_door *d, t_maps_objects *mo, t_player *p,
+					double delta);
+void			dissipate_fire(t_sprite *sprite, t_maps_objects *mo,
+					t_textures *textures);
+int				player_close_to_door(t_maps_objects *mo, t_player *p);
+void			sort_sprites(t_sprite *s, t_maps_objects *mo, t_player *p);
 
 #endif
