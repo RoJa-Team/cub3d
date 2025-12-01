@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/12/01 17:34:36 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 18:15:40 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,12 +308,12 @@ void			clear_list(t_file *content);
 
 /*---------- parse_textures.c ----------*/
 char			*get_texture_path(char *line);
-int				get_texture(t_orientation orien, char *line);
+void			get_texture(t_orientation orien, char *line);
 
 /*---------- parse_colours.c ----------*/
-int				assign_colour(t_identifier ident, int *rgb);
-int				get_colour(t_identifier ident, char *line, int i, int j);
-int				check_rgb(char *line, int *rgb, int *i);
+void			assign_colour(t_identifier ident, int *rgb);
+void			get_colour(t_identifier ident, char *line, int i, int j);
+void			check_rgb(char *line, int *rgb, int *i);
 
 /*---------- static_structs.c ----------*/
 t_player		*player(void);

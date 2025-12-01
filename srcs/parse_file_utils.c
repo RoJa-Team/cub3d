@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:09:13 by rafasant          #+#    #+#             */
-/*   Updated: 2025/12/01 17:35:11 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 17:59:28 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,25 +62,19 @@ void	check_textures_colours(t_textures *textures, t_file *content)
 {
 	int	i;
 
+	if (catch()->error_msg != NULL)
+		return (clear_list(content), deallocate());
 	i = 0;
 	while (i < 4)
 	{
 		if (textures->wall[i].path == NULL)
-		{
-			if (catch()->error_msg == NULL)
-				return (catch()->set("Error\n%s: Missing texture in file",
-						__func__), clear_list(content), deallocate());
-			return (clear_list(content), deallocate());
-		}
+			return (catch()->set("Error\n%s: Missing texture in file",
+					__func__), clear_list(content), deallocate());
 		i++;
 	}
 	if (textures->fcolour == -1 || textures->ccolour == -1)
-	{
-		if (catch()->error_msg == NULL)
-			return (catch()->set("Error\n%s: Missing color in file",
-					__func__), clear_list(content), deallocate());
-		return (clear_list(content), deallocate());
-	}
+		return (catch()->set("Error\n%s: Missing color in file",
+				__func__), clear_list(content), deallocate());
 }
 
 void	clear_list(t_file *content)
