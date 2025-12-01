@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 20:31:28 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 17:41:30 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 17:34:39 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,32 @@ void	check_filename(char *file)
 	}
 }
 
-t_file	*get_file_content(char *file, int fd)
+t_file	*get_file_content(int fd)
 {
 	char	*line;
 	t_file	*tmp;
 	t_file	*content;
 	t_file	*new_content;
 
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (catch()->set("Error\n%s: Error opening file", __func__),
-			deallocate(), NULL);
 	content = NULL;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		new_content = new_file_content(line);
-		if (new_content == NULL)
-			return (clear_list(content), deallocate(), NULL);
-		if (content == NULL)
-			content = new_content;
+		if (!ft_strncmp(line, "\n", 1) || line[0] == '\0')
+			free(line);
 		else
-			tmp->next = new_content;
-		tmp = new_content;
+		{
+			new_content = new_file_content(line);
+			if (new_content == NULL)
+				return (clear_list(content), deallocate(), NULL);
+			if (content == NULL)
+				content = new_content;
+			else
+				tmp->next = new_content;
+			tmp = new_content;
+		}
 		line = get_next_line(fd);
 	}
-	close(fd);
 	return (content);
 }
 
@@ -70,14 +70,8 @@ void	parse_textures_colours(t_file **content)
 		tmp = *content;
 		if (tmp == NULL || tmp->line == NULL)
 			return ;
-		if (tmp->line[0] == '\0')
-		{
-		}
-		else
-		{
-			if (!check_element(tmp->line))
-				break ;
-		}
+		if (check_element(tmp->line))
+			break ;
 		*content = tmp->next;
 		if (tmp->line)
 			free(tmp->line);
@@ -88,28 +82,34 @@ void	parse_textures_colours(t_file **content)
 int	check_element(char *line)
 {
 	if (!ft_strncmp(line, "NO", 2))
-		get_texture(NO, &line[2]);
+		return (get_texture(NO, &line[2]));
 	else if (!ft_strncmp(line, "SO", 2))
-		get_texture(SO, &line[2]);
+		return (get_texture(SO, &line[2]));
 	else if (!ft_strncmp(line, "WE", 2))
-		get_texture(WE, &line[2]);
+		return (get_texture(WE, &line[2]));
 	else if (!ft_strncmp(line, "EA", 2))
-		get_texture(EA, &line[2]);
+		return (get_texture(EA, &line[2]));
 	else if (!ft_strncmp(line, "F", 1))
-		get_colour(FLOOR, &line[1], 0, 0);
+		return (get_colour(FLOOR, &line[1], 0, 0));
 	else if (!ft_strncmp(line, "C", 1))
-		get_colour(CEILING, &line[1], 0, 0);
-	else if (ft_strncmp(line, "\n", 1))
-		return (0);
-	return (1);
+		return (get_colour(CEILING, &line[1], 0, 0));
+	else
+		return (1);
 }
 
 void	parse_file(char *file)
 {
+	int		fd;
 	t_file	*content;
 
 	check_filename(file);
-	content = get_file_content(file, 0);
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return ((void) catch()->set("Error\n%s: Error opening file", __func__),
+			deallocate());
+	content = get_file_content(fd);
+	close(fd);
 	parse_textures_colours(&content);
+	check_textures_colours(textures(), content);
 	map_parse(content);
 }

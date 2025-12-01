@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 16:31:12 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 17:08:58 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 17:07:11 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,21 @@ char	*get_texture_path(char *line)
 	path = ft_strndup(&line[i], len);
 	if (path == NULL)
 		return (catch()->set("Error\n%s: Memory allocation failed",
-				__func__), deallocate(), NULL);
+				__func__), NULL);
 	return (path);
 }
 
-void	get_texture(t_orientation orien, char *line)
+int	get_texture(t_orientation orien, char *line)
 {
 	if (textures()->wall[orien].path == NULL)
 	{
 		textures()->wall[orien].orient = orien;
 		textures()->wall[orien].path = get_texture_path(line);
+		if (textures()->wall[orien].path == NULL)
+			return (1);
+		return (0);
 	}
 	else
 		return (catch()->set("Error\n%s: Duplicate map element {%s}",
-				__func__, orien), deallocate());
+				__func__, orien), 1);
 }

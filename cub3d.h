@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 19:21:06 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 19:45:08 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 17:34:36 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ typedef enum e_line_type
 {
 	TEXTURE,
 	COLOR,
-	MAP
+	MAP,
+	INVALID
 }				t_line_type;
 
 typedef enum e_orientation
@@ -294,23 +295,25 @@ typedef struct s_game
 
 /*---------- parse_file.c ----------*/
 void			check_filename(char *file);
-t_file			*get_file_content(char *file, int fd);
+t_file			*get_file_content(int fd);
 void			parse_textures_colours(t_file **content);
 int				check_element(char *line);
 void			parse_file(char *file);
 
 /*---------- parse_file_utils.c ----------*/
 t_file			*new_file_content(char *line);
+t_line_type		check_line_type(char *line);
+void			check_textures_colours(t_textures *textures, t_file *content);
 void			clear_list(t_file *content);
 
 /*---------- parse_textures.c ----------*/
 char			*get_texture_path(char *line);
-void			get_texture(t_orientation orien, char *line);
+int				get_texture(t_orientation orien, char *line);
 
 /*---------- parse_colours.c ----------*/
-void			assign_colour(t_identifier ident, int *rgb);
-void			get_colour(t_identifier ident, char *line, int i, int j);
-void			check_rgb(char *line, int *rgb, int *i);
+int				assign_colour(t_identifier ident, int *rgb);
+int				get_colour(t_identifier ident, char *line, int i, int j);
+int				check_rgb(char *line, int *rgb, int *i);
 
 /*---------- static_structs.c ----------*/
 t_player		*player(void);
