@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 16:31:12 by rafasant          #+#    #+#             */
-/*   Updated: 2025/12/01 17:56:25 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 18:44:52 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	get_texture(t_orientation orien, char *line)
 		textures()->wall[orien].path = get_texture_path(line);
 	}
 	else
-		return ((void) catch()->set("Error\n%s: Duplicate map element {%s}",
-				__func__, orien));
+		return ((void) catch()->set("Error\n%s: Duplicate map element",
+				__func__));
 }

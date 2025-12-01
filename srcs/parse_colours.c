@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 16:32:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/12/01 18:19:56 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 18:44:13 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	assign_colour(t_identifier ident, int *rgb)
 	else if (ident == CEILING && textures()->ccolour == -1)
 		textures()->ccolour = create_rgb(rgb[0], rgb[1], rgb[2]);
 	else
-		return (catch()->set("Error\n%s: Duplicate map element {%s}",
-				__func__, ident));
+		return (catch()->set("Error\n%s: Duplicate map element", __func__));
 }
 
 void	get_colour(t_identifier ident, char *line, int i, int j)
