@@ -6,7 +6,7 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:09:13 by rafasant          #+#    #+#             */
-/*   Updated: 2025/12/01 17:59:28 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 18:25:12 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ t_file	*new_file_content(char *line)
 	new->line_type = check_line_type(line);
 	new->next = NULL;
 	if (new->line_type == INVALID)
-		return (free(new), catch()->set("Error\n%s: Invalid map element",
-				__func__), NULL);
+		return (catch()->set("Error\n%s: Invalid map element {%s}",
+				__func__, new->line), free(new->line), free(new), NULL);
 	return (new);
 }
 
