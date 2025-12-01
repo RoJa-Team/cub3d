@@ -28,7 +28,7 @@ void	xpm_to_img(char *path, t_image *img)
 void	load_textures_wall(t_textures *t)
 {
 	if (t->wall[SO].path != NULL && t->wall[NO].path != NULL
-			&& t->wall[WE].path != NULL && t->wall[EA].path != NULL)
+		&& t->wall[WE].path != NULL && t->wall[EA].path != NULL)
 	{
 		xpm_to_img(t->wall[NO].path, &t->wall[0].img);
 		xpm_to_img(t->wall[SO].path, &t->wall[1].img);
@@ -39,7 +39,6 @@ void	load_textures_wall(t_textures *t)
 		return ((void)catch()->set("Error\n%s: Missing wall textures.",
 				__func__), deallocate());
 }
-	
 
 void	load_textures_fire(t_textures *t)
 {
