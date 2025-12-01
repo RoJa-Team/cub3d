@@ -27,17 +27,10 @@ void	xpm_to_img(char *path, t_image *img)
 
 void	load_textures_wall(t_textures *t)
 {
-	if (t->wall[SO].path != NULL || t->wall[NO].path != NULL
-		|| t->wall[EA].path != NULL || t->wall[WE].path != NULL)
-	{
-		xpm_to_img(t->wall[NO].path, &t->wall[0].img);
-		xpm_to_img(t->wall[SO].path, &t->wall[1].img);
-		xpm_to_img(t->wall[WE].path, &t->wall[2].img);
-		xpm_to_img(t->wall[EA].path, &t->wall[3].img);
-	}
-	else
-		return ((void)catch()->set("Error\n%s: Missing texture.",
-				__func__), deallocate());
+	xpm_to_img(t->wall[NO].path, &t->wall[0].img);
+	xpm_to_img(t->wall[SO].path, &t->wall[1].img);
+	xpm_to_img(t->wall[WE].path, &t->wall[2].img);
+	xpm_to_img(t->wall[EA].path, &t->wall[3].img);
 }
 
 void	load_textures_fire(t_textures *t)
