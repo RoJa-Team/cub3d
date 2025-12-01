@@ -97,16 +97,16 @@ int	is_bounded_by_walls(char **map, int height)
 		j = -1;
 		while (map[i][++j] && map[i][j] != '\n')
 		{
-			if (i == 0 && map[i][j] == '0')
+			if (i == 0 && is_not_wall(map, i, j))
 				return (0);
-			else if (i == (height - 1) && map[i][j] == '0')
+			else if (i == (height - 1) && is_not_wall(map, i, j))
 				return (0);
-			else if (j == 0 && map[i][j] == '0')
+			else if (j == 0 && is_not_wall(map, i, j))
 				return (0);
-			else if (map[i][j] == '0' && (map[i][j + 1] == '\0'
+			else if (is_not_wall(map, i, j) && (map[i][j + 1] == '\0'
 				|| map[i][j + 1] == '\n' || map[i][j + 1] == ' '))
 				return (0);
-			else if (map[i][j] == '0' && (ft_isspace(map[i - 1][j])
+			else if (is_not_wall(map, i, j) && (ft_isspace(map[i - 1][j])
 				|| ft_isspace(map[i + 1][j]) || ft_isspace(map[i][j - 1])
 				|| ft_isspace(map[i][j + 1])))
 				return (0);

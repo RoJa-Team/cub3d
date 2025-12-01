@@ -465,6 +465,7 @@ void			assign_map_lines(t_file *cub_file);
 void			allocate_map(t_file	*cub_file);
 char			*convert_line(char *old_line);
 void			sprite_door_count(char **map, int i, int j);
+int				is_not_wall(char **map, int i, int j);
 
 /*---------- map_parse_utils.c ----------*/
 void			init_map_objects(void);

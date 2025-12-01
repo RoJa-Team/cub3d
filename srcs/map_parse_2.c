@@ -77,3 +77,11 @@ void	sprite_door_count(char **map, int i, int j)
 	else if (map[i][j] == 'D')
 		map_objects()->door_count++;
 }
+
+int	is_not_wall(char **map, int i, int j)
+{
+	if (map[i][j] == '0' || map[i][j] == 'F' || map[i][j] == 'D')
+		return (1);
+	else
+		return (0);
+}
