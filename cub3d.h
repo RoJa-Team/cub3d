@@ -43,6 +43,7 @@
 # define MAP_DOOR 0x00E0A0E0
 # define MAP_FIRE 0x00E64600
 # define MINIMAP_RADIUS 3
+# define MOUSE_SENSIVITY 0.25
 
 typedef enum e_line_type
 {

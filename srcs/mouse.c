@@ -43,9 +43,9 @@ int	mouse_movement(int x, int y, t_game *game)
 	if (diff_x != 0)
 	{
 		if (diff_x > 0)
-			rotate_camera(player(), frame()->rot_speed * 0.25);
+			rotate_camera(player(), frame()->rot_speed * MOUSE_SENSIVITY);
 		if (diff_x < 0)
-			rotate_camera(player(), -frame()->rot_speed * 0.25);
+			rotate_camera(player(), -frame()->rot_speed * MOUSE_SENSIVITY);
 	}
 	return (0);
 }
