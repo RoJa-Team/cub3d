@@ -85,5 +85,4 @@ void	load_textures_hose(t_textures *t)
 void	load_textures_misc(t_textures *t)
 {
 	xpm_to_img("textures/edited/slide_door.xpm", &(t->door.img));
-	xpm_to_img("textures/edited/clouds.xpm", &(t->clouds.img));
 }
