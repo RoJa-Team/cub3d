@@ -6,18 +6,11 @@
 /*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 18:44:03 by rafasant          #+#    #+#             */
-/*   Updated: 2025/11/30 17:43:48 by rafasant         ###   ########.fr       */
+/*   Updated: 2025/12/01 18:59:38 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	close_game(t_game *game)
-{
-	unlock_mouse(game);
-	deallocate();
-	return (0);
-}
 
 void	pause_game(t_game *game)
 {
@@ -33,6 +26,15 @@ void	pause_game(t_game *game)
 		game->paused = false;
 		lock_mouse(game);
 	}
+}
+
+int	close_game(t_game *game)
+{
+	if (game->paused)
+		pause_game(game);
+	unlock_mouse(game);
+	deallocate();
+	return (0);
 }
 
 void	open_full_map(t_game *game)
