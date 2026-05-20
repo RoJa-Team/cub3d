@@ -133,6 +133,9 @@ Doors and flames are handled as special tiles inspected during the raycasting lo
 
 ---
 
-## 👤 Author
+## 👤 Authors
 
-Developed at **42 Lisboa** as part of the common core curriculum.
+- [@shishudy](https://github.com/shishudy) — `Rafael`
+- [@joafern22](https://github.com/joafern22) — `João`
+
+Developed at [42 Lisboa](https://www.42lisboa.com/).
