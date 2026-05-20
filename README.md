@@ -64,7 +64,7 @@ Doors open and close on their own based on player proximity.
 
 ### Compilation
 ```bash
-git clone <repository-url> cub3d
+git clone https://github.com/RoJa-Team/cub3d
 cd cub3d
 make
 ```
