@@ -16,10 +16,24 @@ This implementation goes beyond the mandatory requirements by introducing origin
 
 ---
 
+## 🎬 Gameplay
+
+<!-- Drop a ~5s GIF showcasing the game in action. -->
+<!-- Replace the path below with your file once it's added to the repo, e.g. ./assets/gameplay.gif -->
+
+<p align="center">
+  <img src="./textures/output.gif" alt="cub3D gameplay preview" width="600"/>
+</p>
+
+---
+
 ## ✨ Features
 
 ### 🔥 Fire & Hose System
-The map can contain **flames** placed at arbitrary positions. The player is equipped with a **hose** that, when activated by pressing the `SPACE` key, sprays water and **extinguishes** any flame within range. This adds an interactive dimension to the otherwise static raycasted world.
+The map can contain **flames** placed at arbitrary positions. The player is equipped with a **hose** that, when activated by holding **right click**, sprays water and **extinguishes** any flame within range. This adds an interactive dimension to the otherwise static raycasted world.
+
+### 🖱️ Mouse Look
+The camera is fully controlled by the **mouse**: simply move it left or right to rotate the player's view, just like in modern first-person shooters. This makes navigation far more fluid and intuitive than relying on the arrow keys alone.
 
 ### 🚪 Proximity-Based Automatic Doors
 Doors behave **automatically**: they slide open as the player approaches and close again once the player has moved away. No key bindings needed — exploration feels smooth and immersive, much like in modern game engines.
@@ -39,16 +53,17 @@ The `.cub` map file format allows full configuration of the level without touchi
 
 ## 🎮 Controls
 
-| Key       | Action                            |
-| --------- | --------------------------------- |
-| `W`       | Move forward                      |
-| `S`       | Move backward                     |
-| `A`       | Strafe left                       |
-| `D`       | Strafe right                      |
-| `←` / `→` | Rotate the camera                 |
-| `SPACE`   | Spray water from the hose         |
-| `M`       | Toggle full-screen minimap        |
-| `ESC`     | Quit the game                     |
+| Input         | Action                            |
+| ------------- | --------------------------------- |
+| `W`           | Move forward                      |
+| `S`           | Move backward                     |
+| `A`           | Strafe left                       |
+| `D`           | Strafe right                      |
+| `←` / `→`     | Rotate the camera (keyboard)      |
+| Mouse move    | Look left / right                 |
+| Right click   | Spray water from the hose         |
+| `M`           | Toggle full-screen minimap        |
+| `ESC`         | Quit the game                     |
 
 Doors open and close on their own based on player proximity.
 
